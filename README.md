@@ -1,4 +1,4 @@
-# WashereCore
+# Washere
 
 A powerful and flexible Minecraft server core plugin that enhances server management and player experience.
 
