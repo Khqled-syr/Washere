@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: net.megavex:scoreboard-library-extra-kotlin:2.2.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="net.megavex" artifactId="scoreboard-library-extra-kotlin" version="2.2.2" baseVersion="2.2.2" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.megavex/scoreboard-library-extra-kotlin/2.2.2/24fb7bd579c24f57ef8122e1af3bce9c273aecb9/scoreboard-library-extra-kotlin-2.2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

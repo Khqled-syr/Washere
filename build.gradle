@@ -1,0 +1,85 @@
+plugins {
+    id 'java'
+    id("xyz.jpenilla.run-paper") version "2.3.1"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'me.washeremc'
+version = '3.5.2'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+
+    maven {
+        url = 'https://repo.extendedclip.com/releases/'
+    }
+
+
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+
+    // PlaceholderAPI
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+
+    // LuckPerms
+    compileOnly 'net.luckperms:api:5.4'
+
+    // HikariCP (for MySQL connection pooling)
+    implementation("com.zaxxer:HikariCP:5.1.0") // or latest
+
+    def scoreboardLibraryVersion = "2.2.2"
+    implementation("net.megavex:scoreboard-library-api:$scoreboardLibraryVersion")
+    runtimeOnly("net.megavex:scoreboard-library-implementation:$scoreboardLibraryVersion")
+    implementation("net.megavex:scoreboard-library-extra-kotlin:$scoreboardLibraryVersion") // Kotlin specific extensions (optional)
+
+    // Add packet adapter implementations you want:
+    runtimeOnly("net.megavex:scoreboard-library-modern:$scoreboardLibraryVersion") // 1.17+
+
+    // If targeting a Minecraft version without native Adventure support, add it as well:
+    //implementation("net.kyori:adventure-platform-bukkit:4.3.4")
+}
+
+tasks {
+  runServer {
+    minecraftVersion("1.21")
+  }
+}
+
+def targetJavaVersion = 21
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

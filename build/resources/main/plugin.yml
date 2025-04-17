@@ -1,0 +1,96 @@
+name: Washere
+version: '3.5.2'
+main: me.washeremc.Washere
+api-version: "1.21"
+authors: [Levaii]
+description: A core plugin for washere.
+website: washeremc.me
+depend:
+  - PlaceholderAPI
+  - LuckPerms
+commands:
+  sethome:
+    description: Sets your home location.
+    usage: "/sethome"
+  home:
+    description: Teleports you to your home location.
+    usage: "/home"
+  backpack:
+    description: Opens your backpack.
+    usage: "/backpack"
+  tpa:
+    description: "Send a teleport request to a player"
+    usage: "/tpa <player>"
+  tpaccept:
+    description: "Accept a teleport request"
+    usage: "/tpaccept"
+  wreload:
+    description: Reloads the plugin configuration.
+    usage: "/reload"
+    permission: washere.admin
+  donate:
+    description: Donate to a player
+    usage: "/donate <player>"
+  setwarp:
+    description: Set a warp point.
+  delwarp:
+    description: Delete a warp point.
+  warp:
+    description: Teleport to a warp point.
+  warps:
+    description: Displays all your warps
+  msg:
+    description: Send a private message to a player.
+  reply:
+    description: Reply to the last private message.
+    aliases: [ r ]
+  help:
+    description: Shows custom plugin help
+    usage: /<command>
+  settings:
+    description: open settings menu.
+    usage: /settings
+  profile:
+    description: open profile menu.
+    usage: /profile
+  spawn:
+    description: Teleport to spawn, set spawn.
+    permission: washere.admin
+  fly:
+    description: toggle fly
+    usage: /fly
+    permission: washere.vip
+  npc:
+    description: Create an NPC to connect to a server.
+    usage: /npc <name> <server>
+    permission: washere.npc
+  deletenpc:
+    description: Delete an NPC.
+    usage: /deletenpc <name>
+    permission: washere.npc
+  listnpcs:
+    description: display all npcs.
+    usage: /listnpcs
+    permission: washere.npc
+  recipe:
+    description: show a recipe.
+    usage: /recipe <item>
+  whois:
+    description: "Shows player's name history and info"
+    usage: "/whois <player>"
+    permission: washere.admin
+  jail:
+    description: Jail a player for a specified duration
+    usage: /jail <player> <duration> <reason>
+    permission: washere.jail
+  unjail:
+    description: Release a player from jail
+    usage: /unjail <player>
+    permission: washere.jail
+  setjail:
+    description: Set the jail location to your current position
+    usage: /setjail
+    permission: washere.jail
+  list:
+    description: Opens a list of all online players
+    usage: /list

@@ -1,0 +1,73 @@
+package me.washeremc.Core.commands;
+
+import me.washeremc.Core.Managers.CooldownManager;
+import me.washeremc.Core.Settings.SettingsManager;
+import me.washeremc.Core.utils.ChatUtils;
+import org.bukkit.Sound;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.UUID;
+
+public class ReplyCommand implements CommandExecutor {
+
+    private final MsgCommand msgCommand;
+
+    public ReplyCommand(MsgCommand msgCommand) {
+        this.msgCommand = msgCommand;
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+            return true;
+        }
+
+        Player target = msgCommand.getLastMessenger(player);
+
+
+        if (target == null || !target.isOnline()) {
+            player.sendMessage(ChatUtils.colorize("&cNo player to reply to or player is not online."));
+            return true;
+        }
+
+        if (SettingsManager.isMessagingEnabled(player)) {
+            player.sendMessage(ChatUtils.colorize("&cMessaging is disabled. Enable it in your settings."));
+            return true;
+        }
+
+        // 🔥 Cooldown check
+        UUID uuid = player.getUniqueId();
+        String cooldownKey = "reply";
+        if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
+            long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
+            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            return true;
+        }
+        CooldownManager.setCooldown(uuid, cooldownKey, 3);
+
+        if (SettingsManager.isMessagingEnabled(target)) {
+            player.sendMessage(ChatUtils.colorize("&cThe player has disabled messaging."));
+            return true;
+        }
+
+        if (args.length < 1) {
+            player.sendMessage(ChatUtils.colorize("&cUsage: /reply <message>"));
+            return true;
+        }
+
+        String message = String.join(" ", Arrays.copyOfRange(args, 0, args.length));
+        target.sendMessage(ChatUtils.colorize("&e" + player.displayName() + " &7-> &6you&7: &b" + message));
+        player.sendMessage(ChatUtils.colorize("&6You &7-> &e" + target.displayName() + "&7: &b" + message));
+
+        msgCommand.setLastMessenger(target, player); // Update the last messenger
+        target.playSound(target.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+
+        return true;
+    }
+}

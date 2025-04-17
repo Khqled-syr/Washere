@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: net.megavex:scoreboard-library-api:2.2.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="net.megavex" artifactId="scoreboard-library-api" version="2.2.2" baseVersion="2.2.2" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.megavex/scoreboard-library-api/2.2.2/ce9ac4ffdfa3a20f645b62f08560c99026ed1074/scoreboard-library-api-2.2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

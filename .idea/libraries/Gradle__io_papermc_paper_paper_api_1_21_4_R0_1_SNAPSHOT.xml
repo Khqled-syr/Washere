@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.papermc.paper" artifactId="paper-api" version="1.21.4-R0.1-SNAPSHOT" baseVersion="1.21.4-R0.1-SNAPSHOT" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.papermc.paper/paper-api/1.21.4-R0.1-SNAPSHOT/bdf888190417929a453af7e053cc7406fc4178b4/paper-api-1.21.4-R0.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

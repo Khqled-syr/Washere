@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: net.megavex:scoreboard-library-packet-adapter-base:2.2.2" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="net.megavex" artifactId="scoreboard-library-packet-adapter-base" version="2.2.2" baseVersion="2.2.2" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.megavex/scoreboard-library-packet-adapter-base/2.2.2/549a52e2fbe3d9f1a6a4c72180bddc3f242f8d3d/scoreboard-library-packet-adapter-base-2.2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Washere.iml" filepath="$PROJECT_DIR$/.idea/modules/Washere.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Washere.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Washere.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Washere.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Washere.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/me.washeremc.Washere.main.iml" filepath="$PROJECT_DIR$/.idea/modules/me.washeremc.Washere.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/me.washeremc.Washere.test.iml" filepath="$PROJECT_DIR$/.idea/modules/me.washeremc.Washere.test.iml" />
+    </modules>
+  </component>
+</project>

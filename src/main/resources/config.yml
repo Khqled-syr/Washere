@@ -1,0 +1,113 @@
+# =======================================
+#           ⚡ WASHERE SERVER ⚡
+#               By Levaii
+# =======================================
+
+# =======================================
+#           GENERAL SETTINGS
+# =======================================
+server-type: none  # Options: survival, lobby (ffa coming soon)
+
+# =======================================
+#           STORAGE SETTINGS
+# =======================================
+storage:
+  type: "yaml"  # Options: yaml, mysql
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  database: "washeresettings"
+  username: "root"
+  password: "password"
+
+# =======================================
+#           PLAYER SETTINGS
+#             ( LOBBY MODE )
+# =======================================
+jump-velocity: 1.2
+fall-limit: -30.0
+
+# =======================================
+#            CHAT SETTINGS
+# =======================================
+join-message: "&a&l+ &r%luckperms_meta_color%%player% &7has joined the server!"
+leave-message: "&c&l- &r%luckperms_meta_color%%player% &7has left the server!"
+chat:
+  format: "%luckperms_prefix%%luckperms_meta_color%%player_name%&f: %message%"
+
+# =======================================
+#       COMMAND FILTER SETTINGS
+#    ( COMMANDS + TAB SUGGESTIONS )
+# =======================================
+allowed-commands:
+  - help
+  - settings
+  - profile
+  - msg
+  - reply
+  - r
+  - warp
+  - warps
+  - delwarp
+  - home
+  - sethome
+  - donate
+  - recipe
+  - backpack
+
+op-bypass: true
+
+# =======================================
+#           DISPLAY SETTINGS
+# =======================================
+# ----- SCOREBOARD CONFIGURATION -----
+scoreboard:
+  title: "&6WasHere"
+  lines:
+    - "&7&owasheremc.me"
+    - ""
+    - "&7Name: &r%luckperms_meta_color%%player_name%"
+    - "&7Rank: &r%luckperms_prefix%"
+    - "&7Ping: &a%player_ping%ms"
+    - ""
+    - "&7🌍 Online: &6%server_online%"
+    - ""
+    - "&8&o%server_time_dd.MM.yyyy%"
+
+  # ----- TAB SORTING CONFIGURATION & NAME TAG COLOR -----
+  teams:
+    founder:
+      prefix: "&4[Founder] " # USE IT WITH use-rank-colors
+      priority: 1 #RANK WEIGHT
+    vip:
+      prefix: "&6[VIP] "
+      priority: 2
+    default:
+      prefix: "&7[Member] "
+      priority: 3
+
+# ----- TABLIST CONFIGURATION -----
+tablist:
+  use-rank-colors: true # SHOWS THE RANK COLOR NOT THE PREFIX
+  player-list-name-format: "%luckperms_prefix%%player_name%"
+  header: |
+    
+    &6WasHere
+    &7&oEnjoy your stay and have fun!
+
+  footer: |
+    
+    &7Need help? Type &e/help
+
+# =======================================
+#        SERVER CONNECTION SETTINGS
+#             ( LOBBY COMPASS )
+# =======================================
+servers:
+  Survival:
+    ip: "127.0.0.1"
+    port: 25566
+  FFA:
+    ip: "127.0.0.1"
+    port: 25567
