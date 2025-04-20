@@ -34,17 +34,24 @@ A powerful and flexible Minecraft server core plugin that enhances server manage
 ## ⚙️ Configuration
 
 ```yaml
-server:
-  type: survival
-settings:
-  pvp:
-    toggle_cooldown: 60
-    default: false
-  scoreboard:
-    enabled: true
-    update_interval: 20
-```
+# =======================================
+#           GENERAL SETTINGS
+# =======================================
+server-type: none  # Options: survival, lobby (ffa coming soon)
 
+# =======================================
+#           STORAGE SETTINGS
+# =======================================
+storage:
+  type: "yaml"  # Options: yaml, mysql
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  database: "washeresettings"
+  username: "root"
+  password: "password"
+```
 ## 🛠️ Commands
 
 ### Player Commands
@@ -67,11 +74,12 @@ fly:
   usage: /fly
   permission: washere.vip
 
-
 ## 🔧 Dependencies
 - Server: Paper/Spigot 1.21+
 - Java: 21+
 - Memory: 512MB minimum
+- LuckPerms
+- PlaceholderAPI
 
 ## 🤝 Contributing
 1. Fork repository
@@ -86,18 +94,6 @@ MIT License - see LICENSE file
 ## 👥 Support
 - Issues: GitHub Issue Tracker
 - Discord: khqledsyr
-
-## 📈 Version History
-
-### 3.5.2
-- Initial release
-- Core PvP system
-- Basic settings management
-
-### 1.1.0
-- Enhanced action bar system
-- Performance optimizations
-- Bug fixes
-
+- 
 ## ⭐ Credits
 Created and maintained by WashereMC
