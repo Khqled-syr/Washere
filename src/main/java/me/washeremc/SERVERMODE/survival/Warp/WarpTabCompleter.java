@@ -1,6 +1,5 @@
-package me.washeremc.SERVERMODE.survival.utils;
+package me.washeremc.SERVERMODE.survival.Warp;
 
-import me.washeremc.SERVERMODE.survival.Warp.WarpManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -21,6 +20,7 @@ public class WarpTabCompleter implements TabCompleter {
 
         UUID playerUUID = player.getUniqueId();
         Set<String> warps = WarpManager.getWarps(playerUUID);
+        Set<String> publicWarps = WarpManager.getPublicWarps();
 
         if (args.length == 1) {
             List<String> suggestions = new ArrayList<>();
@@ -28,12 +28,17 @@ public class WarpTabCompleter implements TabCompleter {
 
             for (String warp : warps) {
                 if (warp.toLowerCase().startsWith(currentArg)) {
-                    suggestions.add(warp);
+                    suggestions.add(publicWarps.contains(warp) ? warp + " (public)" : warp);
+                }
+            }
+
+            for (String warp : publicWarps) {
+                if (warp.toLowerCase().startsWith(currentArg) && !warps.contains(warp)) {
+                    suggestions.add(warp + " (public)");
                 }
             }
             return suggestions;
         }
-
         return new ArrayList<>();
     }
 }

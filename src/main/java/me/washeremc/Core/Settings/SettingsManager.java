@@ -128,14 +128,22 @@ public final class SettingsManager {
         Bukkit.getScheduler().runTask(plugin, () -> applySettingEffect(player, key, newValue));
     }
 
-
-
     private static <T> void applySettingEffect(Player player, String key, T value) {
         try {
             switch (key) {
+
+                //GENERAL
                 case "scoreboard" -> toggleScoreboard(player, (Boolean) value);
-                case "players_visibility" -> updatePlayerVisibility(player, (Boolean) value);
+                case "messaging" -> notifyToggle(player, "Messaging", (Boolean) value);
+                case "pinging" -> notifyToggle(player, "Pinging", (Boolean) value);
+
+                //LOBBY
+                case "players_visibility" -> updatePlayerVisibility(player, (Boolean) value, true);
                 case "player_time" -> applyPlayerTime(player, (PlayerTime) value);
+
+                //SURVIVAL
+                case "tpa" -> notifyToggle(player, "TPA", (Boolean) value);
+                case "actionbar" -> notifyToggle(player, "Action Bar", (Boolean) value);
                 case "pvp" -> notifyPvpStatus(player, (Boolean) value);
                 default -> plugin.getLogger().warning("Unknown setting key: " + key);
             }
@@ -146,6 +154,11 @@ public final class SettingsManager {
         }
     }
 
+    private static void notifyToggle(@NotNull Player player, String settingName, boolean enabled) {
+        player.sendMessage(ChatUtils.colorize(enabled ?
+                "&a" + settingName + " has been enabled." :
+                "&c" + settingName + " has been disabled."));
+    }
 
     private static void notifyPvpStatus(Player player, boolean enabled) {
         if (enabled) {
@@ -156,16 +169,47 @@ public final class SettingsManager {
     }
 
     private static void toggleScoreboard(Player player, boolean enabled) {
-        if (enabled) plugin.getScoreboard().createSidebar(player);
-        else plugin.getScoreboard().removeSidebar(player);
-    }
-
-    private static void updatePlayerVisibility(Player player, boolean visible) {
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            if (visible) player.showPlayer(plugin, online);
-            else player.hidePlayer(plugin, online);
+        if (enabled) {
+            plugin.getScoreboard().createSidebar(player);
+            player.sendMessage(ChatUtils.colorize("&a" + "Scoreboard" + " has been enabled."));
+        } else {
+            plugin.getScoreboard().removeSidebar(player);
+            player.sendMessage(ChatUtils.colorize("&c" + "Scoreboard" + " has been disabled."));
         }
     }
+
+    public static void updatePlayerVisibility(Player player, boolean visible, boolean isToggle) {
+        if (player == null) {
+            plugin.getLogger().warning("Player is null, cannot update visibility.");
+            return;
+        }
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (visible) {
+                player.showPlayer(plugin, online);
+            } else {
+                player.hidePlayer(plugin, online);
+            }
+        }
+
+        if (isToggle) {
+            player.sendMessage(ChatUtils.colorize("&ePlayers are now " + (visible ? "&avisible" : "&cinvisible") + "&e."));
+        }
+
+
+        // Handle whether others can see this player
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (online != player) {  // Don't process for the same player
+                boolean onlinePlayerSettings = isPlayersVisible(online);
+                if (onlinePlayerSettings) {
+                    online.showPlayer(plugin, player);
+                } else {
+                    online.hidePlayer(plugin, player);
+                }
+            }
+        }
+    }
+
 
     private static void applyPlayerTime(@NotNull Player player, @NotNull PlayerTime time) {
         player.setPlayerTime(switch (time) {
@@ -173,6 +217,7 @@ public final class SettingsManager {
             case NIGHT -> 13000L;
             case SUNSET -> 12000L;
         }, false);
+        player.sendMessage(ChatUtils.colorize("&aPlayer time has been set to " + time.name().toLowerCase() + "."));
     }
 
     public static void loadPlayerSettings(UUID uuid) {

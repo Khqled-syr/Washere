@@ -1,6 +1,5 @@
 package me.washeremc;
 
-
 import me.washeremc.Core.Managers.PluginReloadManager;
 import me.washeremc.Core.utils.ScoreBoard;
 import me.washeremc.Core.utils.TabList;
@@ -24,7 +23,6 @@ public final class Washere extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        jailManager = new JailManager(this);
         // Create plugin services first
         pluginServices = new PluginServices(this);
 
@@ -41,13 +39,13 @@ public final class Washere extends JavaPlugin implements Listener {
         pluginReloadManager = new PluginReloadManager(this);
         pluginReloadManager.initializeFeatures();
 
-        tpaManager = new TpaManager(this);
-
         // Initialize components
         npcUtils = new NPCUtils(this);
         npcUtils.loadNPCs();
         scoreboard = new ScoreBoard(this);
         tabList = new TabList(this);
+        tpaManager = new TpaManager(this);
+        jailManager = new JailManager(this);
 
         // Register everything
         pluginServices.registerAllComponents();
@@ -67,9 +65,9 @@ public final class Washere extends JavaPlugin implements Listener {
         if (scoreboard != null) {
             scoreboard.resetSidebars();
         }
-
         pluginServices.logSuccessfulShutdown();
     }
+
 
     public TpaManager getTpaManager() {
         return tpaManager;

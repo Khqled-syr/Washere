@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -43,7 +42,6 @@ public class SettingsMenuListener implements Listener {
         // Handle close button click
         if (SettingsMenu.isCloseButton(slot)) {
             player.closeInventory();
-            playCloseSound(player);
             return;
         }
 
@@ -56,12 +54,6 @@ public class SettingsMenuListener implements Listener {
         handleSettingToggle(player, settingKey);
     }
 
-    /**
-     * Handles the toggling of a setting
-     * 
-     * @param player The player toggling the setting
-     * @param settingKey The key of the setting to toggle
-     */
     private void handleSettingToggle(@NotNull Player player, @NotNull String settingKey) {
         Objects.requireNonNull(player, "Player cannot be null");
         Objects.requireNonNull(settingKey, "Setting key cannot be null");
@@ -71,10 +63,10 @@ public class SettingsMenuListener implements Listener {
         // Handle player time setting separately
         if (SETTING_PLAYER_TIME.equals(settingKey)) {
             PlayerTime currentTime = SettingsManager.getSettingValue(player, settingKey);
-            playPlayerTimeSound(player, currentTime);
+            playPlayerTimeSound(player, Objects.requireNonNull(currentTime));
         }
 
-        // Get current state for non-player-time settings
+        // Get the current state for non-player-time settings
         boolean wasEnabled = !SETTING_PLAYER_TIME.equals(settingKey) && 
                              Boolean.TRUE.equals(SettingsManager.getSettingValue(player, settingKey));
 
@@ -82,7 +74,7 @@ public class SettingsMenuListener implements Listener {
         boolean toggleSuccessful = SettingsManager.toggleSetting(player, settingKey);
 
         if (toggleSuccessful) {
-            // Play appropriate sound based on new state (except for player_time which already played)
+            // Play the appropriate sound based on the new state (except for player_time which already played)
             if (!SETTING_PLAYER_TIME.equals(settingKey)) {
                 boolean isNowEnabled = Boolean.TRUE.equals(SettingsManager.getSettingValue(player, settingKey));
                 playToggleSound(player, settingKey, isNowEnabled, wasEnabled);
@@ -90,7 +82,7 @@ public class SettingsMenuListener implements Listener {
         } else {
             // Cooldown active or other issue - play error sound
             playErrorSound(player);
-            needsRefresh = false; // No need to refresh if toggle failed
+            needsRefresh = false; // No need to refresh if the toggle failed
         }
 
         // Refresh the menu only if needed
@@ -99,35 +91,17 @@ public class SettingsMenuListener implements Listener {
         }
     }
 
-    /**
-     * Plays a sound for the player at their location
-     * 
-     * @param player The player to play the sound for
-     * @param sound The sound to play
-     * @param volume The volume of the sound
-     * @param pitch The pitch of the sound
-     */
     private void playSound(@NotNull Player player, @NotNull Sound sound, float volume, float pitch) {
         Objects.requireNonNull(player, "Player cannot be null");
         Objects.requireNonNull(sound, "Sound cannot be null");
         player.playSound(player.getLocation(), sound, volume, pitch);
     }
 
-    /**
-     * Plays the menu close sound for a player
-     * 
-     * @param player The player to play the sound for
-     */
+
     private void playCloseSound(@NotNull Player player) {
         playSound(player, Sound.BLOCK_CHEST_CLOSE, SOUND_VOLUME_LOW, SOUND_VOLUME_HIGH);
     }
 
-    /**
-     * Plays the appropriate sound for a player time setting
-     * 
-     * @param player The player to play the sound for
-     * @param time The current player time setting
-     */
     private void playPlayerTimeSound(@NotNull Player player, @NotNull PlayerTime time) {
         Sound sound = Sound.BLOCK_NOTE_BLOCK_HARP;
         float pitch = switch (time) {
@@ -138,14 +112,6 @@ public class SettingsMenuListener implements Listener {
         playSound(player, sound, SOUND_VOLUME_LOW, pitch);
     }
 
-    /**
-     * Plays the appropriate sound for a boolean setting toggle
-     * 
-     * @param player The player to play the sound for
-     * @param settingKey The setting key that was toggled
-     * @param enabled Whether the setting is now enabled
-     * @param wasEnabled Whether the setting was previously enabled
-     */
     private void playToggleSound(@NotNull Player player, @NotNull String settingKey, boolean enabled, boolean wasEnabled) {
         if (SETTING_PVP.equals(settingKey)) {
             if (enabled && !wasEnabled) {
@@ -156,7 +122,6 @@ public class SettingsMenuListener implements Listener {
                 playSound(player, Sound.BLOCK_BEACON_DEACTIVATE, SOUND_VOLUME_HIGH, SOUND_VOLUME_HIGH);
             }
         } else {
-            // Regular toggle sounds
             if (enabled != wasEnabled) {
                 playSound(player, Sound.BLOCK_LEVER_CLICK, SOUND_VOLUME_LOW, 
                     enabled ? SOUND_PITCH_HIGH : SOUND_PITCH_MEDIUM);
@@ -164,24 +129,7 @@ public class SettingsMenuListener implements Listener {
         }
     }
 
-    /**
-     * Plays an error sound for the player
-     * 
-     * @param player The player to play the sound for
-     */
     private void playErrorSound(@NotNull Player player) {
         playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, SOUND_VOLUME_LOW, SOUND_PITCH_LOW);
-    }
-
-    @EventHandler
-    public void onInventoryClose(@NotNull InventoryCloseEvent event) {
-        if (!(event.getInventory().getHolder() instanceof SettingsMenu.SettingsMenuHolder)) {
-            return;
-        }
-
-        // Play a sound when closing the menu
-        if (event.getPlayer() instanceof Player player) {
-            playCloseSound(player);
-        }
     }
 }

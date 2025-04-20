@@ -114,8 +114,8 @@ public class JailManager {
 
         for (Map.Entry<UUID, JailData> entry : jailedPlayers.entrySet()) {
             ConfigurationSection playerSection = playersSection.createSection(entry.getKey().toString());
-            playerSection.set("release-time", entry.getValue().getReleaseTime());
-            playerSection.set("reason", entry.getValue().getReason());
+            playerSection.set("release-time", entry.getValue().releaseTime());
+            playerSection.set("reason", entry.getValue().reason());
 
             Location prevLoc = previousLocations.get(entry.getKey());
             if (prevLoc != null) {
@@ -136,7 +136,7 @@ public class JailManager {
         long currentTime = System.currentTimeMillis();
 
         jailedPlayers.entrySet().removeIf(entry -> {
-            if (currentTime >= entry.getValue().getReleaseTime()) {
+            if (currentTime >= entry.getValue().releaseTime()) {
                 UUID uuid = entry.getKey();
                 Player player = Bukkit.getPlayer(uuid);
 
@@ -248,20 +248,7 @@ public class JailManager {
         return time.toString().trim();
     }
 
-    public static class JailData {
-        private final long releaseTime;
-        private final String reason;
+    public record JailData(long releaseTime, String reason) {
 
-        public JailData(long releaseTime, String reason) {
-            this.releaseTime = releaseTime;
-            this.reason = reason;
-        }
-
-        public long getReleaseTime() {
-            return releaseTime;
-        }
-        public String getReason() {
-            return reason;
-        }
     }
 }

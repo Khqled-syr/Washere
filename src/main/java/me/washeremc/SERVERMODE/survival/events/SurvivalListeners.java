@@ -2,9 +2,9 @@ package me.washeremc.SERVERMODE.survival.events;
 
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.libs.kyori.adventure.text.Component;
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Washere;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -57,13 +57,7 @@ public class SurvivalListeners implements Listener {
 
         if (isLobby()) return;
         event.joinMessage(null);
-        String broadcastMessage = plugin.getConfig().getString("join-message");
-        assert broadcastMessage != null;
-        broadcastMessage = PlaceholderAPI.setPlaceholders(player, broadcastMessage);
-
-        broadcastMessage = broadcastMessage.replace("%player%", player.getName());
-        //player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
-        Bukkit.broadcast(LegacyComponentSerializer.legacyAmpersand().deserialize(broadcastMessage));
+        broadcastJoinOrLeaveMessage(event.getPlayer(), "join-message");
 
         if (!player.hasPlayedBefore()) {
                 player.sendMessage("");
@@ -75,15 +69,20 @@ public class SurvivalListeners implements Listener {
     public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
         if (isLobby()) return;
 
-        Player player = event.getPlayer();
         event.quitMessage(null);
-        String broadcastMessage = plugin.getConfig().getString("leave-message");
-        assert broadcastMessage != null;
+        broadcastJoinOrLeaveMessage(event.getPlayer(), "leave-message");
+
+    }
+
+    private void broadcastJoinOrLeaveMessage(Player player, String configKey) {
+        String broadcastMessage = plugin.getConfig().getString(configKey);
+        if (broadcastMessage == null) {
+            plugin.getLogger().warning(configKey + " is not configured properly.");
+            return;
+        }
         broadcastMessage = PlaceholderAPI.setPlaceholders(player, broadcastMessage);
-
         broadcastMessage = broadcastMessage.replace("%player%", player.getName());
-        Bukkit.broadcast(LegacyComponentSerializer.legacyAmpersand().deserialize((broadcastMessage)));
-
+        Bukkit.broadcast(LegacyComponentSerializer.legacyAmpersand().deserialize(broadcastMessage));
     }
 
     @EventHandler
@@ -134,11 +133,9 @@ public class SurvivalListeners implements Listener {
             } else if (damager instanceof LivingEntity) {
                 deathMessage += " by a " + damager.getType().name().toLowerCase();
             }
-        } else {
-            assert damageEvent != null;
+        } else if (damageEvent != null) {
             deathMessage += " (" + damageEvent.getCause().name().toLowerCase() + ")";
         }
-        event.deathMessage((net.kyori.adventure.text.Component) Component.text(deathMessage));
-
+        event.deathMessage(Component.text(deathMessage));
     }
 }

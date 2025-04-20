@@ -12,7 +12,7 @@ import me.washeremc.SERVERMODE.survival.events.RecipeInventoryListener;
 import me.washeremc.SERVERMODE.survival.events.SurvivalListeners;
 import me.washeremc.SERVERMODE.survival.utils.AFKManager;
 import me.washeremc.SERVERMODE.survival.utils.ActionBarTask;
-import me.washeremc.SERVERMODE.survival.utils.WarpTabCompleter;
+import me.washeremc.SERVERMODE.survival.Warp.WarpTabCompleter;
 import me.washeremc.Washere;
 
 import java.util.Objects;
@@ -53,6 +53,7 @@ public class ListenerManager {
             // Register tab completers for survival commands
             Objects.requireNonNull(plugin.getCommand("warp")).setTabCompleter(tabCompleter);
             Objects.requireNonNull(plugin.getCommand("delwarp")).setTabCompleter(tabCompleter);
+            Objects.requireNonNull(plugin.getCommand("setwarp")).setTabCompleter(tabCompleter);
 
             // Start survival-specific tasks
             new ActionBarTask(plugin).runTaskTimer(plugin, 0L, 20L);

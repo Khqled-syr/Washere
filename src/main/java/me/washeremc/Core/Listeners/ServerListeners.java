@@ -69,13 +69,8 @@ public class ServerListeners implements Listener {
 
         if (isLobby()) {
             boolean visible = SettingsManager.isPlayersVisible(player);
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                if (visible) {
-                    player.showPlayer(plugin, online);
-                } else {
-                    player.hidePlayer(plugin, online);
-                }
-            }
+                SettingsManager.updatePlayerVisibility(player, visible, false);
+
 
             PlayerTime time = SettingsManager.getPlayerTime(player);
             long timeValue = switch (time) {

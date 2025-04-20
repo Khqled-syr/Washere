@@ -6,6 +6,7 @@ import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.proxy.PluginMessage;
 import me.washeremc.Core.proxy.ServerPing;
 import me.washeremc.Core.utils.CommandTabFilter;
+import me.washeremc.Core.utils.SittingSystem;
 import me.washeremc.SERVERMODE.lobby.ServerTeleport;
 import me.washeremc.SERVERMODE.survival.Home.HomeManager;
 import me.washeremc.SERVERMODE.survival.Warp.WarpManager;
@@ -32,6 +33,7 @@ public class UtilManager {
 
 
 
+        plugin.getServer().getPluginManager().registerEvents(new SittingSystem(plugin), plugin);
 
         plugin.getServer().getPluginManager().registerEvents(new CommandTabFilter(plugin), plugin);
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");

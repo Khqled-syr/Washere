@@ -36,21 +36,25 @@ public class TpacceptCommand implements CommandExecutor {
             return true;
         }
 
-        // 🔥 Cooldown check
-        UUID uuid = targetPlayer.getUniqueId();
-        String cooldownKey = "tpaccept";
-        if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
-            long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            sender.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+        UUID targetId = targetPlayer.getUniqueId();
+
+        // Check if there's any request first
+        if (!plugin.getTpaManager().hasRequest(targetId)) {
+            targetPlayer.sendMessage(ChatUtils.colorize("&cNo teleport requests found!"));
             return true;
         }
 
-        CooldownManager.setCooldown(uuid, cooldownKey, 3);
+        // Check if the request hasn't expired
+        if (!plugin.getTpaManager().canAcceptRequest(targetId)) {
+            targetPlayer.sendMessage(ChatUtils.colorize("&cThis teleport request has expired!"));
+            plugin.getTpaManager().removeRequest(targetId);
+            return true;
+        }
 
-        UUID targetId = targetPlayer.getUniqueId();
-
-        if (!plugin.getTpaManager().hasRequest(targetId)) {
-            targetPlayer.sendMessage(ChatUtils.colorize("&cNo teleport requests found!"));
+        // Cooldown check
+        if (CooldownManager.isOnCooldown(targetId, "tpaccept")) {
+            long timeLeft = CooldownManager.getRemainingTime(targetId, "tpaccept");
+            targetPlayer.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
 
@@ -63,11 +67,12 @@ public class TpacceptCommand implements CommandExecutor {
             return true;
         }
 
+        CooldownManager.setCooldown(targetId, "tpaccept", 3);
+
         BukkitRunnable expirationTask = plugin.getTpaManager().getExpirationTask(targetId);
         if (expirationTask != null) {
             expirationTask.cancel();
         }
-
         plugin.getTpaManager().removeRequest(targetId);
 
         senderPlayer.teleport(targetPlayer.getLocation());

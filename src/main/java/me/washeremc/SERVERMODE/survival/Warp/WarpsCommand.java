@@ -31,6 +31,12 @@ public record WarpsCommand(Washere plugin) implements CommandExecutor {
             return true;
         }
 
+
+        if (!WarpManager.isWarpsEnabled()) {
+            player.sendMessage(ChatUtils.colorize("&cWarps are currently disabled."));
+            return true;
+        }
+
         // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "warps";
@@ -42,19 +48,28 @@ public record WarpsCommand(Washere plugin) implements CommandExecutor {
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
 
-        UUID playerUUID = player.getUniqueId();
-        Set<String> warps = WarpManager.getWarps(playerUUID);
 
-        if (warps.isEmpty()) {
-            player.sendMessage(ChatUtils.colorize("&cYou have no warps set."));
-        } else {
-            StringBuilder warpList = new StringBuilder("&aYour warps: ");
-            for (String warp : warps) {
-                warpList.append(warp).append(", ");
-            }
-            warpList.setLength(warpList.length() - 2);
-            player.sendMessage(ChatUtils.colorize(warpList.toString()));
-        }
+        sendWarpList(player);
         return true;
+    }
+
+
+    private void sendWarpList(@NotNull Player player) {
+        Set<String> privateWarps = WarpManager.getWarps(player.getUniqueId());
+        Set<String> publicWarps = WarpManager.getPublicWarps();
+
+        player.sendMessage(ChatUtils.colorize("&6=== Available Warps ==="));
+
+        if (!privateWarps.isEmpty()) {
+            player.sendMessage(ChatUtils.colorize("&aYour warps: &f" + String.join(", ", privateWarps)));
+        }
+
+        if (!publicWarps.isEmpty()) {
+            player.sendMessage(ChatUtils.colorize("&aPublic warps: &f" + String.join(", ", publicWarps)));
+        }
+
+        if (privateWarps.isEmpty() && publicWarps.isEmpty()) {
+            player.sendMessage(ChatUtils.colorize("&cNo warps available."));
+        }
     }
 }

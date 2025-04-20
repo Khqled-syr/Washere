@@ -111,3 +111,12 @@ servers:
   FFA:
     ip: "127.0.0.1"
     port: 25567
+
+# =======================================
+#           WARP CONFIGURATION
+# =======================================
+warps:
+  enabled: true
+  max-per-player: 1
+  public-warps-enabled: true
+  cooldown: 3

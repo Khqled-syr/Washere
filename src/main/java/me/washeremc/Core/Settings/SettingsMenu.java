@@ -3,9 +3,10 @@ package me.washeremc.Core.Settings;
 
 import me.washeremc.Core.Managers.CooldownManager;
 import me.washeremc.Core.Settings.PlayerSetting.PlayerTime;
+import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Washere;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,7 +21,7 @@ import java.util.*;
 
 public class SettingsMenu {
     private static final Map<String, SettingDisplay> settingDisplays = new HashMap<>();
-    private static final String MENU_TITLE = "Settings Menu";
+    private static final String MENU_TITLE = "Settings";
     private static final int MENU_SIZE = 36; // 4 rows for better spacing
     private static Washere plugin;
 
@@ -51,11 +52,11 @@ public class SettingsMenu {
     }
 
     public static void openSettingsMenu(Player player) {
-        Inventory inventory = Bukkit.createInventory(new SettingsMenuHolder(), MENU_SIZE, MENU_TITLE);
+        Inventory inventory = Bukkit.getServer().createInventory(new SettingsMenuHolder(), MENU_SIZE, MENU_TITLE);
         boolean isLobby = plugin != null && "lobby".equalsIgnoreCase(plugin.getServerType());
         boolean isSurvival = plugin != null && "survival".equalsIgnoreCase(plugin.getServerType());
 
-        // Create border first
+        // Create a border first
         createBorder(inventory);
 
         // Add settings
@@ -70,7 +71,7 @@ public class SettingsMenu {
                 boolean isLobbyOnlySetting = key.equals("players_visibility") || key.equals("player_time");
 
                 // For survival-only settings, show them as unavailable in non-survival servers
-                boolean isSurvivalOnlySetting = key.equals("pvp");
+                boolean isSurvivalOnlySetting = key.equals("pvp") || key.equals("tpa") || key.equals("actionbar");
 
                 if (!isLobby && isLobbyOnlySetting) {
                     inventory.setItem(display.slot(), createUnavailableSettingItem(setting, display, "Only available in lobby"));
@@ -92,7 +93,7 @@ public class SettingsMenu {
         ItemStack borderItem = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta borderMeta = borderItem.getItemMeta();
         if (borderMeta != null) {
-            borderMeta.setDisplayName(" ");
+            borderMeta.displayName(Component.text( " "));
             borderMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             borderItem.setItemMeta(borderMeta);
         }
@@ -109,11 +110,11 @@ public class SettingsMenu {
             inventory.setItem(i * 9 + 8, borderItem);
         }
 
-        // Fill remaining empty slots with a different color
+        // Fill the remaining empty slots with a different color
         ItemStack fillerItem = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta fillerMeta = fillerItem.getItemMeta();
         if (fillerMeta != null) {
-            fillerMeta.setDisplayName(" ");
+            fillerMeta.displayName(Component.text( " "));
             fillerMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             fillerItem.setItemMeta(fillerMeta);
         }
@@ -134,29 +135,30 @@ public class SettingsMenu {
         ItemStack closeButton = new ItemStack(Material.BARRIER);
         ItemMeta meta = closeButton.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(ChatColor.RED + "Close");
-            meta.setLore(Collections.singletonList(ChatColor.GRAY + "Click to close this menu"));
+            meta.displayName(Component.text(ChatUtils.colorize("&cClose")));
+            meta.lore(List.of(Component.text(ChatUtils.colorize("&7Click to close this menu"))));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             closeButton.setItemMeta(meta);
         }
         return closeButton;
     }
 
+
     private static @NotNull ItemStack createSettingItem(Setting<?> setting, SettingDisplay display, Object value) {
         boolean isEnabled = value instanceof Boolean ? (Boolean) value : true;
 
-        // Use the appropriate material based on enabled/disabled state
+        // Use the appropriate material based on the enabled / disabled state
         Material material = isEnabled ? display.enabledMaterial() : display.disabledMaterial();
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            // Create a more appealing title with status indicator
+            // Create a more appealing title with a status indicator
             String statusIndicator = isEnabled ?
-                    ChatColor.GREEN + "✓ " :
-                    ChatColor.RED + "✗ ";
+                    ChatUtils.colorize("&a&l✓ "):
+                    ChatUtils.colorize("&c&l✗ ");
 
-            meta.setDisplayName(statusIndicator + ChatColor.GOLD + setting.getDisplayName());
+            meta.displayName(Component.text(ChatUtils.colorize(statusIndicator + "&e" + setting.getDisplayName())));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
             List<String> lore = new ArrayList<>();
@@ -164,8 +166,8 @@ public class SettingsMenu {
             // Status line with color
             if (value instanceof Boolean) {
                 lore.add(isEnabled ?
-                        ChatColor.GREEN + "● ENABLED" :
-                        ChatColor.RED + "● DISABLED");
+                        ChatUtils.colorize("&a● ENABLED"):
+                        ChatUtils.colorize("&c● DISABLED"));
 
                 // Add cooldown info for PVP setting
                 if (setting.getKey().equals("pvp")) {
@@ -173,23 +175,23 @@ public class SettingsMenu {
                     if (player != null) {
                         long cooldownTime = CooldownManager.getRemainingTime(player.getUniqueId(), "pvp_toggle");
                         if (cooldownTime > 0) {
-                            lore.add(ChatColor.RED + "Cooldown: " + cooldownTime + "s");
+                            lore.add(ChatUtils.colorize("&cCooldown: " + cooldownTime + "s"));
                         }
                     }
                 }
             } else if (value instanceof PlayerTime time) {
                 String timeDisplay = switch (time) {
-                    case DAY -> ChatColor.YELLOW + "Day";
-                    case NIGHT -> ChatColor.BLUE + "Night";
-                    case SUNSET -> ChatColor.GOLD + "Sunset";
+                    case DAY -> ChatUtils.colorize("&eDay");
+                    case NIGHT -> ChatUtils.colorize("&1Night");
+                    case SUNSET -> ChatUtils.colorize("&6Sunset");
                 };
-                lore.add(ChatColor.AQUA + "Current: " + timeDisplay);
+                lore.add(ChatUtils.colorize("&bCurrent: " + timeDisplay));
             }
 
             lore.add("");
-            lore.add(ChatColor.GRAY + display.description());
+            lore.add(ChatUtils.colorize("&7" + display.description()));
             lore.add("");
-            lore.add(ChatColor.YELLOW + "» Click to toggle");
+            lore.add(ChatUtils.colorize("&e» Click to toggle"));
 
             meta.setLore(lore);
             item.setItemMeta(meta);
@@ -203,15 +205,15 @@ public class SettingsMenu {
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(ChatColor.DARK_GRAY + "❌ " + ChatColor.GRAY + setting.getDisplayName());
+            meta.displayName(Component.text(ChatUtils.colorize("&c❌ " + ChatUtils.colorize("&7" + setting.getDisplayName()))));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.RED + "● UNAVAILABLE");
+            lore.add(ChatUtils.colorize("&c● UNAVAILABLE"));
             lore.add("");
-            lore.add(ChatColor.GRAY + display.description());
+            lore.add(ChatUtils.colorize("&7" + display.description()));
             lore.add("");
-            lore.add(ChatColor.RED + "» " + reason);
+            lore.add(ChatUtils.colorize("&c» " + reason));
 
             meta.setLore(lore);
             item.setItemMeta(meta);
@@ -227,13 +229,13 @@ public class SettingsMenu {
                 .findFirst()
                 .orElse(null);
 
-        // Check if setting is available in current server mode
+        // Check if the setting is available in current server mode
         if (key != null) {
             boolean isLobby = plugin != null && "lobby".equalsIgnoreCase(plugin.getServerType());
             boolean isSurvival = plugin != null && "survival".equalsIgnoreCase(plugin.getServerType());
 
             boolean isLobbyOnlySetting = key.equals("players_visibility") || key.equals("player_time");
-            boolean isSurvivalOnlySetting = key.equals("pvp");
+            boolean isSurvivalOnlySetting = key.equals("pvp") || key.equals("tpa") || key.equals("actionbar");
 
             if (!isLobby && isLobbyOnlySetting) {
                 return null; // Return null to indicate this setting shouldn't be toggled
@@ -263,7 +265,6 @@ public class SettingsMenu {
             return Bukkit.createInventory(this, MENU_SIZE, MENU_TITLE);
         }
     }
-
     public record SettingDisplay(Material disabledMaterial, Material enabledMaterial, int slot, String description) {
     }
 }

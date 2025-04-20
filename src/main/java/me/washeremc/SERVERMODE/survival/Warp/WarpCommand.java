@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public class WarpCommand implements CommandExecutor {
-
     private final Washere plugin;
 
     public WarpCommand(Washere plugin) {
@@ -37,46 +36,66 @@ public class WarpCommand implements CommandExecutor {
             return true;
         }
 
+        if (!WarpManager.isWarpsEnabled()) {
+            player.sendMessage(ChatUtils.colorize("&cWarps are currently disabled."));
+            return true;
+        }
+
+
         UUID uuid = player.getUniqueId();
+
+        if (args.length == 0) {
+            sendWarpList(player);
+            return true;
+        }
+
+
+        // Handle warp teleportation
+        String warpName = args[0];
+        Location location = WarpManager.getWarp(uuid, warpName);
+
+        // Check public warps if private warp not found
+        if (location == null) {
+            location = WarpManager.getPublicWarp(warpName);
+        }
+
+        if (location == null) {
+            player.sendMessage(ChatUtils.colorize("&cWarp &f" + warpName + " &cnot found!"));
+            sendWarpList(player);
+            return true;
+        }
+
         String cooldownKey = "warp";
-        if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
+        if (CooldownManager.isOnCooldown(uuid, cooldownKey) && !player.hasPermission("washere.warp.bypass")) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
             player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
-        CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
-        Set<String> warps = WarpManager.getWarps(uuid);
-
-        if (args.length != 1) {
-            player.sendMessage(ChatUtils.colorize("&cUsage: /warp [name]"));
-            sendWarpList(player, warps);
-            return true;
-        }
-
-        String warpName = args[0];
-        Location location = WarpManager.getWarp(uuid, warpName);
-        if (location != null) {
-            player.teleport(location);
-            player.sendMessage(ChatUtils.colorize("&aTeleported to warp " + warpName + "!"));
-        } else {
-            player.sendMessage(ChatUtils.colorize("&cWarp " + warpName + " not found!"));
-            sendWarpList(player, warps);
-        }
+        player.teleport(location);
+        CooldownManager.setCooldown(uuid, cooldownKey, 3); // Using fixed cooldown of 3 seconds
+        player.sendMessage(ChatUtils.colorize("&aTeleported to warp &f" + warpName + "&a!"));
 
         return true;
     }
 
-    private void sendWarpList(@NotNull Player player, @NotNull Set<String> warps) {
-        if (warps.isEmpty()) {
-            player.sendMessage(ChatUtils.colorize("&cYou have no warps set."));
-        } else {
-            StringBuilder warpList = new StringBuilder("&aYour warps: ");
-            for (String warp : warps) {
-                warpList.append(warp).append(", ");
-            }
-            warpList.setLength(warpList.length() - 2);
-            player.sendMessage(ChatUtils.colorize(warpList.toString()));
+    private void sendWarpList(@NotNull Player player) {
+        Set<String> privateWarps = WarpManager.getWarps(player.getUniqueId());
+        Set<String> publicWarps = WarpManager.getPublicWarps();
+
+        player.sendMessage(ChatUtils.colorize("&6=== Available Warps ==="));
+
+        if (!privateWarps.isEmpty()) {
+            player.sendMessage(ChatUtils.colorize("&aYour warps: &f" + String.join(", ", privateWarps)));
+        }
+
+        if (!publicWarps.isEmpty()) {
+            player.sendMessage(ChatUtils.colorize("&aPublic warps: &f" + String.join(", ", publicWarps)));
+        }
+
+        if (privateWarps.isEmpty() && publicWarps.isEmpty()) {
+            player.sendMessage(ChatUtils.colorize("&cNo warps available."));
         }
     }
 }
+

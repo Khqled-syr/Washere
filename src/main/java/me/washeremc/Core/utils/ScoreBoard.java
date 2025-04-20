@@ -125,8 +125,8 @@ public class ScoreBoard {
         Optional.ofNullable(playerSidebars.remove(player.getUniqueId())).ifPresent(sidebar -> sidebar.removePlayer(player));
         Optional.ofNullable(sidebarUpdaters.remove(player.getUniqueId())).ifPresent(BukkitRunnable::cancel);
     }
-
     public void resetSidebars() {
         Bukkit.getOnlinePlayers().forEach(this::removeSidebar);
     }
+
 }

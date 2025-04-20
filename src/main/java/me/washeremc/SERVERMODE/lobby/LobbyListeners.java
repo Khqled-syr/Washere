@@ -59,6 +59,11 @@ public class LobbyListeners implements Listener {
     }
 
     @EventHandler
+    public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
+        event.quitMessage(null);
+    }
+
+    @EventHandler
     public void onHeadRightClick(@NotNull PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
@@ -180,8 +185,6 @@ public class LobbyListeners implements Listener {
         Player player = event.getPlayer();
         Location under = player.getLocation().clone();
         under.setY(under.getY() - 1);
-
-        // Get Y-velocity from config
         double yVelocity = plugin.getConfig().getDouble("jump-velocity", 0.9); // Default = 0.9
 
         if (player.getLocation().getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE
@@ -193,7 +196,6 @@ public class LobbyListeners implements Listener {
             player.setVelocity(new Vector(direction.getX(), yVelocity, direction.getZ()));
         }
 
-        // Check if the player fell below the configured Y-level
         double minY = plugin.getConfig().getDouble("fall-limit", -10.0); // Default = -10
         if (player.getLocation().getY() <= minY) {
             if (plugin.getConfig().get("serverSpawn") != null) {

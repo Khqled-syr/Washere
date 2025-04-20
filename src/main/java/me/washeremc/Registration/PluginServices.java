@@ -20,24 +20,21 @@ public class PluginServices {
     }
 
     public void logStartupMessage() {
-        //plugin.getLogger().info("WasHere plugin has been enabled\n");
         printBanner();
     }
 
     private void printBanner() {
         String banner = """
-
-                 __          __       _    _              \s
-                 \\ \\        / /      | |  | |             \s
-                  \\ \\  /\\  / /_ _ ___| |__| | ___ _ __ ___\s
-                   \\ \\/  \\/ / _` / __|  __  |/ _ \\ '__/ _ \\
-                    \\  /\\  / (_| \\__ \\ |  | |  __/ | |  __/
-                     \\/  \\/ \\__,_|___/_|  |_|\\___|_|  \\___|
-                                                          \s
-                  \
-                            §b§lMade by Levaii
-                """;
-
+            __          __       _    _              \s
+            \\ \\        / /      | |  | |             \s
+             \\ \\  /\\  / /_ _ ___| |__| | ___ _ __ ___\s
+              \\ \\/  \\/ / _` / __|  __  |/ _ \\ '__/ _ \\
+               \\  /\\  / (_| \\__ \\ |  | |  __/ | |  __/
+                \\/  \\/ \\__,_|___/_|  |_|\\___|_|  \\___|
+                                                       \s
+              \
+                        §b§lMade by Levaii
+            """;
         Bukkit.getConsoleSender().sendMessage(banner);
     }
 
@@ -47,23 +44,26 @@ public class PluginServices {
     }
 
     public void initializeDatabase() {
-        DatabaseManager.initialize(plugin);
+        try {
+            DatabaseManager.initialize(plugin);
+        } catch (Exception e) {
+            plugin.getLogger().severe("Failed to initialize database: " + e.getMessage());
+        }
     }
 
     public void initializeSettings() {
-        SettingsManager.initialize(plugin);
+        try {
+            SettingsManager.initialize(plugin);
+        } catch (Exception e) {
+            plugin.getLogger().severe("Failed to initialize settings: " + e.getMessage());
+        }
     }
 
+
     public void registerAllComponents() {
-        CommandManager commandManager = new CommandManager(plugin);
-        commandManager.registerCommands();
-
-        ListenerManager listenersManager = new ListenerManager(plugin);
-        listenersManager.RegisterListeners();
-
-        UtilManager utilsManager = new UtilManager(plugin);
-        utilsManager.RegisterUtils();
-
+        new CommandManager(plugin).registerCommands();
+        new ListenerManager(plugin).RegisterListeners();
+        new UtilManager(plugin).RegisterUtils();
         checkForPlaceholderAPI();
     }
 
@@ -77,26 +77,26 @@ public class PluginServices {
     }
 
     public void processExistingPlayers(ScoreBoard scoreboard) {
-        Bukkit.getOnlinePlayers().forEach(player -> processPlayerScoreboard(player, scoreboard));
-    }
-
-    private void processPlayerScoreboard(Player player, ScoreBoard scoreboard) {
-        if (!SettingsManager.isScoreboardEnabled(player)) {
-            scoreboard.removeSidebar(player);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!SettingsManager.isScoreboardEnabled(player)) {
+                scoreboard.removeSidebar(player);
+            }
         }
     }
 
     public void setupServerMode(@NotNull String serverType) {
-        if (serverType.equalsIgnoreCase("lobby")) {
-            plugin.getLogger().info("Server is in Lobby mode. Enabling Lobby Features...");
-            plugin.getServer().getPluginManager().registerEvents(new LobbyListeners(plugin), plugin);
-        } else if (serverType.equalsIgnoreCase("survival")) {
-            plugin.getLogger().info("Server is in Survival mode. Enabling Survival Features...");
-            // Survival-specific initialization is now handled in ListenerManager
-            // This ensures that survival features are only enabled when in survival mode
-        } else {
-            plugin.getLogger().warning("Unknown server type: " + serverType + ". Please check your config.");
-            plugin.getLogger().warning("Supported types: 'lobby', 'survival'");
+        switch (serverType.toLowerCase()) {
+            case "lobby":
+                plugin.getLogger().info("Server is in Lobby mode. Enabling Lobby Features...");
+                plugin.getServer().getPluginManager().registerEvents(new LobbyListeners(plugin), plugin);
+                break;
+            case "survival":
+                plugin.getLogger().info("Server is in Survival mode. Enabling Survival Features...");
+                break;
+            default:
+                plugin.getLogger().warning("Unknown server type: " + serverType + ". Please check your config.");
+                plugin.getLogger().warning("Supported types: 'lobby', 'survival'");
+                break;
         }
     }
 

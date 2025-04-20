@@ -48,7 +48,7 @@ public class Profile implements Listener {
     }
 
     public static @NotNull Inventory createProfileGui(@NotNull Player player) {
-        Inventory profileGui = Bukkit.createInventory(null, 45, "Profile");
+        Inventory profileGui = Bukkit.createInventory(null, 36, "Profile");
 
         int totalMined = 0;
         for (Material material : Material.values()) {
@@ -57,9 +57,15 @@ public class Profile implements Listener {
             }
         }
 
+
+        String rank = (lp == null || lp.trim().isEmpty()) ?
+                ChatUtils.colorize("&7N/A") :
+                ChatUtils.colorize(PlaceholderAPI.setPlaceholders(player, lp));
+
+
         ItemStack profileHead = GuiItems.createPlayerHead(player, "§eInfo", Arrays.asList(
                 "§7Name: §f" + ChatUtils.colorize(PlaceholderAPI.setPlaceholders(player, meta) + player.getName()),
-                "§7Rank: §f" + ChatUtils.colorize(PlaceholderAPI.setPlaceholders(player, lp)),
+                "§7Rank: §f" + rank,
                 "§7Playtime: §e" + (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60) + " minutes",
                 "§7Blocks Mined: §e" + totalMined,
                 "",
@@ -67,29 +73,11 @@ public class Profile implements Listener {
         ));
         profileGui.setItem(13, profileHead);
 
-        ItemStack closeIcon = GuiItems.createItem(Material.BARRIER, "§cClose", null);
-        profileGui.setItem(40, closeIcon);
-        if (!"lobby".equalsIgnoreCase(plugin.getServerType())) {
-            // Warps Icon
-            Set<String> warps = WarpManager.getWarps(player.getUniqueId());
-            List<String> warpsLore = warps.isEmpty() ?
-                    List.of("§7You have no warps.", " ") :
-                    List.of("§7View your warps!", " ", "§eClick to open!");
+        ItemStack closeIcon = GuiItems.createItem(Material.BARRIER, "§cClose", List.of("§7Click to close this menu!"));
+        profileGui.setItem(31, closeIcon);
 
-            ItemStack warpsIcon = GuiItems.createItem(Material.COMPASS, "§eWarps", warpsLore);
-            profileGui.setItem(20, warpsIcon);
 
-            // Home Icon
-            Location homeLocation = HomeManager.getHome(player.getUniqueId());
-            List<String> homeLore = homeLocation == null ?
-                    List.of("§7You have no home.", " ") :
-                    List.of("§7View your home info!", " ", "§eClick to open!");
-
-            ItemStack homeIcon = GuiItems.createItem(Material.DARK_OAK_DOOR, "§eHome", homeLore);
-            profileGui.setItem(24, homeIcon);
-        }
-
-        ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta fillerMeta = filler.getItemMeta();
         assert fillerMeta != null;
         fillerMeta.setDisplayName(" ");

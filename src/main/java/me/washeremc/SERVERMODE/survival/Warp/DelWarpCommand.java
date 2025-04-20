@@ -35,6 +35,41 @@ public class DelWarpCommand implements CommandExecutor {
             return true;
         }
 
+        if (!WarpManager.isWarpsEnabled()) {
+            player.sendMessage(ChatUtils.colorize("&cWarps are currently disabled."));
+            return true;
+        }
+
+        if (args.length == 2) {
+            if (!args[0].equalsIgnoreCase("public")) {
+                if (player.hasPermission("washere.warp.public")) {
+                    player.sendMessage(ChatUtils.colorize("&cUsage: /delwarp [public] <name>"));
+                    return true;
+                }
+            }
+
+            if (!WarpManager.isPublicWarpsEnabled()) {
+                player.sendMessage(ChatUtils.colorize("&cPublic warps are currently disabled."));
+                return true;
+            }
+
+            if (!player.hasPermission("washere.warp.public")) {
+                player.sendMessage(ChatUtils.colorize("&cYou don't have permission to delete public warps."));
+                return true;
+            }
+
+            String warpName = args[1];
+            if (WarpManager.deletePublicWarp(warpName)) {
+                player.sendMessage(ChatUtils.colorize("&aPublic warp &f" + warpName + " &ahas been deleted!"));
+            } else {
+                player.sendMessage(ChatUtils.colorize("&cPublic warp &f" + warpName + " &cnot found!"));
+            }
+            return true;
+        }
+
+
+
+
         // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "delwarp";
@@ -45,10 +80,9 @@ public class DelWarpCommand implements CommandExecutor {
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
-
         if (args.length != 1) {
             player.sendMessage(ChatUtils.colorize("&cUsage: /delwarp [name]"));
-            return false;
+            return false; // This returns false while other error cases return true
         }
 
         String warpName = args[0];

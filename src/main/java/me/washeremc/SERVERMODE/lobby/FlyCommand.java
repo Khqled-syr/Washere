@@ -51,7 +51,6 @@ public class FlyCommand implements CommandExecutor {
             return true;
         }
 
-        // Toggle flight
         boolean flightEnabled = !player.getAllowFlight();
         player.setAllowFlight(flightEnabled);
         player.setFlying(flightEnabled);

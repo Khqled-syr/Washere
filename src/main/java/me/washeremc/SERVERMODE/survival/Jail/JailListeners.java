@@ -31,9 +31,9 @@ public class JailListeners implements Listener {
                 player.teleport(jailManager.getJailLocation());
 
                 JailManager.JailData jailData = jailManager.getJailData(player.getUniqueId());
-                long timeLeft = (jailData.getReleaseTime() - System.currentTimeMillis()) / 1000;
+                long timeLeft = (jailData.releaseTime() - System.currentTimeMillis()) / 1000;
 
-                player.sendMessage("§cYou are jailed for: " + jailData.getReason());
+                player.sendMessage("§cYou are jailed for: " + jailData.reason());
                 player.sendMessage("§cTime remaining: " + jailManager.formatTime(timeLeft));
             }, 5L);
         }

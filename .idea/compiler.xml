@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="21" />
+    <bytecodeTargetLevel target="21">
+      <module name="me.washeremc.Washere.main" target="1.8" />
+      <module name="Washere" target="1.8" />
+      <module name="Washere.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Washere" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="Washere.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="me.washeremc.Washere.main" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+    </option>
   </component>
 </project>

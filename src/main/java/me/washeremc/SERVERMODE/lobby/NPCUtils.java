@@ -169,8 +169,8 @@ public class NPCUtils implements Listener {
     private void saveNPC(@NotNull UUID npcId, String serverName, String npcName) {
         if (!initialized) return;
 
-        npcConfig.set(npcId.toString() + ".server", serverName);
-        npcConfig.set(npcId.toString() + ".name", npcName);
+        npcConfig.set(npcId + ".server", serverName);
+        npcConfig.set(npcId + ".name", npcName);
         saveNpcConfig();
     }
 
