@@ -72,6 +72,8 @@ fly:
 - Server: Paper/Spigot 1.21+
 - Java: 21+
 - Memory: 512MB minimum
+- LuckPerms
+- PlaceholderAPI
 
 ## 🤝 Contributing
 1. Fork repository
