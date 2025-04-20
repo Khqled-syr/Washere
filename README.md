@@ -44,7 +44,6 @@ settings:
     enabled: true
     update_interval: 20
 ```
-
 ## 🛠️ Commands
 
 ### Player Commands
@@ -67,7 +66,6 @@ fly:
   usage: /fly
   permission: washere.vip
 
-
 ## 🔧 Dependencies
 - Server: Paper/Spigot 1.21+
 - Java: 21+
@@ -88,18 +86,6 @@ MIT License - see LICENSE file
 ## 👥 Support
 - Issues: GitHub Issue Tracker
 - Discord: khqledsyr
-
-## 📈 Version History
-
-### 3.5.2
-- Initial release
-- Core PvP system
-- Basic settings management
-
-### 1.1.0
-- Enhanced action bar system
-- Performance optimizations
-- Bug fixes
-
+- 
 ## ⭐ Credits
 Created and maintained by WashereMC
