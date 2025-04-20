@@ -34,15 +34,23 @@ A powerful and flexible Minecraft server core plugin that enhances server manage
 ## ⚙️ Configuration
 
 ```yaml
-server:
-  type: survival
-settings:
-  pvp:
-    toggle_cooldown: 60
-    default: false
-  scoreboard:
-    enabled: true
-    update_interval: 20
+# =======================================
+#           GENERAL SETTINGS
+# =======================================
+server-type: none  # Options: survival, lobby (ffa coming soon)
+
+# =======================================
+#           STORAGE SETTINGS
+# =======================================
+storage:
+  type: "yaml"  # Options: yaml, mysql
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  database: "washeresettings"
+  username: "root"
+  password: "password"
 ```
 ## 🛠️ Commands
 
