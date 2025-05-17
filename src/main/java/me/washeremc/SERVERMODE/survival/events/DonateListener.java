@@ -28,7 +28,7 @@ public class DonateListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(@NotNull InventoryClickEvent event) {
-        if (event.getView().title().insertion().startsWith("Donate to ")) {
+        if (event.getView().getTitle().startsWith("Donate to ")) {
             Player donor = (Player) event.getWhoClicked();
             int slot = event.getRawSlot();
 
@@ -55,7 +55,7 @@ public class DonateListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(@NotNull InventoryCloseEvent event) {
-        if (event.getView().title().insertion().startsWith("Donate to ")) {
+        if (event.getView().getTitle().startsWith("Donate to ")) {
             Player donor = (Player) event.getPlayer();
             if (!donor.hasMetadata("donationComplete")) {
                 returnItemsToDonor(donor);

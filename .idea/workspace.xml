@@ -5,227 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04804d31-05a3-490f-8f86-cc94add38d16" name="Changes" comment="Added tags + optimized code.">
-      <change afterPath="$PROJECT_DIR$/.idea/codeInsightSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_auto_service_auto_service_annotations_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_3_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_gson_gson_2_10_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_errorprone_error_prone_annotations_2_28_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_failureaccess_1_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_guava_33_3_1_jre.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_j2objc_j2objc_annotations_3_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mojang_brigadier_1_3_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_zaxxer_HikariCP_5_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_papermc_paper_paper_api_1_21_5_R0_1_SNAPSHOT.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__it_unimi_dsi_fastutil_8_5_15.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_inject_javax_inject_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__me_clip_placeholderapi_2_11_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_api_4_20_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_api_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_key_4_20_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_key_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_logger_slf4j_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_minimessage_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_serializer_gson_4_20_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_serializer_gson_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_serializer_json_4_20_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_serializer_json_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_serializer_legacy_4_20_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_serializer_legacy_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_adventure_text_serializer_plain_4_21_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_examination_api_1_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_examination_string_1_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_kyori_option_1_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_luckperms_api_5_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_md_5_bungeecord_chat_1_21_R0_2_deprecated_build_21.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_megavex_scoreboard_library_api_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_megavex_scoreboard_library_commons_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_megavex_scoreboard_library_extra_kotlin_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_megavex_scoreboard_library_implementation_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_megavex_scoreboard_library_modern_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_megavex_scoreboard_library_packet_adapter_base_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_commons_commons_lang3_3_12_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_api_2_24_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_maven_artifact_3_9_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_maven_builder_support_3_9_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_maven_model_3_9_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_maven_model_builder_3_9_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_maven_repository_metadata_3_9_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_maven_resolver_provider_3_9_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_resolver_maven_resolver_api_1_9_18.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_resolver_maven_resolver_impl_1_9_18.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_resolver_maven_resolver_named_locks_1_9_18.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_resolver_maven_resolver_spi_1_9_18.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_maven_resolver_maven_resolver_util_1_9_18.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_checkerframework_checker_qual_3_49_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_codehaus_plexus_plexus_interpolation_1_26.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_codehaus_plexus_plexus_utils_3_5_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_eclipse_sisu_org_eclipse_sisu_inject_0_9_0_M2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_annotations_13_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_annotations_26_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlin_kotlin_stdlib_2_1_20.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_joml_joml_1_10_8.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jspecify_jspecify_1_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_1_7_36.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_2_0_16.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_yaml_snakeyaml_2_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Tags/Tag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Tags/TagCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Tags/TagGUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Tags/TagListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Tags/TagManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Tags/TagPlaceholderExpansion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/DiscordLogger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/jail.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/tags.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.8/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.8/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.8/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.8/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.8/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/Washere.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Washere.test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/me.washeremc.Washere.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/me.washeremc.Washere.main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Listeners/ChatListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Listeners/ChatListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Listeners/ServerListeners$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Listeners/ServerListeners$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Listeners/ServerListeners.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Listeners/ServerListeners.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Managers/CooldownManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Managers/CooldownManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Managers/PluginReloadManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Managers/PluginReloadManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Profile/Profile.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Profile/Profile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Profile/ProfileCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Profile/ProfileCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/PlayerSetting/PvpListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/PlayerSetting/PvpListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingRegistry.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingRegistry.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu$SettingDisplay.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu$SettingDisplay.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu$SettingsMenuHolder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu$SettingsMenuHolder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenuListener$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenuListener$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenuListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/Settings/SettingsMenuListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/HelpCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/HelpCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/MsgCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/MsgCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/ReplyCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/ReplyCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/WhoisCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/commands/WhoisCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/database/DatabaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/database/DatabaseManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/PluginMessage$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/PluginMessage$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/PluginMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/PluginMessage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/ServerPing$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/ServerPing$1$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/ServerPing$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/ServerPing$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/ServerPing.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/proxy/ServerPing.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/ChatUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/ChatUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/CommandTabFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/CommandTabFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/GuiItems.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/GuiItems.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/ScoreBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Core/utils/ScoreBoard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/CommandManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/CommandManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/ListenerManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/ListenerManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/PluginServices.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/PluginServices.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/UtilManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Registration/UtilManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/FlyCommand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/LobbyListeners.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/LobbyListeners.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/NPCCommand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/NPCDeleteCommand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/NPCListommand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/NPCUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/NPCUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/lobby/SetSpawnCommand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Home/HomeCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Home/HomeCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Home/HomeManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Home/HomeManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Home/SetHomeCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Home/SetHomeCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/JailCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/JailCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/JailManager$JailData.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/JailManager$JailData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/JailManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/JailManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/UnjailCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Jail/UnjailCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpaCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpaCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpaManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpaManager$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpaManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpaManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpacceptCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/TPA/TpacceptCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/DelWarpCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/DelWarpCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/WarpCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/WarpCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/WarpManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/WarpManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/WarpsCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/Warp/WarpsCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/commands/BackpackCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/commands/BackpackCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/commands/DonateCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/commands/DonateCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/commands/RecipeCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/commands/RecipeCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/events/DonateListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/events/DonateListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/events/SurvivalListeners.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/events/SurvivalListeners.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/utils/ActionBarTask.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/utils/ActionBarTask.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/utils/BackpackUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/SERVERMODE/survival/utils/BackpackUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Washere.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/me/washeremc/Washere.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/Washere-3.5.2-all.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/shadowJar/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Listeners/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Listeners/ChatListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Listeners/ServerListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Listeners/ServerListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Managers/CooldownManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Managers/CooldownManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Managers/PluginReloadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Managers/PluginReloadManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Profile/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Profile/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Profile/ProfileCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Profile/ProfileCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/PlayerSetting/PvpListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/PlayerSetting/PvpListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/Setting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/Setting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsMenuListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/Settings/SettingsMenuListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/HelpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/HelpCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/MsgCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/MsgCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/ReplyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/ReplyCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/WhoisCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/commands/WhoisCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/database/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/database/DatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/proxy/PluginMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/proxy/PluginMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/proxy/ServerPing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/proxy/ServerPing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/ChatUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/ChatUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/CommandTabFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/CommandTabFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/GuiItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/GuiItems.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/ScoreBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/ScoreBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/SittingSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Core/utils/SittingSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/CommandManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/ListenerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/ListenerManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/PluginServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/PluginServices.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/UtilManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Registration/UtilManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/FlyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/commands/FlyCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/LobbyListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/LobbyListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/NPCCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/commands/NPCCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/NPCDeleteCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/commands/NPCDeleteCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/NPCListommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/commands/NPCListommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/NPCUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/NPCUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/SetSpawnCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/lobby/commands/SetSpawnCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Home/HomeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Home/HomeCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Home/HomeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Home/HomeManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Home/SetHomeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Home/SetHomeCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Jail/JailCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Jail/JailCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Jail/JailManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Jail/JailManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Jail/UnjailCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Jail/UnjailCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/TPA/TpaCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/TPA/TpaCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/TPA/TpaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/TPA/TpaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/TPA/TpacceptCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/TPA/TpacceptCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/DelWarpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/DelWarpCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/WarpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/WarpCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/WarpManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/WarpManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/WarpsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/Warp/WarpsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/commands/BackpackCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/commands/BackpackCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/commands/DonateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/commands/DonateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/commands/RecipeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/commands/RecipeCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/events/DonateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/events/DonateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/events/SurvivalListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/events/SurvivalListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/utils/ActionBarTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/utils/ActionBarTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/utils/BackpackUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/SERVERMODE/survival/utils/BackpackUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/washeremc/Washere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/washeremc/Washere.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,7 +118,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Gradle.Washere [build]">
+  <component name="RunManager" selected="Gradle.Washere [shadowJar]">
     <configuration name="Washere [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -452,11 +238,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Washere [build]" />
+        <item itemvalue="Gradle.Washere [shadowJar]" />
         <item itemvalue="Gradle.Washere [clean]" />
+        <item itemvalue="Gradle.Washere [build]" />
         <item itemvalue="Gradle.Washere [jar]" />
         <item itemvalue="Gradle.Washere [buildDependents]" />
-        <item itemvalue="Gradle.Washere [shadowJar]" />
       </list>
     </recent_temporary>
   </component>
@@ -537,6 +323,7 @@
       <workItem from="1747408630425" duration="4774000" />
       <workItem from="1747431600634" duration="907000" />
       <workItem from="1747433925935" duration="6514000" />
+      <workItem from="1747442111211" duration="156000" />
     </task>
     <task id="LOCAL-00001" summary="Changed project to gradle.">
       <option name="closed" value="true" />
