@@ -33,18 +33,14 @@ public class NPCUtils implements Listener {
         this.plugin = plugin;
         this.npcKey = new NamespacedKey(plugin, "npc_id");
 
+        // Only initialize if we're in lobby mode
         if (isLobbyMode()) {
             initializeNpcConfig();
             plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+            Bukkit.getPluginManager().registerEvents(this, plugin);
             initialized = true;
         } else {
             plugin.getLogger().info("NPC system not initialized - not in lobby mode.");
-        }
-    }
-
-    public void init() {
-        if (initialized) {
-            Bukkit.getPluginManager().registerEvents(this, plugin);
         }
     }
 

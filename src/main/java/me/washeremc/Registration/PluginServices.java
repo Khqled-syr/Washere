@@ -90,9 +90,8 @@ public class PluginServices {
     }
 
     public void RegisterManagers(){
-        NPCUtils npcUtils = new NPCUtils(plugin);
-        npcUtils.init();
-        npcUtils.loadNPCs();
+        plugin.npcUtils = new NPCUtils(plugin);
+        plugin.npcUtils.loadNPCs();
 
         plugin.scoreboard =  new ScoreBoard(plugin);
         plugin.tabList = new TabList(plugin);

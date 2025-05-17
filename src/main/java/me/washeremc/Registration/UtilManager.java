@@ -2,7 +2,6 @@ package me.washeremc.Registration;
 
 
 import me.washeremc.Core.Profile.Profile;
-import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.Tags.TagListener;
 import me.washeremc.Core.Tags.TagManager;
 import me.washeremc.Core.proxy.PluginMessage;
