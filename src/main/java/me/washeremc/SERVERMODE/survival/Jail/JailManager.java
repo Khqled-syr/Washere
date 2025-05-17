@@ -34,14 +34,15 @@ package me.washeremc.SERVERMODE.survival.Jail;
                 this.jailFile = new File(plugin.getDataFolder(), "jail.yml");
                 loadJailConfig();
                 loadJailData();
-            }
-        }
-
-        public void start() {
-            if (isSurvival()) {
                 Bukkit.getScheduler().runTaskTimer(plugin, this::checkJailTimes, 20L, 20L * 10);
             }
         }
+
+//        public void start() {
+//            if (isSurvival()) {
+//                Bukkit.getScheduler().runTaskTimer(plugin, this::checkJailTimes, 20L, 20L * 10);
+//            }
+//        }
 
 
         private boolean isSurvival() {

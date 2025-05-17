@@ -65,24 +65,36 @@ public class LobbyListeners implements Listener {
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
         if (!isLobby()) return;
+
         Player player = event.getPlayer();
         event.joinMessage(null);
+
         setLobbyItems(player);
         player.setGameMode(GameMode.ADVENTURE);
+
         if (player.hasPermission(FlyCommand.FLY_PERMISSION)) {
             FlyCommand.setFlight(player, true);
         }
 
-
-        if (spawnConfig != null && spawnConfig.contains("serverSpawn")) {
-            Location spawn = spawnConfig.getLocation("serverSpawn");
-            if (spawn != null) {
-                player.teleport(spawn);
+        // Ensure spawn.yml is loaded properly
+        File spawnFile = new File(plugin.getDataFolder(), "spawn.yml");
+        if (spawnFile.exists()) {
+            FileConfiguration spawnConfig = YamlConfiguration.loadConfiguration(spawnFile);
+            if (spawnConfig.contains("serverSpawn")) {
+                Location spawn = spawnConfig.getLocation("serverSpawn");
+                if (spawn != null) {
+                    player.teleport(spawn);
+                } else {
+                    plugin.getLogger().warning("Spawn location in spawn.yml is null.");
+                }
+            } else {
+                plugin.getLogger().warning("spawn.yml does not contain 'serverSpawn'.");
             }
+        } else {
+            plugin.getLogger().warning("spawn.yml does not exist.");
         }
-
-
     }
+
 
     @EventHandler
     public void onPlayerQuit(@NotNull PlayerQuitEvent event) {

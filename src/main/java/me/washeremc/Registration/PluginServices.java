@@ -98,7 +98,6 @@ public class PluginServices {
         plugin.tpaManager =  new TpaManager(plugin);
         plugin.jailManager = new JailManager(plugin);
         plugin.jailManager.initialize();
-        plugin.jailManager.start();
         DiscordLogger.initialize(plugin);
         DiscordLogger.logPluginUsage();
     }

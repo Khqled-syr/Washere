@@ -47,9 +47,12 @@ public class HomeManager {
         }
 
         homesConfig = YamlConfiguration.loadConfiguration(homesFile);
-        loadHomes();
+
+        // ✅ Set initialized to true *before* loading homes
         initialized = true;
+        loadHomes();
     }
+
 
     private static boolean isSurvivalMode() {
         if (plugin instanceof Washere) {
@@ -60,14 +63,12 @@ public class HomeManager {
 
     public static void setHome(UUID playerUUID, Location location) {
         if (!initialized) return;
-
         homes.put(playerUUID, location);
         saveHomes();
     }
 
     public static @Nullable Location getHome(UUID playerUUID) {
         if (!initialized) return null;
-
         return homes.get(playerUUID);
     }
 
@@ -83,7 +84,6 @@ public class HomeManager {
 
     private static void saveHomes() {
         if (!initialized || homesFile == null) return;
-
         homesConfig = new YamlConfiguration();
         try {
             for (UUID playerUUID : homes.keySet()) {

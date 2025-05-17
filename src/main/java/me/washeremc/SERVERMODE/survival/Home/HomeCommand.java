@@ -5,6 +5,7 @@ import me.washeremc.Core.Managers.CooldownManager;
 import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Washere;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -52,6 +53,8 @@ public class HomeCommand implements CommandExecutor {
         if (homeLocation != null) {
             player.teleport(homeLocation);
             player.sendMessage(ChatUtils.colorize("&aTeleported to home!"));
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+            player.playEffect(player.getLocation(), org.bukkit.Effect.ENDER_SIGNAL, 1);
         } else {
             player.sendMessage(ChatUtils.colorize("&cHome not set!"));
         }

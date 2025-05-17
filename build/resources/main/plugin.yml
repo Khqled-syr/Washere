@@ -91,9 +91,6 @@ commands:
     description: Set the jail location to your current position
     usage: /setjail
     permission: washere.jail
-  list:
-    description: Opens a list of all online players
-    usage: /list
   tags:
     description: Open the tags selector
     usage: /tags
