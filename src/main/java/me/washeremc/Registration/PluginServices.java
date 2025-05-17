@@ -3,8 +3,13 @@ package me.washeremc.Registration;
 
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.database.DatabaseManager;
+import me.washeremc.Core.utils.DiscordLogger;
 import me.washeremc.Core.utils.ScoreBoard;
+import me.washeremc.Core.utils.TabList;
 import me.washeremc.SERVERMODE.lobby.LobbyListeners;
+import me.washeremc.SERVERMODE.lobby.NPCUtils;
+import me.washeremc.SERVERMODE.survival.Jail.JailManager;
+import me.washeremc.SERVERMODE.survival.TPA.TpaManager;
 import me.washeremc.Washere;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -59,7 +64,6 @@ public class PluginServices {
         }
     }
 
-
     public void registerAllComponents() {
         new CommandManager(plugin).registerCommands();
         new ListenerManager(plugin).RegisterListeners();
@@ -76,12 +80,28 @@ public class PluginServices {
         }
     }
 
+
     public void processExistingPlayers(ScoreBoard scoreboard) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!SettingsManager.isScoreboardEnabled(player)) {
                 scoreboard.removeSidebar(player);
             }
         }
+    }
+
+    public void RegisterManagers(){
+        NPCUtils npcUtils = new NPCUtils(plugin);
+        npcUtils.init();
+        npcUtils.loadNPCs();
+
+        plugin.scoreboard =  new ScoreBoard(plugin);
+        plugin.tabList = new TabList(plugin);
+        plugin.tpaManager =  new TpaManager(plugin);
+        plugin.jailManager = new JailManager(plugin);
+        plugin.jailManager.initialize();
+        plugin.jailManager.start();
+        DiscordLogger.initialize(plugin);
+        DiscordLogger.logPluginUsage();
     }
 
     public void setupServerMode(@NotNull String serverType) {
@@ -99,7 +119,6 @@ public class PluginServices {
                 break;
         }
     }
-
     public void logShutdownMessage() {
         plugin.getLogger().info("\n§cWasHere plugin has been disabled.\n");
     }
@@ -115,7 +134,6 @@ public class PluginServices {
             plugin.getLogger().warning("Failed to close database connection! " + e.getMessage());
         }
     }
-
     public void logSuccessfulShutdown() {
         plugin.getLogger().info("§cWasHere plugin disabled successfully.");
     }

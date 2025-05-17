@@ -28,7 +28,6 @@ public class BackpackUtils implements Listener {
     public static void initialize(@NotNull Washere pluginInstance) {
         plugin = pluginInstance;
 
-        // Check if this is a survival server
         if (!isSurvivalMode()) {
             pluginInstance.getLogger().info("Backpack system not initialized - not in survival mode.");
             return;
@@ -59,7 +58,6 @@ public class BackpackUtils implements Listener {
     }
 
     private static boolean isSurvivalMode() {
-        // Assuming the plugin has a method to check server type like in the previous example
         return "survival".equalsIgnoreCase(plugin.getServerType());
     }
 

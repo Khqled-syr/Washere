@@ -24,20 +24,19 @@ public class ServerPing {
             public void run() {
                 boolean isOnline = isServerOnline(ip, port);
 
-                // Return to the main thread for Bukkit API interaction
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         PluginMessage.updateServerStatus(serverName, isOnline);
                     }
-                }.runTask(plugin); // ← main thread
+                }.runTask(plugin);
             }
-        }.runTaskAsynchronously(plugin); // ← background thread
+        }.runTaskAsynchronously(plugin);
     }
 
     private static boolean isServerOnline(String ip, int port) {
         try (Socket socket = new Socket()) {
-            socket.connect(new InetSocketAddress(ip, port), 1000); // 1-second timeout
+            socket.connect(new InetSocketAddress(ip, port), 1000);
             return true;
         } catch (IOException e) {
             return false;

@@ -2,10 +2,13 @@ package me.washeremc.SERVERMODE.lobby;
 
 import me.washeremc.Core.Profile.Profile;
 import me.washeremc.Core.utils.GuiItems;
+import me.washeremc.SERVERMODE.lobby.commands.FlyCommand;
 import me.washeremc.Washere;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -23,6 +26,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,32 +35,53 @@ import java.util.List;
 public class LobbyListeners implements Listener {
 
     private final Washere plugin;
+    private FileConfiguration spawnConfig;
 
     public LobbyListeners(Washere plugin) {
         this.plugin = plugin;
+        if (isLobby()) {
+            initSpawnConfig();
+        }
     }
 
     private boolean isLobby() {
         return "lobby".equalsIgnoreCase(plugin.getServerType());
     }
 
+    private void initSpawnConfig() {
+        File spawnFile = new File(plugin.getDataFolder(), "spawn.yml");
+        if (!spawnFile.exists()) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                spawnFile.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().severe("Could not create spawn.yml file: " + e.getMessage());
+            }
+        }
+        spawnConfig = YamlConfiguration.loadConfiguration(spawnFile);
+    }
+
 
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
+        if (!isLobby()) return;
         Player player = event.getPlayer();
         event.joinMessage(null);
         setLobbyItems(player);
-
         player.setGameMode(GameMode.ADVENTURE);
         if (player.hasPermission(FlyCommand.FLY_PERMISSION)) {
             FlyCommand.setFlight(player, true);
         }
 
-        if (plugin.getConfig().get("serverSpawn") != null) {
-            Location spawn = (Location) plugin.getConfig().get("serverSpawn");
-            assert spawn != null;
-            player.teleport(spawn);
+
+        if (spawnConfig != null && spawnConfig.contains("serverSpawn")) {
+            Location spawn = spawnConfig.getLocation("serverSpawn");
+            if (spawn != null) {
+                player.teleport(spawn);
+            }
         }
+
+
     }
 
     @EventHandler

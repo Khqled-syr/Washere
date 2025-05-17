@@ -16,12 +16,11 @@ public class SettingsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
             return true;
         }
-
-        // 🔥 Cooldown check
+        Player player = (Player) sender;
         UUID uuid = player.getUniqueId();
         String cooldownKey = "settings";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
@@ -30,7 +29,6 @@ public class SettingsCommand implements CommandExecutor {
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
-
         SettingsMenu.openSettingsMenu(player);
         return true;
     }

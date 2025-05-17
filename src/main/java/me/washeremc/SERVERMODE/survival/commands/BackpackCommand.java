@@ -37,7 +37,6 @@ public class BackpackCommand implements CommandExecutor {
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "backpack";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {

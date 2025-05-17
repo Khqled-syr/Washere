@@ -22,22 +22,29 @@ public class ChatUtils {
     @Contract(pure = true)
     public static NamedTextColor getNamedTextColor(@NotNull String colorCode) {
         return switch (colorCode) {
-            case "&4" -> NamedTextColor.DARK_RED;
-            case "&c" -> NamedTextColor.RED;
-            case "&6" -> NamedTextColor.GOLD;
-            case "&e" -> NamedTextColor.YELLOW;
-            case "&2" -> NamedTextColor.DARK_GREEN;
-            case "&a" -> NamedTextColor.GREEN;
-            case "&b" -> NamedTextColor.AQUA;
-            case "&3" -> NamedTextColor.DARK_AQUA;
-            case "&1" -> NamedTextColor.DARK_BLUE;
-            case "&9" -> NamedTextColor.BLUE;
-            case "&d" -> NamedTextColor.LIGHT_PURPLE;
-            case "&5" -> NamedTextColor.DARK_PURPLE;
-            case "&f" -> NamedTextColor.WHITE;
-            case "&8" -> NamedTextColor.DARK_GRAY;
-            case "&0" -> NamedTextColor.BLACK;
+            case "§4" -> NamedTextColor.DARK_RED;
+            case "§c" -> NamedTextColor.RED;
+            case "§6" -> NamedTextColor.GOLD;
+            case "§e" -> NamedTextColor.YELLOW;
+            case "§2" -> NamedTextColor.DARK_GREEN;
+            case "§a" -> NamedTextColor.GREEN;
+            case "§b" -> NamedTextColor.AQUA;
+            case "§3" -> NamedTextColor.DARK_AQUA;
+            case "§1" -> NamedTextColor.DARK_BLUE;
+            case "§9" -> NamedTextColor.BLUE;
+            case "§d" -> NamedTextColor.LIGHT_PURPLE;
+            case "§5" -> NamedTextColor.DARK_PURPLE;
+            case "§f" -> NamedTextColor.WHITE;
+            case "§8" -> NamedTextColor.DARK_GRAY;
+            case "§0" -> NamedTextColor.BLACK;
             default -> NamedTextColor.GRAY;
         };
+    }
+
+
+    public static String stripColor(String text) {
+        if (text == null) return null;
+        return text.replaceAll("§[0-9a-fk-orA-FK-OR]", "")
+                .replaceAll("&[0-9a-fk-orA-FK-OR]", "");
     }
 }

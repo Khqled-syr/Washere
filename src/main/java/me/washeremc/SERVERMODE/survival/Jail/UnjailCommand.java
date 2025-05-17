@@ -28,7 +28,7 @@ public class UnjailCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!sender.hasPermission("yourplugin.unjail")) {
+        if (!sender.hasPermission("washere.unjail")) {
             sender.sendMessage("§cYou don't have permission to use this command!");
             return true;
         }

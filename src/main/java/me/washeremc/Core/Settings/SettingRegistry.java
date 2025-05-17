@@ -19,7 +19,8 @@ public class SettingRegistry {
         registerSetting(new Setting<>("tpa", true, "TPA", value -> !value));
         registerSetting(new Setting<>("actionbar", true, "Action Bar", value -> !value));
         registerSetting(new Setting<>("players_visibility", true, "Players Visibility", value -> !value));
-        registerSetting(new Setting<>("pvp", false, "PVP", value -> !value)); // Default to pvp off
+        registerSetting(new Setting<>("pvp", false, "PVP", value -> !value));
+        registerSetting(new Setting<>("selectedTag", "", "Selected Tag", value -> value));
 
         registerSetting(new Setting<>("player_time", PlayerTime.DAY, "Player Time", value -> {
             if (value == PlayerTime.DAY) return PlayerTime.NIGHT;
@@ -31,7 +32,6 @@ public class SettingRegistry {
     public static <T> void registerSetting(Setting<T> setting) {
         settings.put(setting.getKey(), setting);
     }
-    
 
     @SuppressWarnings("unchecked")
     public static <T> Setting<T> getSetting(String key) {

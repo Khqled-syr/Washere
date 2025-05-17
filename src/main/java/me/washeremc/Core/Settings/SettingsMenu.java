@@ -22,7 +22,7 @@ import java.util.*;
 public class SettingsMenu {
     private static final Map<String, SettingDisplay> settingDisplays = new HashMap<>();
     private static final String MENU_TITLE = "Settings";
-    private static final int MENU_SIZE = 36; // 4 rows for better spacing
+    private static final int MENU_SIZE = 36;
     private static Washere plugin;
 
     static {
@@ -35,7 +35,6 @@ public class SettingsMenu {
         registerSettingDisplay("players_visibility", new SettingDisplay(Material.BARRIER, Material.PLAYER_HEAD, 21, "Toggle player visibility"));
         registerSettingDisplay("player_time", new SettingDisplay(Material.BARRIER, Material.CLOCK, 23, "Change your personal time"));
 
-        // New PVP toggle setting - only for survival mode
         registerSettingDisplay("pvp", new SettingDisplay(Material.WOODEN_SWORD, Material.DIAMOND_SWORD, 25, "Toggle your PVP status"));
     }
 
@@ -56,21 +55,16 @@ public class SettingsMenu {
         boolean isLobby = plugin != null && "lobby".equalsIgnoreCase(plugin.getServerType());
         boolean isSurvival = plugin != null && "survival".equalsIgnoreCase(plugin.getServerType());
 
-        // Create a border first
         createBorder(inventory);
 
-        // Add settings
         for (Setting<?> setting : SettingRegistry.getSettings()) {
             String key = setting.getKey();
             SettingDisplay display = settingDisplays.get(key);
 
             if (display != null) {
                 Object value = SettingsManager.getSettingValue(player, key);
-
-                // For lobby-only settings, show them as unavailable in non-lobby servers
                 boolean isLobbyOnlySetting = key.equals("players_visibility") || key.equals("player_time");
 
-                // For survival-only settings, show them as unavailable in non-survival servers
                 boolean isSurvivalOnlySetting = key.equals("pvp") || key.equals("tpa") || key.equals("actionbar");
 
                 if (!isLobby && isLobbyOnlySetting) {
@@ -83,7 +77,6 @@ public class SettingsMenu {
             }
         }
 
-        // Add a close button at the bottom center
         inventory.setItem(31, createCloseButton());
 
         player.openInventory(inventory);
@@ -98,19 +91,16 @@ public class SettingsMenu {
             borderItem.setItemMeta(borderMeta);
         }
 
-        // Top and bottom rows
         for (int i = 0; i < 9; i++) {
             inventory.setItem(i, borderItem);
             inventory.setItem(MENU_SIZE - 9 + i, borderItem);
         }
 
-        // Left and right columns
         for (int i = 1; i < MENU_SIZE / 9 - 1; i++) {
             inventory.setItem(i * 9, borderItem);
             inventory.setItem(i * 9 + 8, borderItem);
         }
 
-        // Fill the remaining empty slots with a different color
         ItemStack fillerItem = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta fillerMeta = fillerItem.getItemMeta();
         if (fillerMeta != null) {
@@ -120,12 +110,12 @@ public class SettingsMenu {
         }
 
         for (int i = 0; i < MENU_SIZE; i++) {
-            final int slot = i; // Make `i` effectively final
+            final int slot = i;
             if (inventory.getItem(slot) == null) {
                 if (settingDisplays.values().stream().anyMatch(display -> display.slot() == slot)) {
                     continue;
                 }
-                if (slot == 31) continue; // Skip close button slot
+                if (slot == 31) continue;
                 inventory.setItem(slot, fillerItem);
             }
         }
@@ -147,13 +137,11 @@ public class SettingsMenu {
     private static @NotNull ItemStack createSettingItem(Setting<?> setting, SettingDisplay display, Object value) {
         boolean isEnabled = value instanceof Boolean ? (Boolean) value : true;
 
-        // Use the appropriate material based on the enabled / disabled state
         Material material = isEnabled ? display.enabledMaterial() : display.disabledMaterial();
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            // Create a more appealing title with a status indicator
             String statusIndicator = isEnabled ?
                     ChatUtils.colorize("&a&l✓ "):
                     ChatUtils.colorize("&c&l✗ ");
@@ -163,15 +151,13 @@ public class SettingsMenu {
 
             List<String> lore = new ArrayList<>();
 
-            // Status line with color
             if (value instanceof Boolean) {
                 lore.add(isEnabled ?
                         ChatUtils.colorize("&a● ENABLED"):
                         ChatUtils.colorize("&c● DISABLED"));
 
-                // Add cooldown info for PVP setting
                 if (setting.getKey().equals("pvp")) {
-                    Player player = Bukkit.getPlayer(UUID.randomUUID()); // Just to avoid null warnings
+                    Player player = Bukkit.getPlayer(UUID.randomUUID());
                     if (player != null) {
                         long cooldownTime = CooldownManager.getRemainingTime(player.getUniqueId(), "pvp_toggle");
                         if (cooldownTime > 0) {
@@ -179,7 +165,8 @@ public class SettingsMenu {
                         }
                     }
                 }
-            } else if (value instanceof PlayerTime time) {
+            } else if (value instanceof PlayerTime) {
+                PlayerTime time = (PlayerTime) value;
                 String timeDisplay = switch (time) {
                     case DAY -> ChatUtils.colorize("&eDay");
                     case NIGHT -> ChatUtils.colorize("&1Night");
@@ -222,14 +209,12 @@ public class SettingsMenu {
     }
 
     public static @Nullable String getSettingKeyFromSlot(int slot) {
-        // Only return a key if the setting should be active
         String key = settingDisplays.entrySet().stream()
                 .filter(entry -> entry.getValue().slot() == slot)
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);
 
-        // Check if the setting is available in current server mode
         if (key != null) {
             boolean isLobby = plugin != null && "lobby".equalsIgnoreCase(plugin.getServerType());
             boolean isSurvival = plugin != null && "survival".equalsIgnoreCase(plugin.getServerType());
@@ -238,18 +223,17 @@ public class SettingsMenu {
             boolean isSurvivalOnlySetting = key.equals("pvp") || key.equals("tpa") || key.equals("actionbar");
 
             if (!isLobby && isLobbyOnlySetting) {
-                return null; // Return null to indicate this setting shouldn't be toggled
+                return null;
             }
 
             if (!isSurvival && isSurvivalOnlySetting) {
-                return null; // Return null to indicate this setting shouldn't be toggled
+                return null;
             }
         }
 
         return key;
     }
 
-    // Added close button handling
     public static boolean isCloseButton(int slot) {
         return slot == 31;
     }
@@ -258,7 +242,6 @@ public class SettingsMenu {
         return MENU_TITLE;
     }
 
-    // Custom inventory holder to prevent item movement
     public static class SettingsMenuHolder implements InventoryHolder {
         @Override
         public @NotNull Inventory getInventory() {

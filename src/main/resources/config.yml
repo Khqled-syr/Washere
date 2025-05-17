@@ -1,6 +1,6 @@
 # =======================================
-#           ⚡ WASHERE SERVER ⚡
-#               By Levaii
+#               ⚡ WASHERE ⚡
+#                By Levaii
 # =======================================
 
 # =======================================
@@ -31,10 +31,10 @@ fall-limit: -30.0
 # =======================================
 #            CHAT SETTINGS
 # =======================================
-join-message: "&a&l+ &r%luckperms_meta_color%%player% &7has joined the server!"
-leave-message: "&c&l- &r%luckperms_meta_color%%player% &7has left the server!"
+join-message: "&a&l+ %washere_tag_prefix%&r%luckperms_meta_color%%player%%washere_tag_suffix% &7ʜᴀꜱ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
+leave-message: "&c&l- %washere_tag_prefix%&r%luckperms_meta_color%%player%%washere_tag_suffix% &7ʜᴀꜱ ʟᴇꜰᴛ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
 chat:
-  format: "%luckperms_prefix%%luckperms_meta_color%%player_name%&f: %message%"
+  format: "%washere_tag_prefix%%luckperms_prefix%%luckperms_meta_color%%player_name%%washere_tag_suffix%&f: %message%"
 
 # =======================================
 #       COMMAND FILTER SETTINGS
@@ -63,22 +63,22 @@ op-bypass: true
 # =======================================
 # ----- SCOREBOARD CONFIGURATION -----
 scoreboard:
-  title: "&6WasHere"
+  title: "&6ᴡᴀꜱʜᴇʀᴇ"
   lines:
-    - "&7&owasheremc.me"
+    - "     &7&oᴡᴀꜱʜᴇʀᴇᴍᴄ.ᴍᴇ      "
     - ""
-    - "&7Name: &r%luckperms_meta_color%%player_name%"
-    - "&7Rank: &r%luckperms_prefix%"
-    - "&7Ping: &a%player_ping%ms"
+    - "&7ɴᴀᴍᴇ: &r%luckperms_meta_color%%player_displayname%"
+    - "&7ʀᴀɴᴋ: &r%luckperms_prefix%"
+    - "&7ᴘɪɴɢ: &a%player_ping%ᴍꜱ"
     - ""
-    - "&7🌍 Online: &6%server_online%"
+    - "&7🌍 ᴏɴʟɪɴᴇ: &6%server_online%"
     - ""
     - "&8&o%server_time_dd.MM.yyyy%"
 
   # ----- TAB SORTING CONFIGURATION & NAME TAG COLOR -----
   teams:
     founder:
-      prefix: "&4[Founder] " # USE IT WITH use-rank-colors
+      prefix: "&4[Founder] "
       priority: 1 #RANK WEIGHT
     vip:
       prefix: "&6[VIP] "
@@ -89,16 +89,15 @@ scoreboard:
 
 # ----- TABLIST CONFIGURATION -----
 tablist:
-  use-rank-colors: true # SHOWS THE RANK COLOR NOT THE PREFIX
-  player-list-name-format: "%luckperms_prefix%%player_name%"
+  player-list-name-format: "%washere_tag_prefix%%luckperms_prefix%%player_name%%washere_tag_suffix%"
   header: |
     
-    &6WasHere
-    &7&oEnjoy your stay and have fun!
+    &6ᴡᴀꜱʜᴇʀᴇ
+    &7&oᴇɴᴊᴏʏ ʏᴏᴜʀ ꜱᴛᴀʏ ᴀɴᴅ ʜᴀᴠᴇ ꜰᴜɴ!
 
   footer: |
     
-    &7Need help? Type &e/help
+    &7ɴᴇᴇᴅ ʜᴇʟᴘ? ᴛʏᴘᴇ &e/ʜᴇʟᴘ
 
 # =======================================
 #        SERVER CONNECTION SETTINGS

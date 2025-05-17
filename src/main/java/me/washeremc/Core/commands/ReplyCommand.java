@@ -23,10 +23,11 @@ public class ReplyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
             return true;
         }
+        Player player = (Player) sender;
 
         Player target = msgCommand.getLastMessenger(player);
 
@@ -41,7 +42,6 @@ public class ReplyCommand implements CommandExecutor {
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "reply";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
@@ -65,9 +65,8 @@ public class ReplyCommand implements CommandExecutor {
         target.sendMessage(ChatUtils.colorize("&e" + player.displayName() + " &7-> &6you&7: &b" + message));
         player.sendMessage(ChatUtils.colorize("&6You &7-> &e" + target.displayName() + "&7: &b" + message));
 
-        msgCommand.setLastMessenger(target, player); // Update the last messenger
+        msgCommand.setLastMessenger(target, player);
         target.playSound(target.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
-
         return true;
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,6 @@ public class HomeManager {
     public static void initialize(@NotNull JavaPlugin pluginInstance) {
         plugin = pluginInstance;
 
-        // Check if this is a survival server
         if (!isSurvivalMode()) {
             pluginInstance.getLogger().info("Home system not initialized - not in survival mode.");
             return;
@@ -52,12 +52,10 @@ public class HomeManager {
     }
 
     private static boolean isSurvivalMode() {
-        // Assuming the plugin has a method to check server type like in the previous examples
         if (plugin instanceof Washere) {
             return "survival".equalsIgnoreCase(((Washere) plugin).getServerType());
         }
-        // Alternative approach if the above is not available
-        return true; // Default to true if we can't determine, adjust as needed
+        return true;
     }
 
     public static void setHome(UUID playerUUID, Location location) {
@@ -67,7 +65,7 @@ public class HomeManager {
         saveHomes();
     }
 
-    public static Location getHome(UUID playerUUID) {
+    public static @Nullable Location getHome(UUID playerUUID) {
         if (!initialized) return null;
 
         return homes.get(playerUUID);

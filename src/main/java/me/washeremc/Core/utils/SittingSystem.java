@@ -21,7 +21,7 @@ import java.util.UUID;
 public class SittingSystem implements Listener {
     private final Washere plugin;
     private final HashMap<UUID, ArmorStand> stairSeats = new HashMap<>();
-    private final HashMap<UUID, UUID> playerSeats = new HashMap<>(); // Sitting player UUID -> Target player UUID
+    private final HashMap<UUID, UUID> playerSeats = new HashMap<>();
 
     public SittingSystem(Washere plugin) {
         this.plugin = plugin;
@@ -35,9 +35,7 @@ public class SittingSystem implements Listener {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
 
-
         if (stairSeats.containsKey(player.getUniqueId()) || playerSeats.containsKey(player.getUniqueId())) return;
-
 
         if (block.getBlockData() instanceof Stairs) {
             event.setCancelled(true);
@@ -51,24 +49,25 @@ public class SittingSystem implements Listener {
 
         Player player = event.getPlayer();
 
-
         if (stairSeats.containsKey(player.getUniqueId()) || playerSeats.containsKey(player.getUniqueId())) return;
 
-        if (!targetPlayer.isOnGround()) return;
+        if (!isPlayerOnGround(targetPlayer)) return;
 
         sitOnPlayer(player, targetPlayer);
         event.setCancelled(true);
     }
 
+    private boolean isPlayerOnGround(@NotNull Player player) {
+        Location loc = player.getLocation().clone();
+        loc.setY(loc.getY() - 0.01);
+        return loc.getBlock().getType().isSolid();
+    }
+
     @EventHandler
     public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
         Player player = event.getPlayer();
-
-        // Make sitting players stand up when they quit
         standUp(player);
 
-        // Make players sitting on the quitting player stand up
-        // Create a copy of the keys to avoid concurrent modification
         new HashMap<>(playerSeats).forEach((sittingPlayerUUID, targetPlayerUUID) -> {
             if (targetPlayerUUID.equals(player.getUniqueId())) {
                 Player sittingPlayer = plugin.getServer().getPlayer(sittingPlayerUUID);
@@ -79,9 +78,8 @@ public class SittingSystem implements Listener {
         });
     }
 
-
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
+    public void onPlayerDeath(@NotNull PlayerDeathEvent event) {
         standUp(event.getEntity());
     }
 
@@ -92,22 +90,29 @@ public class SittingSystem implements Listener {
     }
 
     private void sitOnPlayer(Player sitter, @NotNull Player target) {
-        // Directly add the sitting player as a passenger to the target player
+        if (target.getPassengers().contains(sitter)) return;
+
+        target.getPassengers().forEach(entity -> {
+            if (entity instanceof Player) {
+                standUp((Player) entity);
+            }
+        });
+
         target.addPassenger(sitter);
         playerSeats.put(sitter.getUniqueId(), target.getUniqueId());
 
-        // Register sneak event for dismounting
         plugin.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler
             public void onPlayerSneak(org.bukkit.event.player.PlayerToggleSneakEvent e) {
-                if (e.getPlayer().getUniqueId().equals(sitter.getUniqueId()) || e.getPlayer().getUniqueId().equals(target.getUniqueId())) {
+                if (e.getPlayer().getUniqueId().equals(sitter.getUniqueId()) ||
+                        e.getPlayer().getUniqueId().equals(target.getUniqueId())) {
                     standUp(sitter);
                 }
             }
         }, plugin);
     }
 
-    private ArmorStand createStairSeat(Player player, @NotNull Location location) {
+    private @NotNull ArmorStand createStairSeat(Player player, @NotNull Location location) {
         ArmorStand seat = location.getWorld().spawn(location, ArmorStand.class, armorStand -> {
             armorStand.setVisible(false);
             armorStand.setGravity(false);
@@ -126,29 +131,26 @@ public class SittingSystem implements Listener {
                 }
             }
         }, plugin);
-
         return seat;
     }
 
-    public void standUp(Player player) {
-        // Handle stair seats
+    public void standUp(@NotNull Player player) {
         ArmorStand stairSeat = stairSeats.remove(player.getUniqueId());
         if (stairSeat != null) {
-            player.leaveVehicle(); // More reliable than eject()
+            player.leaveVehicle();
             stairSeat.remove();
-            Location safeLoc = player.getLocation();
-            safeLoc.setY(player.getLocation().getBlockY() + 0.5);
-            player.teleport(safeLoc);
+            teleportToSafeLocation(player);
         }
 
-        // Handle player seats
         UUID targetUUID = playerSeats.remove(player.getUniqueId());
         if (targetUUID != null) {
-            player.leaveVehicle(); // More reliable than eject()
-            Location safeLoc = player.getLocation();
-            safeLoc.setY(player.getLocation().getBlockY() + 0.5);
-            player.teleport(safeLoc);
+            player.leaveVehicle();
+            teleportToSafeLocation(player);
         }
     }
-
+    private void teleportToSafeLocation(@NotNull Player player) {
+        Location safeLoc = player.getLocation();
+        safeLoc.setY(player.getLocation().getBlockY());
+        player.teleport(safeLoc);
+    }
 }

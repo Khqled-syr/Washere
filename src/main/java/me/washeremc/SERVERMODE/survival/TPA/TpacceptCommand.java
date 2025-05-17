@@ -38,20 +38,17 @@ public class TpacceptCommand implements CommandExecutor {
 
         UUID targetId = targetPlayer.getUniqueId();
 
-        // Check if there's any request first
         if (!plugin.getTpaManager().hasRequest(targetId)) {
             targetPlayer.sendMessage(ChatUtils.colorize("&cNo teleport requests found!"));
             return true;
         }
 
-        // Check if the request hasn't expired
         if (!plugin.getTpaManager().canAcceptRequest(targetId)) {
             targetPlayer.sendMessage(ChatUtils.colorize("&cThis teleport request has expired!"));
             plugin.getTpaManager().removeRequest(targetId);
             return true;
         }
 
-        // Cooldown check
         if (CooldownManager.isOnCooldown(targetId, "tpaccept")) {
             long timeLeft = CooldownManager.getRemainingTime(targetId, "tpaccept");
             targetPlayer.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
@@ -78,7 +75,6 @@ public class TpacceptCommand implements CommandExecutor {
         senderPlayer.teleport(targetPlayer.getLocation());
         senderPlayer.sendMessage(ChatUtils.colorize("&7Teleport request accepted by &e" + targetPlayer.getName()));
         targetPlayer.sendMessage(ChatUtils.colorize("&aYou have accepted the teleport request from &e" + senderPlayer.getName()));
-
         return true;
     }
 }

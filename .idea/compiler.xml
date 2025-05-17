@@ -8,10 +8,11 @@
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="--enable-preview" />
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Washere" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
-      <module name="Washere.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
-      <module name="me.washeremc.Washere.main" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="Washere" options="-parameters -Xlint:all --enable-preview -Xdoclint -Xdoclint:-missing" />
+      <module name="Washere.test" options="-parameters -Xlint:all --enable-preview -Xdoclint -Xdoclint:-missing" />
+      <module name="me.washeremc.Washere.main" options="-parameters -Xlint:all --enable-preview -Xdoclint -Xdoclint:-missing" />
     </option>
   </component>
 </project>

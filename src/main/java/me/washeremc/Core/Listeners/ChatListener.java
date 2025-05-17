@@ -40,9 +40,10 @@ public class ChatListener implements Listener {
         }
 
         FileConfiguration config = plugin.getConfig();
-        String chatFormat = config.getString("chat.format", "&7%luckperms_prefix% %player_name%: &f%message%");
-        chatFormat = PlaceholderAPI.setPlaceholders(sender, chatFormat);
-        String formattedMessage = ChatUtils.colorize(chatFormat.replace("%message%", message));
+        String chatFormat = config.getString("chat.format", "&7%luckperms_prefix%%player_name%: &f%message%");
+
+        // Apply placeholders directly (including our tag placeholders)
+        String formattedMessage = ChatUtils.colorize(PlaceholderAPI.setPlaceholders(sender, chatFormat).replace("%message%", message));
 
         CooldownManager.setCooldown(uuid, cooldownKey, 2);
 
@@ -50,7 +51,7 @@ public class ChatListener implements Listener {
             if (message.contains(recipient.getName()) && !recipient.equals(sender)) {
                 if (SettingsManager.isPingingEnabled(recipient)) {
                     String highlightedMessage = message.replace(recipient.getName(), "§b§n" + recipient.getName() + "§r");
-                    String personalizedMessage = ChatUtils.colorize(chatFormat.replace("%message%", highlightedMessage));
+                    String personalizedMessage = ChatUtils.colorize(PlaceholderAPI.setPlaceholders(sender, chatFormat).replace("%message%", highlightedMessage));
 
                     recipient.sendMessage(personalizedMessage);
                     recipient.playSound(recipient.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);

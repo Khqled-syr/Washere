@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: net.megavex:scoreboard-library-modern:2.3.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="net.megavex" artifactId="scoreboard-library-modern" version="2.3.0" baseVersion="2.3.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.megavex/scoreboard-library-modern/2.3.0/a7d0309a73bba85bf8f69c654c0b7a73e6d79fa7/scoreboard-library-modern-2.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

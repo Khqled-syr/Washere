@@ -44,7 +44,6 @@ public class RecipeCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "recipe";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {

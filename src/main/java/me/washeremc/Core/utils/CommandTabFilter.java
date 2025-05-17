@@ -34,6 +34,7 @@ public class CommandTabFilter implements Listener {
         for (String cmd : allowedCommands) {
             allowed.add(cmd.toLowerCase());
         }
+
         event.getCommands().clear();
         event.getCommands().addAll(allowed);
     }

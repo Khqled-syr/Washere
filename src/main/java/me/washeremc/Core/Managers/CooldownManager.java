@@ -14,7 +14,6 @@ public class CooldownManager {
     public static boolean isOnCooldown(UUID uuid, String key) {
         return getRemainingTime(uuid, key) > 0;
     }
-
     public static long getRemainingTime(UUID uuid, String key) {
         return Math.max(0, (cooldowns.getOrDefault(uuid, new HashMap<>()).getOrDefault(key, 0L) - System.currentTimeMillis()) / 1000);
     }

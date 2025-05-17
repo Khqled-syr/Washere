@@ -2,6 +2,7 @@ package me.washeremc.Core.Managers;
 
 
 import me.washeremc.Core.Settings.SettingsManager;
+import me.washeremc.Core.Tags.TagManager;
 import me.washeremc.Core.utils.ScoreBoard;
 import me.washeremc.Washere;
 import org.bukkit.Bukkit;
@@ -26,6 +27,8 @@ public class PluginReloadManager {
         }
         plugin.reloadConfig();
         initializeFeatures();
+        updateServerType();
+        reloadTags();
 
         plugin.getLogger().info("Config reloaded successfully.");
         plugin.getLogger().info("Current server type: " + plugin.getServerType());
@@ -50,6 +53,26 @@ public class PluginReloadManager {
                 scoreBoard.removeSidebar(player);
             }
         }
+    }
 
+    public void reloadTags() {
+        plugin.getLogger().info("Reloading tags...");
+        TagManager.loadTagsConfig();
+        TagManager.loadTags();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            TagManager.loadPlayerTag(player.getUniqueId());
+        }
+        plugin.getLogger().info("Tags reloaded successfully.");
+    }
+
+    public void updateServerType(){
+        String newServerType = plugin.getConfig().getString("server-type", "NONE");
+        if (!newServerType.equalsIgnoreCase(plugin.getServerType())) {
+            plugin.getLogger().info("Server type changed from " + plugin.getServerType() + " to " + newServerType);
+            plugin.setServerType(newServerType);
+            plugin.getLogger().info("Current server type: " + newServerType);
+        } else {
+            plugin.getLogger().info("Server type is already set to " + newServerType);
+        }
     }
 }

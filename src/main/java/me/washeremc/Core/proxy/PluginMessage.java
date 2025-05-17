@@ -43,11 +43,10 @@ public class PluginMessage implements PluginMessageListener {
             if (ip != null && port > 0) {
                 serverIPs.put(server, ip);
                 serverPorts.put(server, port);
-                serverStatus.put(server, false); // Default status is offline
+                serverStatus.put(server, false);
             }
         }
     }
-
     public static void requestServerStatus(Player ignoredPlayer) {
         for (String server : serverIPs.keySet()) {
             ServerPing.pingServer(serverIPs.get(server), serverPorts.get(server), server);
@@ -64,7 +63,6 @@ public class PluginMessage implements PluginMessageListener {
     }
 
     public static void connect(@NotNull Player player, String server) {
-        //player.sendMessage("§aConnecting to " + server + "...");
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(server);
@@ -83,6 +81,5 @@ public class PluginMessage implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
-        // Handle BungeeCord messages if needed
     }
 }

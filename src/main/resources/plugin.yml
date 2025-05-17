@@ -94,3 +94,7 @@ commands:
   list:
     description: Opens a list of all online players
     usage: /list
+  tags:
+    description: Open the tags selector
+    usage: /tags
+    aliases: [ tag, emoji ]

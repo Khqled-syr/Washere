@@ -170,7 +170,6 @@ public class Profile implements Listener {
                 event.setCancelled(true);
             }
 
-
         } else if (event.getView().getTitle().equals("Your warps")) {
             event.setCancelled(true);
 

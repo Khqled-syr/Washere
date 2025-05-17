@@ -37,7 +37,6 @@ public class HomeCommand implements CommandExecutor {
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "home";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {

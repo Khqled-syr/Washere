@@ -50,7 +50,6 @@ public class WarpCommand implements CommandExecutor {
         }
 
 
-        // Handle warp teleportation
         String warpName = args[0];
         Location location = WarpManager.getWarp(uuid, warpName);
 
@@ -73,7 +72,7 @@ public class WarpCommand implements CommandExecutor {
         }
 
         player.teleport(location);
-        CooldownManager.setCooldown(uuid, cooldownKey, 3); // Using fixed cooldown of 3 seconds
+        CooldownManager.setCooldown(uuid, cooldownKey, 3);
         player.sendMessage(ChatUtils.colorize("&aTeleported to warp &f" + warpName + "&a!"));
 
         return true;

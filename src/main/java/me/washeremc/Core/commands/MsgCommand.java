@@ -22,17 +22,17 @@ public class MsgCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
             return true;
         }
+        Player player = (Player) sender;
 
         if (!SettingsManager.isMessagingEnabled(player)) {
             player.sendMessage(ChatUtils.colorize("&cMessaging is disabled. Enable it in your settings."));
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "msg";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
@@ -53,7 +53,6 @@ public class MsgCommand implements CommandExecutor {
             return true;
         }
 
-        // Check if messaging is enabled for the target
         if (!SettingsManager.isMessagingEnabled(target)) {
             player.sendMessage(ChatUtils.colorize("&cThe player has disabled messaging."));
             return true;

@@ -6,11 +6,16 @@ import me.washeremc.Core.database.DatabaseManager;
 import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Washere;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +48,6 @@ public final class SettingsManager {
     }
 
 
-    @SuppressWarnings("unchecked")
     public static <T> @Nullable T getSettingValue(@NotNull UUID uuid, @NotNull String key) {
         Objects.requireNonNull(uuid, "UUID cannot be null");
         Objects.requireNonNull(key, "Key cannot be null");
@@ -62,7 +66,6 @@ public final class SettingsManager {
 
 
     @Contract("_, _, _ -> !null")
-    @SuppressWarnings("unchecked")
     public static <T> T getSettingValue(@NotNull UUID uuid, @NotNull String key, @NotNull T defaultValue) {
         Objects.requireNonNull(uuid, "UUID cannot be null");
         Objects.requireNonNull(key, "Key cannot be null");
@@ -196,10 +199,8 @@ public final class SettingsManager {
             player.sendMessage(ChatUtils.colorize("&ePlayers are now " + (visible ? "&avisible" : "&cinvisible") + "&e."));
         }
 
-
-        // Handle whether others can see this player
         for (Player online : Bukkit.getOnlinePlayers()) {
-            if (online != player) {  // Don't process for the same player
+            if (online != player) {
                 boolean onlinePlayerSettings = isPlayersVisible(online);
                 if (onlinePlayerSettings) {
                     online.showPlayer(plugin, player);
@@ -209,7 +210,6 @@ public final class SettingsManager {
             }
         }
     }
-
 
     private static void applyPlayerTime(@NotNull Player player, @NotNull PlayerTime time) {
         player.setPlayerTime(switch (time) {
@@ -229,12 +229,22 @@ public final class SettingsManager {
             Object defaultValue = setting.getDefaultValue();
 
             futures.put(key, DatabaseManager.loadSetting(uuid, key, defaultValue)
-                .thenAccept(value -> settings.put(key, value))
-                .exceptionally(e -> {
-                    plugin.getLogger().log(Level.SEVERE, "Error loading setting: " + key, e);
-                    settings.put(key, defaultValue);
-                    return null;
-                }));
+                    .thenAccept(value -> {
+                        // Handle null values properly
+                        if (key.equals("selectedTag")) {
+                            // For selectedTag, an empty string is a valid default
+                            settings.put(key, value != null ? value : "");
+                        } else {
+                            // For other settings, use the default value if null
+                            settings.put(key, value != null ? value : defaultValue);
+                        }
+                    })
+                    .exceptionally(e -> {
+                        plugin.getLogger().log(Level.SEVERE, "Error loading setting: " + key, e);
+                        // Use empty string for selectedTag, default value for others
+                        settings.put(key, key.equals("selectedTag") ? "" : defaultValue);
+                        return null;
+                    }));
         }
 
         try {
@@ -265,11 +275,65 @@ public final class SettingsManager {
         });
     }
 
+    public static @NotNull CompletableFuture<Void> savePlayerTag(UUID uuid, String tagId) {
+        // Update the in-memory settings
+        playerSettings.computeIfAbsent(uuid, k -> new ConcurrentHashMap<>())
+                .put("selectedTag", tagId != null ? tagId : "");
+
+        // Save to a database
+        return DatabaseManager.saveSetting(uuid, "selectedTag", tagId != null ? tagId : "");
+    }
+
+    public static @NotNull Map<UUID, String> getAllPlayerTags() {
+        Map<UUID, String> result = new HashMap<>();
+
+        if (DatabaseManager.useMySQL) {
+            // Fetch tags from MySQL
+            try (Connection conn = DatabaseManager.dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement("SELECT uuid, selectedTag FROM player_settings")) {
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("uuid"));
+                        String tagId = rs.getString("selectedTag");
+                        if (tagId != null && !tagId.isEmpty()) {
+                            result.put(uuid, tagId);
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed to fetch player tags from MySQL", e);
+            }
+        } else {
+            // Fetch tags from YAML
+            if (DatabaseManager.settingsConfig == null) {
+                plugin.getLogger().severe("Settings configuration is not initialized. Ensure DatabaseManager.settingsConfig is loaded.");
+                return result;
+            }
+
+            ConfigurationSection playersSection = DatabaseManager.settingsConfig.getConfigurationSection("players");
+            if (playersSection != null) {
+                for (String uuidStr : playersSection.getKeys(false)) {
+                    try {
+                        UUID uuid = UUID.fromString(uuidStr);
+                        String tagId = DatabaseManager.settingsConfig.getString("players." + uuidStr + ".selectedTag", "");
+                        if (!tagId.isEmpty()) {
+                            result.put(uuid, tagId);
+                        }
+                    } catch (IllegalArgumentException e) {
+                        plugin.getLogger().warning("Invalid UUID in settings file: " + uuidStr);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+
     public static boolean isMessagingEnabled(@NotNull Player player) {
         Objects.requireNonNull(player, "Player cannot be null");
         return getSettingValue(player, "messaging", true);
     }
-
 
     public static boolean isScoreboardEnabled(Player player) {
         return getSettingValue(player, "scoreboard", true);
@@ -298,7 +362,6 @@ public final class SettingsManager {
     private static boolean isPvpToggle(String key) {
         return "pvp".equals(key);
     }
-
 
     public static boolean isPvpEnabled(Player player) {
         return getSettingValue(player, "pvp", false);

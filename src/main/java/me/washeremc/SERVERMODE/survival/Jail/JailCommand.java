@@ -50,7 +50,6 @@ public class JailCommand implements CommandExecutor {
             return true;
         }
 
-        // Parse duration
         String durationStr = args[1].toLowerCase();
         long durationSeconds = 0;
 

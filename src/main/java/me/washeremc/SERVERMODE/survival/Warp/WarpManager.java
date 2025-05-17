@@ -26,11 +26,9 @@ public class WarpManager {
     private static boolean initialized = false;
     private static final Map<String, Location> publicWarps = new HashMap<>();
 
-
     public static void initialize(@NotNull Washere pluginInstance) {
         plugin = pluginInstance;
 
-        // ✅ Only initialize if we're in survival mode
         if (!isSurvivalMode()) {
             pluginInstance.getLogger().info("Warp system not initialized - not in survival mode.");
             return;
@@ -90,11 +88,9 @@ public class WarpManager {
             return;
         }
 
-        // Clear existing warps before loading
         warps.clear();
         publicWarps.clear();
 
-        // Load private warps
         for (String uuidString : warpsConfig.getKeys(false)) {
             if (uuidString.equals("public")) continue; // Skip public section
 
@@ -125,7 +121,6 @@ public class WarpManager {
             }
         }
 
-        // Load public warps
         ConfigurationSection publicSection = warpsConfig.getConfigurationSection("public");
         if (publicSection != null) {
             for (String warpName : publicSection.getKeys(false)) {
@@ -142,8 +137,6 @@ public class WarpManager {
 
         logger.info("Loaded " + warps.size() + " private warps and " + publicWarps.size() + " public warps");
     }
-
-
 
     public static @Nullable Location getLocationFromConfig(@NotNull Map<String, Object> config) {
         String worldName = (String) config.get("world");
@@ -178,8 +171,7 @@ private static void saveWarps() {
     if (!initialized) return;
 
     warpsConfig = new YamlConfiguration();
-    
-    // Save private warps
+
     for (UUID playerUUID : warps.keySet()) {
         for (Map.Entry<String, Location> entry : warps.get(playerUUID).entrySet()) {
             String path = playerUUID.toString() + "." + entry.getKey();
@@ -193,7 +185,6 @@ private static void saveWarps() {
         }
     }
 
-    // Save public warps
     for (Map.Entry<String, Location> entry : publicWarps.entrySet()) {
         String path = "public." + entry.getKey();
         Location location = entry.getValue();
@@ -205,7 +196,6 @@ private static void saveWarps() {
         warpsConfig.set(path + ".pitch", location.getPitch());
     }
 
-    // Save the configuration once
     try {
         warpsConfig.save(warpsFile);
     } catch (IOException e) {
@@ -213,7 +203,6 @@ private static void saveWarps() {
         e.printStackTrace();
     }
 }
-
 
     public static boolean deletePublicWarp(String warpName) {
         if (!initialized) return false;
@@ -225,7 +214,6 @@ private static void saveWarps() {
         }
         return false;
     }
-
 
     public static void setPublicWarp(String name, Location location) {
         publicWarps.put(name, location);

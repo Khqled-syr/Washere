@@ -94,33 +94,16 @@ public class ScoreBoard {
         teamManager.addPlayer(player);
         team.display(player, teamDisplay);
 
-        boolean useRankColors = plugin.getConfig().getBoolean("tablist.use-rank-colors", true);
-
-        if (useRankColors) {
-            String displayName = ChatUtils.colorize(rankColor + player.getName());
-            player.displayName(Component.text(displayName));
-            player.playerListName(Component.text(displayName));
-        } else {
-            String format = plugin.getConfig().getString("tablist.player-list-name-format", "&e%player_name%");
-            String formattedName = PlaceholderAPI.setPlaceholders(player, format);
-            player.displayName(Component.text(ChatUtils.colorize(formattedName)));
-            player.playerListName(Component.text(ChatUtils.colorize(formattedName)));
-        }
-    }
-
-    public void toggleSidebar(@NotNull Player player) {
-        if (playerSidebars.containsKey(player.getUniqueId())) {
-            removeSidebar(player);
-        }else {
-            createSidebar(player);
-        }
+        // Respect the TabList format from the config
+        String format = plugin.getConfig().getString("tablist.player-list-name-format", "&e%player_name%");
+        String formattedName = PlaceholderAPI.setPlaceholders(player, format);
+        player.playerListName(Component.text(ChatUtils.colorize(formattedName)));
     }
 
     public void removePlayerTeams(@NotNull Player player) {
         if (teamManager == null) return;
         teamManager.removePlayer(player);
     }
-
     public void removeSidebar(@NotNull Player player) {
         Optional.ofNullable(playerSidebars.remove(player.getUniqueId())).ifPresent(sidebar -> sidebar.removePlayer(player));
         Optional.ofNullable(sidebarUpdaters.remove(player.getUniqueId())).ifPresent(BukkitRunnable::cancel);
@@ -128,5 +111,4 @@ public class ScoreBoard {
     public void resetSidebars() {
         Bukkit.getOnlinePlayers().forEach(this::removeSidebar);
     }
-
 }

@@ -2,7 +2,6 @@ package me.washeremc.SERVERMODE.survival.events;
 
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Washere;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -33,45 +32,29 @@ public class SurvivalListeners implements Listener {
         this.plugin = plugin;
     }
 
-    private boolean isLobby() {
-        return "lobby".equalsIgnoreCase(plugin.getServerType());
+    private boolean isSurvival() {
+        return "survival".equalsIgnoreCase(plugin.getServerType());
     }
 
     @EventHandler
     public void OnPlayerJoin(@NotNull PlayerJoinEvent event) {
-
         Player player = event.getPlayer();
-        plugin.getScoreboard().setPlayerTeams(Objects.requireNonNull(player.getPlayer()));
-
-        try {
-            plugin.getTabList().setTabList(player);
-            plugin.getTabList().updatePlayerListNames();
-        } catch (Exception e) {
-            plugin.getLogger().warning("Failed to update tablist for " + player.getName() + ": " + e.getMessage());
-        }
-        if (SettingsManager.isScoreboardEnabled(player)) {
-            plugin.getScoreboard().createSidebar(player);
-        } else {
-            plugin.getScoreboard().removeSidebar(player);
-        }
-
-        if (isLobby()) return;
+        if (!isSurvival()) return;
         event.joinMessage(null);
         broadcastJoinOrLeaveMessage(event.getPlayer(), "join-message");
 
         if (!player.hasPlayedBefore()) {
-                player.sendMessage("");
-                player.performCommand("washere:help");
-            }
+            player.sendMessage("");
+            player.performCommand("washere:help");
         }
+    }
 
     @EventHandler
     public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
-        if (isLobby()) return;
+        if (!isSurvival()) return;
 
         event.quitMessage(null);
         broadcastJoinOrLeaveMessage(event.getPlayer(), "leave-message");
-
     }
 
     private void broadcastJoinOrLeaveMessage(Player player, String configKey) {
@@ -87,7 +70,7 @@ public class SurvivalListeners implements Listener {
 
     @EventHandler
     public void onPlayerBedEnter(@NotNull PlayerBedEnterEvent event) {
-        if (isLobby()) return;
+        if (!isSurvival()) return;
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                 Objects.requireNonNull(Bukkit.getWorld("world")).setTime(0);
@@ -100,7 +83,7 @@ public class SurvivalListeners implements Listener {
 
     @EventHandler
     public void onPlayerHit(@NotNull EntityDamageByEntityEvent event) {
-        if (isLobby()) return;
+        if (!isSurvival()) return;
         if (event.getDamager() instanceof Player damager) {
             Entity damaged = event.getEntity();
 
@@ -119,7 +102,7 @@ public class SurvivalListeners implements Listener {
 
     @EventHandler
     public void onPlayerDeath(@NotNull PlayerDeathEvent event) {
-        if (isLobby()) return;
+        if (!isSurvival()) return;
         Player player = event.getEntity();
         String deathMessage = colorize("&c" + player.getName() + " died at X: " +
                 player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: " +

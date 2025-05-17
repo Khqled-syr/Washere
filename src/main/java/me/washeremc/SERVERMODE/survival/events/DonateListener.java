@@ -28,14 +28,13 @@ public class DonateListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(@NotNull InventoryClickEvent event) {
-        if (event.getView().getTitle().startsWith("Donate to ")) {
+        if (event.getView().title().insertion().startsWith("Donate to ")) {
             Player donor = (Player) event.getWhoClicked();
             int slot = event.getRawSlot();
 
             if (slot >= 0 && slot <= 26) {
                 event.setCancelled(false);
             } else if (slot == 27) {
-                // Cancel button clicked
                 returnItemsToDonor(donor);
                 donor.closeInventory();
                 donor.sendMessage(ChatUtils.colorize("&cDonation cancelled."));
@@ -56,7 +55,7 @@ public class DonateListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(@NotNull InventoryCloseEvent event) {
-        if (event.getView().getTitle().startsWith("Donate to ")) {
+        if (event.getView().title().insertion().startsWith("Donate to ")) {
             Player donor = (Player) event.getPlayer();
             if (!donor.hasMetadata("donationComplete")) {
                 returnItemsToDonor(donor);

@@ -1,6 +1,7 @@
 package me.washeremc;
 
 import me.washeremc.Core.Managers.PluginReloadManager;
+import me.washeremc.Core.Tags.TagManager;
 import me.washeremc.Core.utils.ScoreBoard;
 import me.washeremc.Core.utils.TabList;
 import me.washeremc.Registration.PluginServices;
@@ -13,44 +14,31 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Washere extends JavaPlugin implements Listener {
 
     private PluginServices pluginServices;
-    private TpaManager tpaManager;
-    private ScoreBoard scoreboard;
+    public TpaManager tpaManager;
+    public ScoreBoard scoreboard;
     private PluginReloadManager pluginReloadManager;
-    private TabList tabList;
+    public TabList tabList;
     private String serverType;
-    private NPCUtils npcUtils;
-    private JailManager jailManager;
+    public NPCUtils npcUtils;
+    public JailManager jailManager;
+    public TagManager tagManager;
 
     @Override
     public void onEnable() {
-        // Create plugin services first
         pluginServices = new PluginServices(this);
 
-        // Core initialization
         pluginServices.logStartupMessage();
         pluginServices.initializeConfig();
         pluginServices.initializeDatabase();
         pluginServices.initializeSettings();
 
-        // Load server configuration
         serverType = getConfig().getString("server-type", "NONE");
 
-        // Initialize managers
         pluginReloadManager = new PluginReloadManager(this);
         pluginReloadManager.initializeFeatures();
 
-        // Initialize components
-        npcUtils = new NPCUtils(this);
-        npcUtils.loadNPCs();
-        scoreboard = new ScoreBoard(this);
-        tabList = new TabList(this);
-        tpaManager = new TpaManager(this);
-        jailManager = new JailManager(this);
-
-        // Register everything
+        pluginServices.RegisterManagers();
         pluginServices.registerAllComponents();
-
-        // Post-initialization tasks
         pluginServices.processExistingPlayers(scoreboard);
         pluginServices.setupServerMode(serverType);
     }
@@ -61,7 +49,6 @@ public final class Washere extends JavaPlugin implements Listener {
         pluginServices.cancelScheduledTasks();
         pluginServices.closeDatabase();
 
-        // Clean up resources
         if (scoreboard != null) {
             scoreboard.resetSidebars();
         }
@@ -72,32 +59,31 @@ public final class Washere extends JavaPlugin implements Listener {
     public TpaManager getTpaManager() {
         return tpaManager;
     }
-
     public PluginReloadManager getPluginReloadManager() {
         return pluginReloadManager;
     }
-
     public String getServerType() {
         return serverType;
     }
-
     public ScoreBoard getScoreboard() {
         return scoreboard;
     }
-
     public TabList getTabList() {
         return tabList;
     }
-
     public NPCUtils getNpcUtils() {
         return npcUtils;
     }
-
     public JailManager getJailManager() {
         return jailManager;
     }
-
     public void setScoreboard(ScoreBoard scoreboard) {
         this.scoreboard = scoreboard;
+    }
+    public void setServerType(String serverType) {
+        this.serverType = serverType;
+    }
+    public TagManager getTagManager() {
+        return tagManager;
     }
 }

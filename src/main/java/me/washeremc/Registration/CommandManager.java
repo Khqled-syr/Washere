@@ -3,8 +3,9 @@ package me.washeremc.Registration;
 
 import me.washeremc.Core.Profile.ProfileCommand;
 import me.washeremc.Core.Settings.SettingsCommand;
+import me.washeremc.Core.Tags.TagCommand;
 import me.washeremc.Core.commands.*;
-import me.washeremc.SERVERMODE.lobby.*;
+import me.washeremc.SERVERMODE.lobby.commands.*;
 import me.washeremc.SERVERMODE.survival.Home.HomeCommand;
 import me.washeremc.SERVERMODE.survival.Home.SetHomeCommand;
 import me.washeremc.SERVERMODE.survival.Jail.JailCommand;
@@ -56,6 +57,7 @@ public class CommandManager {
         registerCommand("listnpcs", new NPCListommand());
         registerCommand("recipe", new RecipeCommand(plugin));
         registerCommand("whois", new WhoisCommand());
+        registerCommand("tags", new TagCommand(plugin));
 
 
         registerCommand("jail", new JailCommand(plugin.getJailManager(), plugin));

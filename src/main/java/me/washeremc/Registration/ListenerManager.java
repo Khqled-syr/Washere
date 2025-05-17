@@ -27,19 +27,16 @@ public class ListenerManager {
     }
 
     public void RegisterListeners(){
-        // Register core listeners that should be active in all server modes
         plugin.getServer().getPluginManager().registerEvents(new ServerListeners(plugin), plugin);
         plugin.getServer().getPluginManager().registerEvents(new ChatListener(plugin), plugin);
         plugin.getServer().getPluginManager().registerEvents(new SettingsMenuListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PvpListener(plugin), plugin);
         SettingsMenu.setPlugin(plugin);
 
-        // Register NPC utils if available
         if (plugin.getNpcUtils() != null) {
             plugin.getServer().getPluginManager().registerEvents(plugin.getNpcUtils(), plugin);
         }
 
-        // Register survival-specific listeners only if in survival mode
         if ("survival".equalsIgnoreCase(plugin.getServerType())) {
             plugin.getServer().getPluginManager().registerEvents(new SurvivalListeners(plugin), plugin);
             plugin.getServer().getPluginManager().registerEvents(new DonateListener(plugin), plugin);
@@ -50,12 +47,10 @@ public class ListenerManager {
                 plugin.getServer().getPluginManager().registerEvents(new JailListeners(plugin, plugin.getJailManager()), plugin);
             }
 
-            // Register tab completers for survival commands
             Objects.requireNonNull(plugin.getCommand("warp")).setTabCompleter(tabCompleter);
             Objects.requireNonNull(plugin.getCommand("delwarp")).setTabCompleter(tabCompleter);
             Objects.requireNonNull(plugin.getCommand("setwarp")).setTabCompleter(tabCompleter);
 
-            // Start survival-specific tasks
             new ActionBarTask(plugin).runTaskTimer(plugin, 0L, 20L);
         }
     }

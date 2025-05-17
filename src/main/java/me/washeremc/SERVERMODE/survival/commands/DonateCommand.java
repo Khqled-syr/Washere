@@ -44,7 +44,6 @@ public class DonateCommand implements CommandExecutor {
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = donor.getUniqueId();
         String cooldownKey = "donate";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
@@ -86,7 +85,6 @@ public class DonateCommand implements CommandExecutor {
         cancelItem.setItemMeta(cancelMeta);
         donateInventory.setItem(27, cancelItem);
 
-        // Create the "Donate" button
         ItemStack donateItem = new ItemStack(Material.GREEN_WOOL);
         ItemMeta donateMeta = donateItem.getItemMeta();
         donateMeta.displayName(Component.text(ChatUtils.colorize("&aDonate")));

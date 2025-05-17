@@ -37,7 +37,6 @@ public record WarpsCommand(Washere plugin) implements CommandExecutor {
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "warps";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
@@ -46,8 +45,6 @@ public record WarpsCommand(Washere plugin) implements CommandExecutor {
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
-
-
 
         sendWarpList(player);
         return true;

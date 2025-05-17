@@ -15,12 +15,12 @@ public class ProfileCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
             return true;
         }
+        Player player = (Player) sender;
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "profile";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {

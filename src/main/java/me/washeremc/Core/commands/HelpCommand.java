@@ -21,12 +21,12 @@ public class HelpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
             return true;
         }
+        Player player = (Player) sender;
 
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "help";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
@@ -36,7 +36,6 @@ public class HelpCommand implements CommandExecutor {
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
-        // Create the header of the help menu
         TextComponent header = Component.text()
                 .append(Component.text("╔════════════════════════════╗", NamedTextColor.AQUA))
                 .append(Component.newline())
@@ -46,7 +45,6 @@ public class HelpCommand implements CommandExecutor {
                 .append(Component.newline())
                 .build();
 
-        // Create the body of the help menu
         TextComponent body = Component.text()
                 .append(Component.text("/backpack", NamedTextColor.GREEN))
                 .append(Component.text(" - Access your backpack.", NamedTextColor.GRAY))
@@ -86,7 +84,6 @@ public class HelpCommand implements CommandExecutor {
                 .append(Component.newline())
                 .build();
 
-        // Create the footer of the help menu
         TextComponent footer = Component.text()
                 .append(Component.text("═════════════════════════════", NamedTextColor.AQUA))
                 .append(Component.newline())
@@ -95,16 +92,13 @@ public class HelpCommand implements CommandExecutor {
                 .append(Component.text(" to customize your experience!", NamedTextColor.YELLOW))
                 .build();
 
-        // Combine all parts of the help menu
         TextComponent helpMenu = Component.text()
                 .append(header)
                 .append(body)
                 .append(footer)
                 .build();
 
-        // Send the help menu to the player
         player.sendMessage(helpMenu);
-
         return true;
     }
 }

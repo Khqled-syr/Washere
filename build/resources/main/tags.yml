@@ -1,0 +1,80 @@
+tags:
+  smiley:
+    display-name: "&e😊 Smiley"
+    prefix: "&e😊 "
+    suffix: " &e😊"
+    permission: "washere.tag.smiley"
+    material: "SUNFLOWER"
+    slot: 0
+
+  heart:
+    display-name: "&c❤ Heart"
+    prefix: "&c❤ "
+    suffix: " &c❤"
+    permission: "washere.tag.heart"
+    material: "RED_DYE"
+    slot: 1
+
+  star:
+    display-name: "&6⭐ Star"
+    prefix: "&6⭐ "
+    suffix: " &6⭐"
+    permission: "washere.tag.star"
+    material: "GOLD_NUGGET"
+    slot: 2
+
+  music:
+    display-name: "&d🎵 Music"
+    prefix: "&d🎵 "
+    suffix: " &d🎵"
+    permission: "washere.tag.music"
+    material: "NOTE_BLOCK"
+    slot: 3
+
+  fire:
+    display-name: "&4🔥 Fire"
+    prefix: "&4🔥 "
+    suffix: " &4🔥"
+    permission: "washere.tag.fire"
+    material: "BLAZE_POWDER"
+    slot: 4
+
+  cool:
+    display-name: "&b😎 Cool"
+    prefix: "&b😎 "
+    suffix: " &b😎"
+    permission: "washere.tag.cool"
+    material: "DIAMOND"
+    slot: 5
+
+  sparkle:
+    display-name: "&6✨ Sparkle"
+    prefix: "&6✨ "
+    suffix: " &6✨"
+    permission: "washere.tag.sparkle"
+    material: "GLOWSTONE_DUST"
+    slot: 6
+
+  thumbs_up:
+    display-name: "&a👍 Thumbs Up"
+    prefix: "&a👍 "
+    suffix: " &a👍"
+    permission: "washere.tag.thumbs_up"
+    material: "LIME_DYE"
+    slot: 7
+
+  lightning:
+    display-name: "&e⚡ Lightning"
+    prefix: "&e⚡ "
+    suffix: " &e⚡"
+    permission: "washere.tag.lightning"
+    material: "YELLOW_DYE"
+    slot: 8
+
+  crown:
+    display-name: "&6👑 Crown"
+    prefix: "&6👑 "
+    suffix: " &6👑"
+    permission: "washere.tag.crown"
+    material: "GOLD_BLOCK"
+    slot: 9

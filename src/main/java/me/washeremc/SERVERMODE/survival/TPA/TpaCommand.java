@@ -37,13 +37,11 @@ public class TpaCommand implements CommandExecutor {
             return true;
         }
 
-
         if (isLobby()) {
             senderPlayer.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
             return true;
         }
 
-        // 🔥 Cooldown check
         UUID uuid = senderPlayer.getUniqueId();
         String cooldownKey = "tpa";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {

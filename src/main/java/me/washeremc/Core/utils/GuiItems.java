@@ -13,7 +13,6 @@ import java.util.List;
 
 public record GuiItems(String name) {
 
-
     public static @NotNull ItemStack createItem(Material material, String displayName, List<String> lore) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
@@ -28,8 +27,6 @@ public record GuiItems(String name) {
         item.setItemMeta(meta);
         return item;
     }
-
-
     public static @NotNull ItemStack createPlayerHead(@NotNull Player player, String displayName, List<String> lore) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
@@ -41,7 +38,6 @@ public record GuiItems(String name) {
             List<TextComponent> componentLore = lore.stream().map(Component::text).toList();
             meta.lore(componentLore);
         }
-
         head.setItemMeta(meta);
         return head;
     }

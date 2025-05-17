@@ -15,85 +15,61 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class DatabaseManager {
-    private static final int MAX_POOL_SIZE = 10;
-    private static final int MIN_IDLE = 2;
-    private static final int IDLE_TIMEOUT = 60000;
-    private static final int CONNECTION_TIMEOUT = 30000;
-    private static final int MAX_LIFETIME = 1800000;
-    private static final int MAX_RETRIES = 3;
+    private static final int MAX_POOL_SIZE = 10, MIN_IDLE = 2, IDLE_TIMEOUT = 60000, CONNECTION_TIMEOUT = 30000, MAX_LIFETIME = 1800000, MAX_RETRIES = 3;
     private static final long RETRY_DELAY = 1000L;
 
     private static Washere plugin;
-    private static HikariDataSource dataSource;
-    private static boolean useMySQL;
-    private static volatile File settingsFile;
-    private static volatile FileConfiguration settingsConfig;
-    private static final Map<String, PreparedStatement> preparedStatements = new ConcurrentHashMap<>();
+    public static HikariDataSource dataSource;
+    public static boolean useMySQL;
+    private static File settingsFile;
+    public static FileConfiguration settingsConfig;
 
-
-
-
-
-
-    public static void initialize(@NotNull Washere plugin) {
-        Objects.requireNonNull(plugin, "Plugin cannot be null");
-        DatabaseManager.plugin = plugin;
+    public static void initialize(@NotNull Washere pluginInstance) {
+        plugin = Objects.requireNonNull(pluginInstance, "Plugin cannot be null");
         useMySQL = plugin.getConfig().getString("storage.type", "yaml").equalsIgnoreCase("mysql");
-
         try {
             if (useMySQL) {
+                plugin.getLogger().info("Using MySQL for storage.");
                 setupMySQL();
             } else {
+                plugin.getLogger().info("Using YAML for storage.");
                 setupYAML();
             }
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to initialize database", e);
-            throw new RuntimeException("Database initialization failed", e);
+            throw new RuntimeException(e);
         }
     }
 
-
     private static void setupMySQL() {
         HikariConfig config = new HikariConfig();
-        config.setPoolName("WashereCP");
         config.setJdbcUrl(buildJdbcUrl());
         config.setUsername(plugin.getConfig().getString("mysql.username", "root"));
         config.setPassword(plugin.getConfig().getString("mysql.password", ""));
-
-        // Connection pool settings
         config.setMaximumPoolSize(MAX_POOL_SIZE);
         config.setMinimumIdle(MIN_IDLE);
         config.setIdleTimeout(IDLE_TIMEOUT);
         config.setConnectionTimeout(CONNECTION_TIMEOUT);
         config.setMaxLifetime(MAX_LIFETIME);
-
-        // Performance optimizations
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         config.addDataSourceProperty("useServerPrepStmts", "true");
-
         dataSource = new HikariDataSource(config);
         createTables();
     }
-
 
     private static void setupYAML() {
         settingsFile = new File(plugin.getDataFolder(), "settings.yml");
         if (!settingsFile.exists()) {
             try {
-                boolean dirCreated = settingsFile.getParentFile().mkdirs();
-                boolean fileCreated = settingsFile.createNewFile();
-                if (!dirCreated && !settingsFile.getParentFile().exists()) {
-                    plugin.getLogger().warning("Failed to create parent directories for settings file");
-                }
-                if (!fileCreated) {
-                    plugin.getLogger().warning("Failed to create settings file");
-                }
+                //noinspection ResultOfMethodCallIgnored
+                settingsFile.getParentFile().mkdirs();
+                //noinspection ResultOfMethodCallIgnored
+                settingsFile.createNewFile();
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "Failed to create settings.yml", e);
             }
@@ -101,7 +77,6 @@ public class DatabaseManager {
         settingsConfig = YamlConfiguration.loadConfiguration(settingsFile);
         if (!settingsConfig.contains("players")) settingsConfig.createSection("players");
     }
-
 
     @NotNull
     private static String buildJdbcUrl() {
@@ -111,110 +86,95 @@ public class DatabaseManager {
                 plugin.getConfig().getString("mysql.database", "minecraft"));
     }
 
-
     private static void createTables() {
         if (!useMySQL) return;
 
-        // Drop the table to recreate it with all columns
-        executeUpdate("DROP TABLE IF EXISTS player_settings;");
+        try (Connection conn = dataSource.getConnection()) {
+            DatabaseMetaData meta = conn.getMetaData();
+            ResultSet tables = meta.getTables(null, null, "player_settings", null);
 
-        StringBuilder columns = new StringBuilder();
-        for (Setting<?> setting : SettingRegistry.getSettings()) {
-            if (!columns.isEmpty()) columns.append(", ");
-            columns.append(setting.getKey()).append(" ").append(getSqlType(setting));
+            if (!tables.next()) {
+                StringBuilder columns = new StringBuilder("uuid VARCHAR(36) PRIMARY KEY, selectedTag VARCHAR(255) DEFAULT NULL");
+                for (Setting<?> setting : SettingRegistry.getSettings()) {
+                    if (!setting.getKey().equals("selectedTag")) { // Avoid duplicating the selectedTag column
+                        columns.append(", ").append(setting.getKey()).append(" ").append(getSqlType(setting));
+                    }
+                }
+                executeUpdate("CREATE TABLE player_settings (" + columns + ");");
+                plugin.getLogger().info("Created player_settings table in database");
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to check or create tables: " + e.getMessage(), e);
         }
-
-        executeUpdate("CREATE TABLE IF NOT EXISTS player_settings (uuid VARCHAR(36) PRIMARY KEY, " + columns + ");");
-        plugin.getLogger().info("Database tables created successfully");
     }
 
     private static @NotNull String getSqlType(@NotNull Setting<?> setting) {
-        Object defaultValue = setting.getDefaultValue();
-        Class<?> type = defaultValue.getClass();
-
-        if (type == Boolean.class) return "BOOLEAN DEFAULT " + defaultValue;
-        if (type == Integer.class) return "INT DEFAULT " + defaultValue;
-        if (type == Double.class) return "DOUBLE DEFAULT " + defaultValue;
-        if (type.isEnum()) {
-            // Store enums as strings, not serialized objects
-            return "VARCHAR(64) DEFAULT '" + defaultValue + "'";
-        }
-        return "VARCHAR(255) DEFAULT '" + defaultValue + "'";
+        Object def = setting.getDefaultValue();
+        if (def instanceof Boolean) return "BOOLEAN DEFAULT " + def;
+        if (def instanceof Integer) return "INT DEFAULT " + def;
+        if (def instanceof Double) return "DOUBLE DEFAULT " + def;
+        if (def.getClass().isEnum()) return "VARCHAR(64) DEFAULT '" + def + "'";
+        return "VARCHAR(255) DEFAULT '" + def + "'";
     }
 
-    @Contract("_, _, _ -> new")
     public static <T> @NotNull CompletableFuture<Void> saveSetting(UUID uuid, String key, T value) {
-        Objects.requireNonNull(uuid, "UUID cannot be null");
-        Objects.requireNonNull(key, "Key cannot be null");
+        return saveSettingWithRetry(uuid, key, value, 1);
+    }
 
+    private static <T> @NotNull CompletableFuture<Void> saveSettingWithRetry(UUID uuid, String key, T value, int attempt) {
         return CompletableFuture.runAsync(() -> {
-            for (int attempt = 1; true; attempt++) {
-                try {
-                    if (useMySQL) {
-                        saveToMySQL(uuid, key, value);
-                    } else {
-                        saveToYAML(uuid, key, value instanceof Enum<?> ? value.toString() : value);
-                    }
-                    return;
-                } catch (Exception e) {
-                    if (attempt == MAX_RETRIES) {
-                        plugin.getLogger().log(Level.SEVERE, "Failed to save setting after " + MAX_RETRIES + " attempts", e);
-                        throw new RuntimeException("Failed to save setting", e);
-                    }
-                    try {
-                        Thread.sleep(RETRY_DELAY);
-                    } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException("Operation interrupted", ie);
-                    }
-                }
-            }
+            if (useMySQL) saveToMySQL(uuid, key, value instanceof Enum<?> ? value.toString() : value);
+            else saveToYAML(uuid, key, value instanceof Enum<?> ? value.toString() : value);
+        }).exceptionallyCompose(ex -> {
+            if (attempt >= MAX_RETRIES) return CompletableFuture.failedFuture(ex);
+
+            CompletableFuture<Void> delayedFuture = new CompletableFuture<>();
+
+            plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin,
+                    () -> delayedFuture.complete(null),
+                    RETRY_DELAY / 50);
+            return delayedFuture.thenCompose(ignored ->
+                    saveSettingWithRetry(uuid, key, value, attempt + 1));
         });
     }
 
-
-    private static void saveToMySQL(UUID uuid, String key, Object value) {
+    private static void saveToMySQL(@NotNull UUID uuid, String key, Object value) {
         String sql = "INSERT INTO player_settings (uuid, " + key + ") VALUES (?, ?) " +
-                "ON DUPLICATE KEY UPDATE " + key + " = VALUES(" + key + ")";
-
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = preparedStatements.computeIfAbsent(sql,
-                     k -> createPreparedStatement(conn, sql))) {
-
+                "ON DUPLICATE KEY UPDATE " + key + " = ?";
+        try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, uuid.toString());
-            ps.setObject(2, value instanceof Enum<?> ? value.toString() : value);
+            ps.setObject(2, value);
+            ps.setObject(3, value);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to save to MySQL", e);
+            plugin.getLogger().log(Level.SEVERE, "Failed to save setting to MySQL: " + e.getMessage(), e);
         }
     }
 
-
     private static void saveToYAML(UUID uuid, String key, Object value) {
         settingsConfig.set("players." + uuid + "." + key, value);
-        saveYAML();
+        try {
+            settingsConfig.save(settingsFile);
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to save settings.yml", e);
+        }
     }
 
     @Contract("_, _, _ -> new")
-    @SuppressWarnings("unchecked")
     public static <T> @NotNull CompletableFuture<T> loadSetting(UUID uuid, String key, T defaultValue) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                if (useMySQL) {
-                    return (T) loadFromMySQL(uuid, key, defaultValue);
-                } else {
-                    // For YAML, handle enum conversion
-                    Object value = settingsConfig.get("players." + uuid + "." + key, defaultValue);
-                    if (defaultValue instanceof Enum && value instanceof String) {
-                        try {
-                            Class<Enum> enumClass = (Class<Enum>) defaultValue.getClass();
-                            return (T) Enum.valueOf(enumClass, (String) value);
-                        } catch (IllegalArgumentException e) {
-                            return defaultValue;
-                        }
+                if (useMySQL) return (T) loadFromMySQL(uuid, key, defaultValue);
+                Object value = settingsConfig.get("players." + uuid + "." + key, defaultValue);
+                if (defaultValue instanceof Enum && value instanceof String) {
+                    try {
+                        Class<Enum> enumClass = (Class<Enum>) defaultValue.getClass();
+                        return (T) Enum.valueOf(enumClass, (String) value);
+                    } catch (IllegalArgumentException e) {
+                        return defaultValue;
                     }
-                    return (T) value;
                 }
+                return (T) value;
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Error loading setting: " + e.getMessage());
                 return defaultValue;
@@ -229,19 +189,15 @@ public class DatabaseManager {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Object value = rs.getObject(key);
-                    if (value != null) {
-                        // Convert string back to enum if needed
-                        if (defaultValue instanceof Enum && value instanceof String) {
-                            try {
-                                @SuppressWarnings("unchecked")
-                                Class<Enum> enumClass = (Class<Enum>) defaultValue.getClass();
-                                return Enum.valueOf(enumClass, (String) value);
-                            } catch (IllegalArgumentException e) {
-                                return defaultValue;
-                            }
+                    if (defaultValue instanceof Enum && value instanceof String) {
+                        try {
+                            Class<Enum> enumClass = (Class<Enum>) defaultValue.getClass();
+                            return Enum.valueOf(enumClass, (String) value);
+                        } catch (IllegalArgumentException e) {
+                            return defaultValue;
                         }
-                        return value;
                     }
+                    return value != null ? value : defaultValue;
                 }
             }
         } catch (SQLException e) {
@@ -250,36 +206,20 @@ public class DatabaseManager {
         return defaultValue;
     }
 
-    private static void saveYAML() {
-        try {
-            settingsConfig.save(settingsFile);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to save settings.yml: " + e.getMessage());
-        }
-    }
-
-    private static PreparedStatement createPreparedStatement(@NotNull Connection conn, String sql) {
-        try {
-            return conn.prepareStatement(sql);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to create prepared statement", e);
-        }
-    }
-
-
     public static void closeConnection() {
         if (useMySQL && dataSource != null && !dataSource.isClosed()) {
-            preparedStatements.clear();
             dataSource.close();
         } else if (settingsConfig != null && settingsFile != null) {
-            saveYAML();
+            try {
+                settingsConfig.save(settingsFile);
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed to save settings.yml: " + e.getMessage());
+            }
         }
     }
 
-
     private static void executeUpdate(String sql) {
-        try (Connection conn = dataSource.getConnection();
-             Statement stmt = conn.createStatement()) {
+        try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "SQL error: " + e.getMessage());

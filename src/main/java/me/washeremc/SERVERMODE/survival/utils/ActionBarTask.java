@@ -18,7 +18,6 @@ public class ActionBarTask extends BukkitRunnable {
         return "lobby".equalsIgnoreCase(plugin.getServerType());
     }
 
-
     @Override
     public void run() {
         if (isLobby()) {

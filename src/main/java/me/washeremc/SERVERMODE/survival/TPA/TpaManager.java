@@ -26,7 +26,6 @@ public class TpaManager {
 
     public TpaManager(Washere plugin) {
         this.plugin = plugin;
-        // Schedule periodic cleanup
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -53,7 +52,6 @@ public class TpaManager {
         return System.currentTimeMillis() - requestTime < REQUEST_EXPIRATION_TIME;
     }
 
-
     public void addRequest(UUID senderId, UUID targetId) {
         Objects.requireNonNull(senderId, "senderId cannot be null");
         Objects.requireNonNull(targetId, "targetId cannot be null");
@@ -66,7 +64,6 @@ public class TpaManager {
             tpaRequests.put(targetId, senderId);
             requestTimestamps.put(targetId, System.currentTimeMillis());
 
-            // Schedule expiration task
             BukkitRunnable expirationTask = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -115,7 +112,6 @@ public class TpaManager {
             task.cancel();
         }
     }
-
 
     public boolean isOnCooldown(UUID senderId) {
         if (senderId == null) return false;

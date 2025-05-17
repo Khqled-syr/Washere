@@ -67,10 +67,6 @@ public class DelWarpCommand implements CommandExecutor {
             return true;
         }
 
-
-
-
-        // 🔥 Cooldown check
         UUID uuid = player.getUniqueId();
         String cooldownKey = "delwarp";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
@@ -82,7 +78,7 @@ public class DelWarpCommand implements CommandExecutor {
 
         if (args.length != 1) {
             player.sendMessage(ChatUtils.colorize("&cUsage: /delwarp [name]"));
-            return false; // This returns false while other error cases return true
+            return false;
         }
 
         String warpName = args[0];
