@@ -27,12 +27,12 @@ public class NPCCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command!"));
             return true;
         }
 
         if (!isLobby()) {
-            player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
@@ -40,14 +40,13 @@ public class NPCCommand implements CommandExecutor {
         String cooldownKey = "npc";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
-
         if (args.length < 2) {
-            player.sendMessage(ChatUtils.colorize("&cUsage: /npc <name> <server>"));
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /npc <name> <server>"));
             return true;
         }
 

@@ -3,6 +3,7 @@ package me.washeremc.Core.Managers;
 
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.Tags.TagManager;
+import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Core.utils.ScoreBoard;
 import me.washeremc.Washere;
 import org.bukkit.Bukkit;
@@ -19,7 +20,7 @@ public class PluginReloadManager {
     }
 
     public void reloadCustomConfig() {
-        plugin.getLogger().info("Reloading config...");
+        plugin.getLogger().info(ChatUtils.colorize("&eReloading config..."));
         File configFile = new File(plugin.getDataFolder(), "config.yml");
 
         if (!configFile.exists()) {

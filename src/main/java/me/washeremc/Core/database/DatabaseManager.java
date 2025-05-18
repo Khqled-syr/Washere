@@ -20,12 +20,11 @@ import java.util.logging.Level;
 public class DatabaseManager {
     private static final int MAX_POOL_SIZE = 10, MIN_IDLE = 2, IDLE_TIMEOUT = 60000, CONNECTION_TIMEOUT = 30000, MAX_LIFETIME = 1800000, MAX_RETRIES = 3;
     private static final long RETRY_DELAY = 1000L;
-
-    private static Washere plugin;
     public static HikariDataSource dataSource;
     public static boolean useMySQL;
     private static File settingsFile;
     public static FileConfiguration settingsConfig;
+    private static Washere plugin;
 
     public static void initialize(@NotNull Washere pluginInstance) {
         plugin = Objects.requireNonNull(pluginInstance, "Plugin cannot be null");
@@ -88,7 +87,6 @@ public class DatabaseManager {
 
     private static void createTables() {
         if (!useMySQL) return;
-
         try (Connection conn = dataSource.getConnection()) {
             DatabaseMetaData meta = conn.getMetaData();
             ResultSet tables = meta.getTables(null, null, "player_settings", null);
@@ -96,7 +94,7 @@ public class DatabaseManager {
             if (!tables.next()) {
                 StringBuilder columns = new StringBuilder("uuid VARCHAR(36) PRIMARY KEY, selectedTag VARCHAR(255) DEFAULT NULL");
                 for (Setting<?> setting : SettingRegistry.getSettings()) {
-                    if (!setting.getKey().equals("selectedTag")) { // Avoid duplicating the selectedTag column
+                    if (!setting.getKey().equals("selectedTag")) {
                         columns.append(", ").append(setting.getKey()).append(" ").append(getSqlType(setting));
                     }
                 }

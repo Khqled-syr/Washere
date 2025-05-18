@@ -1,6 +1,7 @@
 package me.washeremc.SERVERMODE.lobby;
 
 import me.washeremc.Core.Profile.Profile;
+import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Core.utils.GuiItems;
 import me.washeremc.SERVERMODE.lobby.commands.FlyCommand;
 import me.washeremc.Washere;
@@ -28,14 +29,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class LobbyListeners implements Listener {
 
     private final Washere plugin;
-    private FileConfiguration spawnConfig;
 
     public LobbyListeners(Washere plugin) {
         this.plugin = plugin;
@@ -58,7 +57,6 @@ public class LobbyListeners implements Listener {
                 plugin.getLogger().severe("Could not create spawn.yml file: " + e.getMessage());
             }
         }
-        spawnConfig = YamlConfiguration.loadConfiguration(spawnFile);
     }
 
 
@@ -85,7 +83,7 @@ public class LobbyListeners implements Listener {
                 if (spawn != null) {
                     player.teleport(spawn);
                 } else {
-                    plugin.getLogger().warning("Spawn location in spawn.yml is null.");
+                    plugin.getLogger().warning("Spawn location in spawn.yml has not been set. Please set it using /spawn set.");
                 }
             } else {
                 plugin.getLogger().warning("spawn.yml does not contain 'serverSpawn'.");
@@ -108,7 +106,7 @@ public class LobbyListeners implements Listener {
 
         if (itemInHand.getType() == Material.PLAYER_HEAD) {
             if (itemInHand.hasItemMeta() && itemInHand.getItemMeta().hasDisplayName()) {
-                if (itemInHand.getItemMeta().getDisplayName().equals("§eProfile")) {
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatUtils.colorize("&eProfile"))) {
                     Profile.openProfile(player);
                 }
             }
@@ -122,7 +120,7 @@ public class LobbyListeners implements Listener {
 
         if (itemInHand.getType() == Material.COMPASS) {
             if (itemInHand.hasItemMeta() && itemInHand.getItemMeta().hasDisplayName()) {
-                if (itemInHand.getItemMeta().getDisplayName().equals("§eServers")) {
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatUtils.colorize("&eServers"))) {
                     ServerTeleport.openServerTeleport(player);
                 }
             }
@@ -223,7 +221,7 @@ public class LobbyListeners implements Listener {
         Player player = event.getPlayer();
         Location under = player.getLocation().clone();
         under.setY(under.getY() - 1);
-        double yVelocity = plugin.getConfig().getDouble("jump-velocity", 0.9); // Default = 0.9
+        double yVelocity = plugin.getConfig().getDouble("jump-velocity", 0.9);
 
         if (player.getLocation().getBlock().getType() == Material.HEAVY_WEIGHTED_PRESSURE_PLATE
                 && under.getBlock().getType() == Material.EMERALD_BLOCK) {
@@ -249,15 +247,14 @@ public class LobbyListeners implements Listener {
             return;
         }
         player.getInventory().clear();
-        ItemStack playerHead = GuiItems.createPlayerHead(player, "§eProfile", Arrays.asList(
-                "§7Click to open your profile menu!",
-                "§eRight-click to view profile."
+        ItemStack playerHead = GuiItems.createPlayerHead(player,ChatUtils.colorize( "&eProfile"), List.of(
+                ChatUtils.colorize("&7Click to open your profile menu!")
         ));
         player.getInventory().setItem(0, playerHead);
 
 
-        ItemStack compass = GuiItems.createItem(Material.COMPASS, "§eServers", List.of(
-                "§7Click to teleport between servers."
+        ItemStack compass = GuiItems.createItem(Material.COMPASS, ChatUtils.colorize("&eServers"), List.of(
+                ChatUtils.colorize("&7Click to teleport between servers.")
         ));
         player.getInventory().setItem(8, compass);
     }

@@ -26,11 +26,16 @@ public class TagManager {
 
     public static void initialize(Washere pluginInstance) {
         plugin = pluginInstance;
-        loadTagsConfig();
-        loadTags();
-        preloadAllPlayerTags();
-
-        new TagPlaceholderExpansion(plugin).register();
+        try{
+            plugin.getLogger().info("Tags system initialized.");
+            loadTagsConfig();
+            loadTags();
+            preloadAllPlayerTags();
+            new TagPlaceholderExpansion(plugin).register();
+        }catch (Exception e){
+            plugin.getLogger().severe("Failed to initialize Tags system: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private static void preloadAllPlayerTags() {
@@ -99,20 +104,37 @@ public class TagManager {
 
         if (tagId == null) {
             tagId = SettingsManager.getSettingValue(uuid, SETTING_KEY, "");
-            if (!tagId.isEmpty() && tags.containsKey(tagId)) {
-                playerTags.put(uuid, tagId);
-            }
+            playerTags.put(uuid, tagId);
         }
-        return !tagId.isEmpty() ? tags.get(tagId) : null;
+        if (tagId.isEmpty() || !tags.containsKey(tagId)) {
+            return null;
+        }
+
+        return tags.get(tagId);
+    }
+
+    public static void refreshPlayerTag(UUID uuid) {
+        playerTags.remove(uuid);
+
+        String tagId = SettingsManager.getSettingValue(uuid, SETTING_KEY, "");
+        if (!tagId.isEmpty() && tags.containsKey(tagId)) {
+            playerTags.put(uuid, tagId);
+        } else {
+            playerTags.put(uuid, "");
+        }
     }
 
     public static CompletableFuture<Void> setPlayerTag(UUID uuid, String tagId) {
+        playerTags.remove(uuid);
+
         if (tagId == null || tagId.isEmpty()) {
-            playerTags.remove(uuid);
-            return DatabaseManager.saveSetting(uuid, SETTING_KEY, "");
+            playerTags.put(uuid, "");
+            return SettingsManager.savePlayerTag(uuid, "").thenCompose(v ->
+                    DatabaseManager.saveSetting(uuid, SETTING_KEY, ""));
         } else if (tags.containsKey(tagId)) {
             playerTags.put(uuid, tagId);
-            return DatabaseManager.saveSetting(uuid, SETTING_KEY, tagId);
+            return SettingsManager.savePlayerTag(uuid, tagId).thenCompose(v ->
+                    DatabaseManager.saveSetting(uuid, SETTING_KEY, tagId));
         }
         return CompletableFuture.completedFuture(null);
     }

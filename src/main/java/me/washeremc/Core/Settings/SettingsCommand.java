@@ -16,16 +16,15 @@ public class SettingsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
-        Player player = (Player) sender;
         UUID uuid = player.getUniqueId();
         String cooldownKey = "settings";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);

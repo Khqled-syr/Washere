@@ -22,18 +22,18 @@ public record WarpsCommand(Washere plugin) implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
 
         if (isLobby()) {
-            player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
 
         if (!WarpManager.isWarpsEnabled()) {
-            player.sendMessage(ChatUtils.colorize("&cWarps are currently disabled."));
+            player.sendMessage(ChatUtils.colorizeMini("&cWarps are currently disabled."));
             return true;
         }
 
@@ -41,7 +41,7 @@ public record WarpsCommand(Washere plugin) implements CommandExecutor {
         String cooldownKey = "warps";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
@@ -55,18 +55,18 @@ public record WarpsCommand(Washere plugin) implements CommandExecutor {
         Set<String> privateWarps = WarpManager.getWarps(player.getUniqueId());
         Set<String> publicWarps = WarpManager.getPublicWarps();
 
-        player.sendMessage(ChatUtils.colorize("&6=== Available Warps ==="));
+        player.sendMessage(ChatUtils.colorizeMini("&6=== Available Warps ==="));
 
         if (!privateWarps.isEmpty()) {
-            player.sendMessage(ChatUtils.colorize("&aYour warps: &f" + String.join(", ", privateWarps)));
+            player.sendMessage(ChatUtils.colorizeMini("&aYour warps: &f" + String.join(", ", privateWarps)));
         }
 
         if (!publicWarps.isEmpty()) {
-            player.sendMessage(ChatUtils.colorize("&aPublic warps: &f" + String.join(", ", publicWarps)));
+            player.sendMessage(ChatUtils.colorizeMini("&aPublic warps: &f" + String.join(", ", publicWarps)));
         }
 
         if (privateWarps.isEmpty() && publicWarps.isEmpty()) {
-            player.sendMessage(ChatUtils.colorize("&cNo warps available."));
+            player.sendMessage(ChatUtils.colorizeMini("&cNo warps available."));
         }
     }
 }

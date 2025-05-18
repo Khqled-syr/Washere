@@ -23,28 +23,27 @@ public class SetJailCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cThis command can only be used by players!");
+            sender.sendMessage(ChatUtils.colorizeMini("&cThis command can only be used by players!"));
             return true;
         }
 
 
         if (!sender.hasPermission("washere.setjail")) {
-            sender.sendMessage("§cYou don't have permission to use this command!");
+            sender.sendMessage(ChatUtils.colorizeMini("&cYou don't have permission to use this command!"));
             return true;
         }
 
         if (isLobby()) {
-            sender.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
 
         if (jailManager.setJailLocation(player.getLocation())) {
-            player.sendMessage("§aJail location has been set to your current position!");
+            player.sendMessage(ChatUtils.colorizeMini("&aJail location has been set to your current position!"));
         } else {
-            player.sendMessage("§cFailed to set jail location!");
+            player.sendMessage(ChatUtils.colorizeMini("&cFailed to set jail location!"));
         }
-
         return true;
     }
 }

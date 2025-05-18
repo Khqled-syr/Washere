@@ -52,7 +52,6 @@ public class TagPlaceholderExpansion extends PlaceholderExpansion {
                 return tag != null ? tag.displayName() : "";
             }
         }
-
         return null;
     }
 }

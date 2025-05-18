@@ -1,5 +1,6 @@
 package me.washeremc.SERVERMODE.survival.Jail;
 
+import me.washeremc.Core.utils.ChatUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,8 +34,8 @@ public class JailListeners implements Listener {
                 JailManager.JailData jailData = jailManager.getJailData(player.getUniqueId());
                 long timeLeft = (jailData.releaseTime() - System.currentTimeMillis()) / 1000;
 
-                player.sendMessage("§cYou are jailed for: " + jailData.reason());
-                player.sendMessage("§cTime remaining: " + jailManager.formatTime(timeLeft));
+                player.sendMessage(ChatUtils.colorizeMini("&cYou are jailed for: " + jailData.reason()));
+                player.sendMessage(ChatUtils.colorizeMini("&cTime remaining: " + jailManager.formatTime(timeLeft)));
             }, 5L);
         }
     }
@@ -70,7 +71,7 @@ public class JailListeners implements Listener {
             String command = event.getMessage().toLowerCase();
             if (!command.startsWith("/unjail")) {
                 event.setCancelled(true);
-                player.sendMessage("§cYou are jailed, you can't use commands!");
+                player.sendMessage(ChatUtils.colorizeMini("&cYou are jailed, you can't use commands!"));
             }
         }
     }

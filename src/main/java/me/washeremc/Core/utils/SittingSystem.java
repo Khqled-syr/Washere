@@ -36,7 +36,6 @@ public class SittingSystem implements Listener {
         Block block = event.getClickedBlock();
 
         if (stairSeats.containsKey(player.getUniqueId()) || playerSeats.containsKey(player.getUniqueId())) return;
-
         if (block.getBlockData() instanceof Stairs) {
             event.setCancelled(true);
             sitOnStairs(player, block);
@@ -50,7 +49,6 @@ public class SittingSystem implements Listener {
         Player player = event.getPlayer();
 
         if (stairSeats.containsKey(player.getUniqueId()) || playerSeats.containsKey(player.getUniqueId())) return;
-
         if (!isPlayerOnGround(targetPlayer)) return;
 
         sitOnPlayer(player, targetPlayer);

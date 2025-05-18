@@ -29,17 +29,17 @@ public class UnjailCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!sender.hasPermission("washere.unjail")) {
-            sender.sendMessage("§cYou don't have permission to use this command!");
+            sender.sendMessage(ChatUtils.colorizeMini("&cYou don't have permission to use this command!"));
             return true;
         }
 
         if (isLobby()) {
-            sender.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
         if (args.length < 1) {
-            sender.sendMessage("§cUsage: /unjail <player>");
+            sender.sendMessage(ChatUtils.colorizeMini("&cUsage: /unjail <player>"));
             return true;
         }
 
@@ -47,33 +47,29 @@ public class UnjailCommand implements CommandExecutor {
         Player target = Bukkit.getPlayer(playerName);
 
         if (target != null) {
-            // Player is online
             if (jailManager.unjailPlayer(target.getUniqueId())) {
-                sender.sendMessage("§aPlayer " + target.getName() + " has been released from jail!");
+                sender.sendMessage(ChatUtils.colorizeMini("&aPlayer " + target.getName() + " has been released from jail!"));
             } else {
-                sender.sendMessage("§cPlayer " + target.getName() + " is not jailed!");
+                sender.sendMessage(ChatUtils.colorizeMini("&cPlayer " + target.getName() + " is not jailed!"));
             }
         } else {
-            // Try to find offline player
             boolean found = false;
             for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
                 if (offlinePlayer.getName() != null && offlinePlayer.getName().equalsIgnoreCase(playerName)) {
                     UUID uuid = offlinePlayer.getUniqueId();
                     if (jailManager.unjailPlayer(uuid)) {
-                        sender.sendMessage("§aOffline player " + offlinePlayer.getName() + " has been released from jail!");
+                        sender.sendMessage(ChatUtils.colorizeMini("&aOffline player " + offlinePlayer.getName() + " has been released from jail!"));
                     } else {
-                        sender.sendMessage("§cPlayer " + offlinePlayer.getName() + " is not jailed!");
+                        sender.sendMessage(ChatUtils.colorizeMini("&cPlayer " + offlinePlayer.getName() + " is not jailed!"));
                     }
                     found = true;
                     break;
                 }
             }
-
             if (!found) {
                 sender.sendMessage("§cPlayer not found!");
             }
         }
-
         return true;
     }
 }

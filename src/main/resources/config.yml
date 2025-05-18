@@ -31,8 +31,8 @@ fall-limit: -30.0
 # =======================================
 #            CHAT SETTINGS
 # =======================================
-join-message: "&a&l+ %washere_tag_prefix%&r%luckperms_meta_color%%player%%washere_tag_suffix% &7ʜᴀꜱ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
-leave-message: "&c&l- %washere_tag_prefix%&r%luckperms_meta_color%%player%%washere_tag_suffix% &7ʜᴀꜱ ʟᴇꜰᴛ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
+join-message: "&a&l+ &r%washere_tag_prefix%&r%luckperms_meta_color%%player_displayname%&r%washere_tag_suffix% &7ʜᴀꜱ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
+leave-message: "&c&l- &r%washere_tag_prefix%&r%luckperms_meta_color%%player_displayname%&r%washere_tag_suffix% &7ʜᴀꜱ ʟᴇꜰᴛ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
 chat:
   format: "%washere_tag_prefix%%luckperms_prefix%%luckperms_meta_color%%player_name%%washere_tag_suffix%&f: %message%"
 

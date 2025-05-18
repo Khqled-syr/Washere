@@ -20,7 +20,7 @@ public class TagCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command!"));
             return true;
         }
 

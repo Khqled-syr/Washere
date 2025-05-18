@@ -23,30 +23,35 @@ public class JailCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command!"));
+            return true;
+        }
+
         if (!sender.hasPermission("washere.jail")) {
-            sender.sendMessage("§cYou don't have permission to use this command!");
+            sender.sendMessage(ChatUtils.colorizeMini("&cYou don't have permission to use this command!"));
             return true;
         }
 
         if (isLobby()) {
-            sender.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
         if (args.length < 3) {
-            sender.sendMessage("§cUsage: /jail <player> <duration> <reason>");
-            sender.sendMessage("§cDuration format: 1d2h3m4s (days, hours, minutes, seconds)");
+            sender.sendMessage(ChatUtils.colorizeMini("&cUsage: /jail <player> <duration> <reason>"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cDuration format: 1d2h3m4s (days, hours, minutes, seconds)"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage("§cPlayer not found or not online!");
+            sender.sendMessage(ChatUtils.colorizeMini("&cPlayer not found or not online!"));
             return true;
         }
 
         if (jailManager.getJailLocation() == null) {
-            sender.sendMessage("§cJail location has not been set! Use /setjail first.");
+            sender.sendMessage(ChatUtils.colorizeMini("&cJail location has not been set! Use /setjail first."));
             return true;
         }
 
@@ -76,14 +81,14 @@ public class JailCommand implements CommandExecutor {
                         durationSeconds += num;
                         break;
                     default:
-                        sender.sendMessage("§cInvalid duration format! Use: 1d2h3m4s");
+                        sender.sendMessage(ChatUtils.colorizeMini("&cInvalid duration format! Use: 1d2h3m4s"));
                         return true;
                 }
             }
         }
 
         if (durationSeconds <= 0) {
-            sender.sendMessage("§cDuration must be greater than 0!");
+            sender.sendMessage(ChatUtils.colorizeMini("&cDuration must be greater than 0!"));
             return true;
         }
 
@@ -94,9 +99,9 @@ public class JailCommand implements CommandExecutor {
 
         if (jailManager.jailPlayer(target.getUniqueId(), durationSeconds, reason.toString().trim())) {
             String timeFormatted = jailManager.formatTime(durationSeconds);
-            sender.sendMessage("§aPlayer " + target.getName() + " has been jailed for " + timeFormatted);
+            sender.sendMessage(ChatUtils.colorizeMini("&aPlayer " + target.getName() + " has been jailed for " + timeFormatted));
         } else {
-            sender.sendMessage("§cFailed to jail player. Is the jail location set?");
+            sender.sendMessage(ChatUtils.colorizeMini("&cFailed to jail player. Is the jail location set?"));
         }
         return true;
     }

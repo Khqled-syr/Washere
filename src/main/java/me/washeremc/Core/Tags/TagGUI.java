@@ -31,14 +31,13 @@ public class TagGUI implements Listener {
         List<Tag> allTags = TagManager.getAllTags();
 
         if (allTags.isEmpty()) {
-            player.sendMessage(ChatUtils.colorize("&cNo tags are available."));
+            player.sendMessage(ChatUtils.colorizeMini("&cNo tags are available."));
             return;
         }
 
         int rows = 6;
-        Inventory inventory = Bukkit.createInventory(null, rows * 9, ChatUtils.colorize("&8Tag Selector"));
+        Inventory inventory = Bukkit.createInventory(null, rows * 9, ChatUtils.colorizeMini("Tag Selector"));
 
-        // Get the player's current tag
         Tag currentTag = TagManager.getPlayerTag(player.getUniqueId());
 
         for (Tag tag : allTags) {
@@ -129,14 +128,13 @@ public class TagGUI implements Listener {
         // Handle "Remove Tag" button
         if (clickedItem.getType() == Material.BARRIER && ChatUtils.stripColor(clickedItem.getItemMeta().getDisplayName()).equals("Remove Tag")) {
             TagManager.setPlayerTag(player.getUniqueId(), null);
-            player.sendMessage(ChatUtils.colorize("&aYour tag has been removed."));
+            player.sendMessage(ChatUtils.colorizeMini("&aYour tag has been removed."));
             player.closeInventory();
             return;
         }
 
-        // Prevent selecting tags if the player doesn't have access
         if (clickedItem.getType() == Material.BARRIER) {
-            player.sendMessage(ChatUtils.colorize("&cYou cannot select this tag as you do not have access to it."));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou cannot select this tag as you do not have access to it."));
             return;
         }
 
@@ -145,7 +143,7 @@ public class TagGUI implements Listener {
             if (ChatUtils.stripColor(tag.displayName()).equals(tagName)) {
                 // Set the tag for the player
                 TagManager.setPlayerTag(player.getUniqueId(), tag.id());
-                player.sendMessage(ChatUtils.colorize("&aYou have selected the " + tag.displayName() + " &atag."));
+                player.sendMessage(ChatUtils.colorizeMini("&aYou have selected the " + tag.displayName() + " &atag."));
                 player.closeInventory();
                 return;
             }

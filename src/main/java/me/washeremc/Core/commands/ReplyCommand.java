@@ -23,22 +23,21 @@ public class ReplyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
-        Player player = (Player) sender;
 
         Player target = msgCommand.getLastMessenger(player);
 
 
         if (target == null || !target.isOnline()) {
-            player.sendMessage(ChatUtils.colorize("&cNo player to reply to or player is not online."));
+            player.sendMessage(ChatUtils.colorizeMini("&cNo player to reply to or player is not online."));
             return true;
         }
 
         if (SettingsManager.isMessagingEnabled(player)) {
-            player.sendMessage(ChatUtils.colorize("&cMessaging is disabled. Enable it in your settings."));
+            player.sendMessage(ChatUtils.colorizeMini("&cMessaging is disabled. Enable it in your settings."));
             return true;
         }
 
@@ -46,24 +45,24 @@ public class ReplyCommand implements CommandExecutor {
         String cooldownKey = "reply";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (SettingsManager.isMessagingEnabled(target)) {
-            player.sendMessage(ChatUtils.colorize("&cThe player has disabled messaging."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThe player has disabled messaging."));
             return true;
         }
 
         if (args.length < 1) {
-            player.sendMessage(ChatUtils.colorize("&cUsage: /reply <message>"));
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /reply <message>"));
             return true;
         }
 
         String message = String.join(" ", Arrays.copyOfRange(args, 0, args.length));
-        target.sendMessage(ChatUtils.colorize("&e" + player.displayName() + " &7-> &6you&7: &b" + message));
-        player.sendMessage(ChatUtils.colorize("&6You &7-> &e" + target.displayName() + "&7: &b" + message));
+        target.sendMessage(ChatUtils.colorizeMini("&e" + player.displayName() + " &7-> &6you&7: &b" + message));
+        player.sendMessage(ChatUtils.colorizeMini("&6You &7-> &e" + target.displayName() + "&7: &b" + message));
 
         msgCommand.setLastMessenger(target, player);
         target.playSound(target.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);

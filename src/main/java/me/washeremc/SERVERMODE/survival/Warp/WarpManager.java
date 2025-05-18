@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
 @SuppressWarnings("ALL")
 public class WarpManager {
@@ -22,7 +21,6 @@ public class WarpManager {
     private static File warpsFile;
     private static FileConfiguration warpsConfig;
     private static Washere plugin;
-    private static final Logger logger = Bukkit.getLogger();
     private static boolean initialized = false;
     private static final Map<String, Location> publicWarps = new HashMap<>();
 
@@ -35,22 +33,20 @@ public class WarpManager {
         }
 
         warpsFile = new File(pluginInstance.getDataFolder(), "warps.yml");
-
         if (!warpsFile.exists()) {
             warpsFile.getParentFile().mkdirs();
             try {
                 warpsFile.createNewFile();
             } catch (IOException e) {
-                logger.severe("Could not create warps.yml file");
+                plugin.getLogger().severe("Could not create warps.yml file");
                 e.printStackTrace();
             }
         }
 
-        initialized = true; // Move this before loading warps
+        initialized = true;
+        pluginInstance.getLogger().info("Warp system initialized.");
         warpsConfig = YamlConfiguration.loadConfiguration(warpsFile);
         loadWarps();
-        logger.info("Warp system initialized successfully!");
-
     }
 
     private static boolean isSurvivalMode() {
@@ -84,7 +80,7 @@ public class WarpManager {
 
     public static void loadWarps() {
         if (!initialized) {
-            logger.severe("Attempted to load warps before initialization!");
+            plugin.getLogger().info("Attempted to load warps before initialization!");
             return;
         }
 
@@ -99,25 +95,25 @@ public class WarpManager {
                 ConfigurationSection warpsSection = warpsConfig.getConfigurationSection(uuidString);
 
                 if (warpsSection == null) {
-                    logger.warning("Warp section for " + uuidString + " is null.");
+                    plugin.getLogger().warning("Warp section for " + uuidString + " is null.");
                     continue;
                 }
 
                 for (String warpName : warpsSection.getKeys(false)) {
                     ConfigurationSection warpSection = warpsSection.getConfigurationSection(warpName);
                     if (warpSection == null) {
-                        logger.warning("Invalid warp configuration for " + warpName);
+                        plugin.getLogger().warning("Invalid warp configuration for " + warpName);
                         continue;
                     }
 
                     Location location = getLocationFromConfig(warpSection.getValues(false));
                     if (location != null) {
                         warps.computeIfAbsent(playerUUID, k -> new HashMap<>()).put(warpName, location);
-                        logger.info("Loaded warp '" + warpName + "' for player " + uuidString);
+                        plugin.getLogger().info("Loaded warp '" + warpName + "' for player " + uuidString);
                     }
                 }
             } catch (IllegalArgumentException e) {
-                logger.warning("Invalid UUID in warps.yml: " + uuidString);
+                plugin.getLogger().warning("Invalid UUID in warps.yml: " + uuidString);
             }
         }
 
@@ -129,20 +125,19 @@ public class WarpManager {
                     Location location = getLocationFromConfig(warpSection.getValues(false));
                     if (location != null) {
                         publicWarps.put(warpName, location);
-                        logger.info("Loaded public warp: " + warpName);
+                        plugin.getLogger().info("Loaded public warp: " + warpName);
                     }
                 }
             }
         }
-
-        logger.info("Loaded " + warps.size() + " private warps and " + publicWarps.size() + " public warps");
+        plugin.getLogger().info("Loaded " + warps.size() + " private warps and " + publicWarps.size() + " public warps");
     }
 
     public static @Nullable Location getLocationFromConfig(@NotNull Map<String, Object> config) {
         String worldName = (String) config.get("world");
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            logger.severe("World " + worldName + " is not loaded or does not exist.");
+            plugin.getLogger().severe("World " + worldName + " is not loaded or does not exist.");
             return null;
         }
         double x = (double) config.get("x");
@@ -195,11 +190,10 @@ private static void saveWarps() {
         warpsConfig.set(path + ".yaw", location.getYaw());
         warpsConfig.set(path + ".pitch", location.getPitch());
     }
-
     try {
         warpsConfig.save(warpsFile);
-    } catch (IOException e) {
-        logger.severe("Failed to save warps.yml");
+    }catch (IOException e) {
+        plugin.getLogger().severe("Failed to save warps.yml");
         e.printStackTrace();
     }
 }
@@ -223,24 +217,19 @@ private static void saveWarps() {
     public static Location getPublicWarp(String name) {
         return publicWarps.get(name);
     }
-
     @Contract(" -> new")
     public static @NotNull Set<String> getPublicWarps() {
         return new HashSet<>(publicWarps.keySet());
     }
-
     public static boolean isWarpsEnabled() {
         return plugin.getConfig().getBoolean("warps.enabled", true);
     }
-
     public static boolean isPublicWarpsEnabled() {
         return plugin.getConfig().getBoolean("warps.public-warps-enabled", true);
     }
-
     public static int getMaxWarpsPerPlayer() {
         return plugin.getConfig().getInt("warps.max-per-player", 5);
     }
-
     public static int getWarpCooldown() {
         return plugin.getConfig().getInt("warps.cooldown", 3);
     }

@@ -35,12 +35,12 @@ public class DonateCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
 
         if (!(sender instanceof Player donor)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
 
         if (isLobby()) {
-            sender.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
@@ -48,13 +48,13 @@ public class DonateCommand implements CommandExecutor {
         String cooldownKey = "donate";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            sender.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length != 1) {
-            sender.sendMessage(ChatUtils.colorize("&cUsage: /donate <player>"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cUsage: /donate <player>"));
             return true;
         }
 
@@ -62,12 +62,12 @@ public class DonateCommand implements CommandExecutor {
         Player recipient = Bukkit.getPlayer(args[0]);
 
         if (recipient == null) {
-            donor.sendMessage(ChatUtils.colorize("&cPlayer not found!"));
+            donor.sendMessage(ChatUtils.colorizeMini("&cPlayer not found!"));
             return true;
         }
 
         if (recipient.equals(donor)) {
-            donor.sendMessage(ChatUtils.colorize("&cReally? You cannot do that lol!"));
+            donor.sendMessage(ChatUtils.colorizeMini("&cReally? You cannot do that lol!"));
             return true;
         }
 
@@ -78,7 +78,6 @@ public class DonateCommand implements CommandExecutor {
     private void openDonateGui(@NotNull Player donor, @NotNull Player recipient) {
         Inventory donateInventory = Bukkit.createInventory(null, 36, Component.text("Donate to " + recipient.getName()));
 
-        // Create the "Cancel" button
         ItemStack cancelItem = new ItemStack(Material.RED_WOOL);
         ItemMeta cancelMeta = cancelItem.getItemMeta();
         cancelMeta.displayName(Component.text(ChatUtils.colorize("&cCancel")));

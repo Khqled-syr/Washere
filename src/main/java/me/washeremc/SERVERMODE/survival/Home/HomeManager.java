@@ -36,7 +36,6 @@ public class HomeManager {
                 pluginInstance.getLogger().severe("Failed to create parent directories for homes.yml");
                 return;
             }
-
             try {
                 if (!homesFile.createNewFile()) {
                     pluginInstance.getLogger().severe("Failed to create homes.yml (file already exists or unknown issue)");
@@ -45,14 +44,12 @@ public class HomeManager {
                 pluginInstance.getLogger().log(java.util.logging.Level.SEVERE, "Failed to create homes.yml", e);
             }
         }
-
         homesConfig = YamlConfiguration.loadConfiguration(homesFile);
 
-        // ✅ Set initialized to true *before* loading homes
         initialized = true;
+        pluginInstance.getLogger().info("Home system initialized.");
         loadHomes();
     }
-
 
     private static boolean isSurvivalMode() {
         if (plugin instanceof Washere) {
@@ -80,6 +77,7 @@ public class HomeManager {
             Location homeLocation = (Location) homesConfig.get(uuidString);
             homes.put(playerUUID, homeLocation);
         }
+        plugin.getLogger().info("Loaded " + homes.size() + " homes");
     }
 
     private static void saveHomes() {

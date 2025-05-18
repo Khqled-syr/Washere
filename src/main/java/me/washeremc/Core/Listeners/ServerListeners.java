@@ -58,7 +58,6 @@ public class ServerListeners implements Listener {
             plugin.getLogger().warning("Failed to update tablist for " + player.getName() + ": " + e.getMessage());
         }
 
-        // Load settings asynchronously
         SettingsManager.loadPlayerSettingsAsync(uuid).thenRun(() ->
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     try {
@@ -70,10 +69,7 @@ public class ServerListeners implements Listener {
                             plugin.getScoreboard().createSidebar(player);
                         }
 
-                        // Set player teams
                         plugin.getScoreboard().setPlayerTeams(player);
-
-                        // Load player's tag
                         TagManager.loadPlayerTag(uuid);
 
                         plugin.getLogger().info("✅ Settings applied for " + player.getName());
@@ -119,7 +115,7 @@ public class ServerListeners implements Listener {
             event.setCancelled(true);
             Player player = event.getPlayer();
             if (!player.hasPermission("washere.plugins")) {
-                player.sendMessage(ChatUtils.colorize("&cAll Plugins that we use on the server are custom."));
+                player.sendMessage(ChatUtils.colorizeMini("&cAll Plugins that we use on the server are custom."));
             } else {
                 event.setCancelled(false);
             }

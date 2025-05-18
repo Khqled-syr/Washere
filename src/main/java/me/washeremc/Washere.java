@@ -1,10 +1,9 @@
 package me.washeremc;
 
+import me.washeremc.Registration.PluginServices;
 import me.washeremc.Core.Managers.PluginReloadManager;
-import me.washeremc.Core.Tags.TagManager;
 import me.washeremc.Core.utils.ScoreBoard;
 import me.washeremc.Core.utils.TabList;
-import me.washeremc.Registration.PluginServices;
 import me.washeremc.SERVERMODE.lobby.NPCUtils;
 import me.washeremc.SERVERMODE.survival.Jail.JailManager;
 import me.washeremc.SERVERMODE.survival.TPA.TpaManager;
@@ -14,76 +13,38 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Washere extends JavaPlugin implements Listener {
 
     private PluginServices pluginServices;
-    public TpaManager tpaManager;
-    public ScoreBoard scoreboard;
+    private TpaManager tpaManager;
+    private ScoreBoard scoreboard;
     private PluginReloadManager pluginReloadManager;
-    public TabList tabList;
+    private TabList tabList;
     private String serverType;
-    public NPCUtils npcUtils;
-    public JailManager jailManager;
-    public TagManager tagManager;
+    private NPCUtils npcUtils;
+    private JailManager jailManager;
 
     @Override
     public void onEnable() {
         pluginServices = new PluginServices(this);
-
-        pluginServices.logStartupMessage();
-        pluginServices.initializeConfig();
-        pluginServices.initializeDatabase();
-        pluginServices.initializeSettings();
-
-        serverType = getConfig().getString("server-type", "NONE");
-
-        pluginReloadManager = new PluginReloadManager(this);
-        pluginReloadManager.initializeFeatures();
-
-        pluginServices.RegisterManagers();
-        pluginServices.registerAllComponents();
-        pluginServices.processExistingPlayers(scoreboard);
-        pluginServices.setupServerMode(serverType);
+        pluginServices.onStartup();
     }
 
     @Override
     public void onDisable() {
-        pluginServices.logShutdownMessage();
-        pluginServices.cancelScheduledTasks();
-        pluginServices.closeDatabase();
-
-        if (scoreboard != null) {
-            scoreboard.resetSidebars();
-        }
-        pluginServices.logSuccessfulShutdown();
+        pluginServices.onShutdown();
     }
 
+    public TpaManager getTpaManager() { return tpaManager; }
+    public ScoreBoard getScoreboard() { return scoreboard; }
+    public PluginReloadManager getPluginReloadManager() { return pluginReloadManager; }
+    public TabList getTabList() { return tabList; }
+    public String getServerType() { return serverType; }
+    public NPCUtils getNpcUtils() { return npcUtils; }
+    public JailManager getJailManager() { return jailManager; }
 
-    public TpaManager getTpaManager() {
-        return tpaManager;
-    }
-    public PluginReloadManager getPluginReloadManager() {
-        return pluginReloadManager;
-    }
-    public String getServerType() {
-        return serverType;
-    }
-    public ScoreBoard getScoreboard() {
-        return scoreboard;
-    }
-    public TabList getTabList() {
-        return tabList;
-    }
-    public NPCUtils getNpcUtils() {
-        return npcUtils;
-    }
-    public JailManager getJailManager() {
-        return jailManager;
-    }
-    public void setScoreboard(ScoreBoard scoreboard) {
-        this.scoreboard = scoreboard;
-    }
-    public void setServerType(String serverType) {
-        this.serverType = serverType;
-    }
-    public TagManager getTagManager() {
-        return tagManager;
-    }
+    public void setTpaManager(TpaManager tpaManager) { this.tpaManager = tpaManager; }
+    public void setScoreboard(ScoreBoard scoreboard) { this.scoreboard = scoreboard; }
+    public void setPluginReloadManager(PluginReloadManager pluginReloadManager) { this.pluginReloadManager = pluginReloadManager; }
+    public void setTabList(TabList tabList) { this.tabList = tabList; }
+    public void setServerType(String serverType) { this.serverType = serverType; }
+    public void setNpcUtils(NPCUtils npcUtils) { this.npcUtils = npcUtils; }
+    public void setJailManager(JailManager jailManager) { this.jailManager = jailManager; }
 }

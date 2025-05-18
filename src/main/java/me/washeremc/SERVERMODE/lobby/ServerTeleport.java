@@ -43,17 +43,17 @@ public class ServerTeleport implements Listener {
     }
 
     public static @NotNull Inventory createServersGui(@NotNull Player ignoredPlayer) {
-        Inventory serverGui = Bukkit.createInventory(null, 9, Component.text(ChatUtils.colorize("&8Select a Server")));
+        Inventory serverGui = Bukkit.createInventory(null, 9, ChatUtils.colorizeMini("Select a Server"));
 
         int slot = 0;
         for (String server : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("servers")).getKeys(false)) {
             if (PluginMessage.isServerOnline(server)) continue;
 
-            ItemStack serverItem = GuiItems.createItem(Material.GREEN_WOOL, "§e§l" + server, List.of(
+            ItemStack serverItem = GuiItems.createItem(Material.GREEN_WOOL,ChatUtils.colorize("&e&l" + server), List.of(
                     "",
-                    "§7Status: §aOnline",
-                    "§eClick to teleport."
-            ));
+                    ChatUtils.colorize("§7Status: §aOnline"),
+                    ChatUtils.colorize("§eClick to teleport."
+            )));
 
             serverGui.setItem(slot++, serverItem);
         }
@@ -67,18 +67,18 @@ public class ServerTeleport implements Listener {
                 Player player = entry.getKey();
                 Inventory gui = entry.getValue();
 
-                if (player.getOpenInventory().title().equals(Component.text(ChatUtils.colorize("&8Select a Server")))) {
+                if (player.getOpenInventory().title().equals(ChatUtils.colorizeMini("Select a Server"))) {
                     gui.clear();
 
                     int slot = 0;
                     for (String server : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("servers")).getKeys(false)) {
                         if (PluginMessage.isServerOnline(server)) continue;
 
-                        ItemStack serverItem = GuiItems.createItem(Material.GREEN_WOOL, "§e§l" + server, List.of(
+                        ItemStack serverItem = GuiItems.createItem(Material.GREEN_WOOL,ChatUtils.colorize("&e&l" + server), List.of(
                                 "",
-                                "§7Status: §aOnline",
-                                "§eClick to teleport."
-                        ));
+                                ChatUtils.colorize("&7Status: &aOnline"),
+                                ChatUtils.colorize("&eClick to teleport."
+                        )));
 
                         gui.setItem(slot++, serverItem);
                     }
@@ -91,7 +91,7 @@ public class ServerTeleport implements Listener {
 
     @EventHandler
     public void onInventoryClick(@NotNull InventoryClickEvent event) {
-        if (event.getView().title().equals(Component.text(ChatUtils.colorize("&8Select a Server")))) {
+        if (event.getView().title().equals(ChatUtils.colorizeMini("Select a Server"))) {
             event.setCancelled(true);
 
             if (event.getClickedInventory() == null || event.getClickedInventory().getType() == InventoryType.PLAYER) return;
@@ -102,8 +102,7 @@ public class ServerTeleport implements Listener {
             Player player = (Player) event.getWhoClicked();
             Component displayNameComponent = clickedItem.getItemMeta().displayName();
             String serverName = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(Objects.requireNonNull(displayNameComponent)).replace("§e§l", "");
-
-
+            
             PluginMessage.connect(player, serverName);
             player.closeInventory();
         }

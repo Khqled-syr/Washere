@@ -94,7 +94,6 @@ public class ScoreBoard {
         teamManager.addPlayer(player);
         team.display(player, teamDisplay);
 
-        // Respect the TabList format from the config
         String format = plugin.getConfig().getString("tablist.player-list-name-format", "&e%player_name%");
         String formattedName = PlaceholderAPI.setPlaceholders(player, format);
         player.playerListName(Component.text(ChatUtils.colorize(formattedName)));
@@ -104,10 +103,12 @@ public class ScoreBoard {
         if (teamManager == null) return;
         teamManager.removePlayer(player);
     }
+
     public void removeSidebar(@NotNull Player player) {
         Optional.ofNullable(playerSidebars.remove(player.getUniqueId())).ifPresent(sidebar -> sidebar.removePlayer(player));
         Optional.ofNullable(sidebarUpdaters.remove(player.getUniqueId())).ifPresent(BukkitRunnable::cancel);
     }
+
     public void resetSidebars() {
         Bukkit.getOnlinePlayers().forEach(this::removeSidebar);
     }

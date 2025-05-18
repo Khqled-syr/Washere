@@ -30,11 +30,9 @@ public class SettingsMenu {
         registerSettingDisplay("messaging", new SettingDisplay(Material.BARRIER, Material.PAPER, 12, "Toggle private messaging"));
         registerSettingDisplay("pinging", new SettingDisplay(Material.BARRIER, Material.BELL, 14, "Toggle mention notifications"));
         registerSettingDisplay("tpa", new SettingDisplay(Material.BARRIER, Material.ENDER_PEARL, 16, "Toggle teleport requests"));
-
         registerSettingDisplay("actionbar", new SettingDisplay(Material.BARRIER, Material.COMPASS, 19, "Toggle actionbar messages"));
         registerSettingDisplay("players_visibility", new SettingDisplay(Material.BARRIER, Material.PLAYER_HEAD, 21, "Toggle player visibility"));
         registerSettingDisplay("player_time", new SettingDisplay(Material.BARRIER, Material.CLOCK, 23, "Change your personal time"));
-
         registerSettingDisplay("pvp", new SettingDisplay(Material.WOODEN_SWORD, Material.DIAMOND_SWORD, 25, "Toggle your PVP status"));
     }
 
@@ -78,7 +76,6 @@ public class SettingsMenu {
         }
 
         inventory.setItem(31, createCloseButton());
-
         player.openInventory(inventory);
     }
 
@@ -237,11 +234,9 @@ public class SettingsMenu {
     public static boolean isCloseButton(int slot) {
         return slot == 31;
     }
-
     public static String getMenuTitle() {
         return MENU_TITLE;
     }
-
     public static class SettingsMenuHolder implements InventoryHolder {
         @Override
         public @NotNull Inventory getInventory() {

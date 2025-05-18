@@ -63,13 +63,12 @@ public class Profile implements Listener {
                 ChatUtils.colorize(PlaceholderAPI.setPlaceholders(player, lp));
 
 
-        ItemStack profileHead = GuiItems.createPlayerHead(player, "§eInfo", Arrays.asList(
-                "§7Name: §f" + ChatUtils.colorize(PlaceholderAPI.setPlaceholders(player, meta) + player.getName()),
-                "§7Rank: §f" + rank,
-                "§7Playtime: §e" + (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60) + " minutes",
-                "§7Blocks Mined: §e" + totalMined,
+        ItemStack profileHead = GuiItems.createPlayerHead(player, ChatUtils.colorize("&eInfo"), Arrays.asList(
+                ChatUtils.colorize("&7Name: &f" + PlaceholderAPI.setPlaceholders(player, meta) + player.getName()),
+                ChatUtils.colorize("&7Rank: &f" + rank),
+                ChatUtils.colorize("&7Playtime: &e" + (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60) + " minutes"),
                 "",
-                "§eClick to open settings."
+                ChatUtils.colorize("&eClick to open settings.")
         ));
         profileGui.setItem(13, profileHead);
 

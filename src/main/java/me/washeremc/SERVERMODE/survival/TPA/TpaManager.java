@@ -14,6 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TpaManager {
 
     private final Washere plugin;
+    private boolean isSurvival() {
+        return "survival".equalsIgnoreCase(plugin.getServerType());
+    }
 
     private static final long REQUEST_EXPIRATION_TIME = 30000; // 30 seconds
     private static final long COOLDOWN_DURATION = 30000; // 30 seconds
@@ -26,14 +29,20 @@ public class TpaManager {
 
     public TpaManager(Washere plugin) {
         this.plugin = plugin;
+
+        if (!isSurvival()) {
+            plugin.getLogger().info("TPA system not initialized - not in survival mode.");
+            return;
+        }
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 cleanupExpiredCooldowns();
             }
         }.runTaskTimer(plugin, CLEANUP_INTERVAL, CLEANUP_INTERVAL);
+        plugin.getLogger().info("TPA system initialized.");
     }
-
 
     public UUID getRequest(UUID targetId) {
         return tpaRequests.get(targetId);
@@ -75,25 +84,23 @@ public class TpaManager {
             };
 
             expirationTasks.put(targetId, expirationTask);
-            expirationTask.runTaskLater(plugin, REQUEST_EXPIRATION_TIME / 50L); // Convert to ticks
+            expirationTask.runTaskLater(plugin, REQUEST_EXPIRATION_TIME / 50L);
         }
     }
-
 
     private void sendExpirationMessages(UUID senderId, UUID targetId) {
         Player senderPlayer = Bukkit.getPlayer(senderId);
         Player targetPlayer = Bukkit.getPlayer(targetId);
 
         if (senderPlayer != null && targetPlayer != null) {
-            senderPlayer.sendMessage(ChatUtils.colorize("&cYour teleport request to " + targetPlayer.getName() + " has expired."));
-            targetPlayer.sendMessage(ChatUtils.colorize("&cThe teleport request from " + senderPlayer.getName() + " has expired."));
+            senderPlayer.sendMessage(ChatUtils.colorizeMini("&cYour teleport request to " + targetPlayer.getName() + " has expired."));
+            targetPlayer.sendMessage(ChatUtils.colorizeMini("&cThe teleport request from " + senderPlayer.getName() + " has expired."));
         } else if (senderPlayer != null) {
-            senderPlayer.sendMessage(ChatUtils.colorize("&cYour teleport request has expired."));
+            senderPlayer.sendMessage(ChatUtils.colorizeMini("&cYour teleport request has expired."));
         } else if (targetPlayer != null) {
-            targetPlayer.sendMessage(ChatUtils.colorize("&cA teleport request to you has expired."));
+            targetPlayer.sendMessage(ChatUtils.colorizeMini("&cA teleport request to you has expired."));
         }
     }
-
 
     public void cleanupExpiredCooldowns() {
         long currentTime = System.currentTimeMillis();
@@ -122,7 +129,6 @@ public class TpaManager {
     public void setCooldown(UUID senderId) {
         requestCooldowns.put(senderId, System.currentTimeMillis());
     }
-
     public long getCooldownRemaining(UUID senderId) {
         if (isOnCooldown(senderId)) {
             return (COOLDOWN_DURATION - (System.currentTimeMillis() - requestCooldowns.get(senderId))) / 1000;

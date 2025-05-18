@@ -33,7 +33,7 @@ public class WhoisCommand implements CommandExecutor {
         }
 
         if (!player.hasPermission("washere.admin")) {
-            player.sendMessage(ChatUtils.colorize("&cYou do not have permission to use this command!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou do not have permission to use this command!"));
             return true;
         }
 
@@ -41,25 +41,25 @@ public class WhoisCommand implements CommandExecutor {
         String cooldownKey = "whois";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length != 1) {
-            player.sendMessage(ChatUtils.colorize("&cUsage: /whois <player>"));
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /whois <player>"));
             return true;
         }
 
         OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
         if (target == null || (!target.isOnline() && target.getFirstPlayed() == 0)) {
-            player.sendMessage(ChatUtils.colorize("&cPlayer not found!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cPlayer not found!"));
             return true;
         }
 
-        player.sendMessage(ChatUtils.colorize("&8&m----------------------------------------"));
-        player.sendMessage(ChatUtils.colorize("&e&lPlayer Information for " + target.getName()));
-        player.sendMessage(ChatUtils.colorize("&8&m----------------------------------------"));
+        player.sendMessage(ChatUtils.colorizeMini("&8&m----------------------------------------"));
+        player.sendMessage(ChatUtils.colorizeMini("&e&lPlayer Information for " + target.getName()));
+        player.sendMessage(ChatUtils.colorizeMini("&8&m----------------------------------------"));
 
         sendCopyableInfo(player, "Name", target.getName() != null ? target.getName() : "Unknown");
         sendCopyableInfo(player, "UUID", target.getUniqueId().toString());
@@ -72,7 +72,7 @@ public class WhoisCommand implements CommandExecutor {
             sendCopyableInfo(player, "Last Seen", dateFormat.format(Date.from(Instant.ofEpochMilli(target.getLastLogin()))));
         }
 
-        player.sendMessage(ChatUtils.colorize("&6Online Status: " + (target.isOnline() ? "&aOnline" : "&cOffline")));
+        player.sendMessage(ChatUtils.colorizeMini("&6Online Status: " + (target.isOnline() ? "&aOnline" : "&cOffline")));
 
         if (target.isOnline()) {
             Player onlineTarget = target.getPlayer();
@@ -83,25 +83,25 @@ public class WhoisCommand implements CommandExecutor {
                 double maxHealth = onlineTarget.getAttribute(Attribute.MAX_HEALTH) != null ?
                         Objects.requireNonNull(onlineTarget.getAttribute(Attribute.MAX_HEALTH)).getValue() : 20.0;
 
-                player.sendMessage(ChatUtils.colorize("&6Health: &f" + Math.round(onlineTarget.getHealth()) + "/" + Math.round(maxHealth)));
-                player.sendMessage(ChatUtils.colorize("&6Food Level: &f" + onlineTarget.getFoodLevel() + "/20"));
-                player.sendMessage(ChatUtils.colorize("&6XP Level: &f" + onlineTarget.getLevel()));
+                player.sendMessage(ChatUtils.colorizeMini("&6Health: &f" + Math.round(onlineTarget.getHealth()) + "/" + Math.round(maxHealth)));
+                player.sendMessage(ChatUtils.colorizeMini("&6Food Level: &f" + onlineTarget.getFoodLevel() + "/20"));
+                player.sendMessage(ChatUtils.colorizeMini("&6XP Level: &f" + onlineTarget.getLevel()));
                 sendCopyableInfo(player, "Location",
                         onlineTarget.getWorld().getName() + " (" +
                                 Math.round(onlineTarget.getLocation().getX()) + ", " +
                                 Math.round(onlineTarget.getLocation().getY()) + ", " +
                                 Math.round(onlineTarget.getLocation().getZ()) + ")");
 
-                player.sendMessage(ChatUtils.colorize("&6Gamemode: &f" + onlineTarget.getGameMode()));
-                player.sendMessage(ChatUtils.colorize("&6OP Status: " + (onlineTarget.isOp() ? "&aYes" : "&cNo")));
-                player.sendMessage(ChatUtils.colorize("&6Flying: " + (onlineTarget.isFlying() ? "&aYes" : "&cNo")));
+                player.sendMessage(ChatUtils.colorizeMini("&6Gamemode: &f" + onlineTarget.getGameMode()));
+                player.sendMessage(ChatUtils.colorizeMini("&6OP Status: " + (onlineTarget.isOp() ? "&aYes" : "&cNo")));
+                player.sendMessage(ChatUtils.colorizeMini("&6Flying: " + (onlineTarget.isFlying() ? "&aYes" : "&cNo")));
             }
         }
 
-        player.sendMessage(ChatUtils.colorize("&6Banned: " + (target.isBanned() ? "&cYes" : "&aNo")));
-        player.sendMessage(ChatUtils.colorize("&6Whitelisted: " + (target.isWhitelisted() ? "&aYes" : "&cNo")));
+        player.sendMessage(ChatUtils.colorizeMini("&6Banned: " + (target.isBanned() ? "&cYes" : "&aNo")));
+        player.sendMessage(ChatUtils.colorizeMini("&6Whitelisted: " + (target.isWhitelisted() ? "&aYes" : "&cNo")));
 
-        player.sendMessage(ChatUtils.colorize("&8&m----------------------------------------"));
+        player.sendMessage(ChatUtils.colorizeMini("&8&m----------------------------------------"));
         return true;
     }
 

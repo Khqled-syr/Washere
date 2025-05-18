@@ -33,12 +33,12 @@ public class TpaCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player senderPlayer)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
 
         if (isLobby()) {
-            senderPlayer.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            senderPlayer.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
@@ -52,29 +52,29 @@ public class TpaCommand implements CommandExecutor {
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length != 1) {
-            sender.sendMessage(ChatUtils.colorize("&cUsage: /tpa <player>"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cUsage: /tpa <player>"));
             return true;
         }
 
         Player targetPlayer = Bukkit.getPlayerExact(args[0]);
 
         if (targetPlayer == null) {
-            sender.sendMessage(ChatUtils.colorize("&cPlayer not found!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cPlayer not found!"));
             return true;
         }
 
         if (!SettingsManager.isTpaEnabled(senderPlayer)) {
-            sender.sendMessage(ChatUtils.colorize("&cYou have disabled TPA, enable it from the settings!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cYou have disabled TPA, enable it from the settings!"));
             return true;
         }
 
         if (!SettingsManager.isTpaEnabled(targetPlayer)) {
-            sender.sendMessage(ChatUtils.colorize("&cThat player has disabled TPA."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cThat player has disabled TPA."));
             return true;
         }
 
         if (senderPlayer.equals(targetPlayer)) {
-            senderPlayer.sendMessage(ChatUtils.colorize("&cYou cannot send a teleport request to yourself!"));
+            senderPlayer.sendMessage(ChatUtils.colorizeMini("&cYou cannot send a teleport request to yourself!"));
             return true;
         }
 
@@ -83,7 +83,7 @@ public class TpaCommand implements CommandExecutor {
 
         if (plugin.getTpaManager().isOnCooldown(senderId)) {
             long remainingTime = plugin.getTpaManager().getCooldownRemaining(senderId);
-            sender.sendMessage(ChatUtils.colorize("&cPlease wait " + remainingTime + " seconds before sending another request!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cPlease wait " + remainingTime + " seconds before sending another request!"));
             return true;
         }
 
@@ -97,7 +97,7 @@ public class TpaCommand implements CommandExecutor {
 
         targetPlayer.sendMessage(message);
         targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-        senderPlayer.sendMessage(ChatUtils.colorize("&7Teleport request sent to &e" + targetPlayer.getName()));
+        senderPlayer.sendMessage(ChatUtils.colorizeMini("&7Teleport request sent to &e" + targetPlayer.getName()));
         return true;
     }
 }

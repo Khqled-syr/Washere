@@ -63,12 +63,12 @@ public class SetSpawnCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cThis command can only be used by players!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cThis command can only be used by players!"));
             return true;
         }
 
         if (!isLobby()) {
-            player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
@@ -80,30 +80,30 @@ public class SetSpawnCommand implements CommandExecutor, TabCompleter {
         String cooldownKey = "spawn";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (!player.hasPermission("washere.staff")) {
-            player.sendMessage(ChatUtils.colorize("&cYou don't have permission to use this command!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou don't have permission to use this command!"));
             return true;
         }
 
         if (args.length == 0) {
             if (!spawnConfig.contains("serverSpawn")) {
-                player.sendMessage(ChatUtils.colorize("&cThe server spawn has not been set!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cThe server spawn has not been set!"));
                 return true;
             }
 
             Location spawnLocation = spawnConfig.getLocation("serverSpawn");
             if (spawnLocation == null) {
-                player.sendMessage(ChatUtils.colorize("&cThe server spawn location is invalid!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cThe server spawn location is invalid!"));
                 return true;
             }
 
             player.teleport(spawnLocation);
-            player.sendMessage(ChatUtils.colorize("&aTeleported to the server spawn."));
+            player.sendMessage(ChatUtils.colorizeMini("&aTeleported to the server spawn."));
             player.getInventory().clear();
             return true;
         }
@@ -112,23 +112,23 @@ public class SetSpawnCommand implements CommandExecutor, TabCompleter {
             Location playerLoc = player.getLocation();
             spawnConfig.set("serverSpawn", playerLoc);
             saveSpawnConfig();
-            player.sendMessage(ChatUtils.colorize("&aThe server spawn has been set!"));
+            player.sendMessage(ChatUtils.colorizeMini("&aThe server spawn has been set!"));
             return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("clear")) {
             if (!spawnConfig.contains("serverSpawn")) {
-                player.sendMessage(ChatUtils.colorize("&cThe server spawn has not been set!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cThe server spawn has not been set!"));
                 return true;
             }
 
             spawnConfig.set("serverSpawn", null);
             saveSpawnConfig();
-            player.sendMessage(ChatUtils.colorize("&aThe server spawn has been cleared!"));
+            player.sendMessage(ChatUtils.colorizeMini("&aThe server spawn has been cleared!"));
             return true;
         }
 
-        player.sendMessage(ChatUtils.colorize("&cUsage: /setspawn [set|clear]"));
+        player.sendMessage(ChatUtils.colorizeMini("&cUsage: /setspawn [set|clear]"));
         return true;
     }
 

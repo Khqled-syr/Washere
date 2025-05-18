@@ -1,10 +1,8 @@
 package me.washeremc.SERVERMODE.survival.events;
 
-
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Washere;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -20,9 +18,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-
-import static me.washeremc.Core.utils.ChatUtils.colorize;
-
 
 public class SurvivalListeners implements Listener {
 
@@ -40,8 +35,15 @@ public class SurvivalListeners implements Listener {
     public void OnPlayerJoin(@NotNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (!isSurvival()) return;
-        event.joinMessage(null);
-        broadcastJoinOrLeaveMessage(event.getPlayer(), "join-message");
+
+        String joinMessage = plugin.getConfig().getString("join-message");
+        if (joinMessage == null) {
+            plugin.getLogger().warning("join-message is not configured properly.");
+            return;
+        }
+
+        String processedMessage = PlaceholderAPI.setPlaceholders(player, joinMessage);
+        event.joinMessage(ChatUtils.colorizeMini(processedMessage));
 
         if (!player.hasPlayedBefore()) {
             player.sendMessage("");
@@ -53,19 +55,14 @@ public class SurvivalListeners implements Listener {
     public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
         if (!isSurvival()) return;
 
-        event.quitMessage(null);
-        broadcastJoinOrLeaveMessage(event.getPlayer(), "leave-message");
-    }
-
-    private void broadcastJoinOrLeaveMessage(Player player, String configKey) {
-        String broadcastMessage = plugin.getConfig().getString(configKey);
-        if (broadcastMessage == null) {
-            plugin.getLogger().warning(configKey + " is not configured properly.");
+        String leaveMessage = plugin.getConfig().getString("leave-message");
+        if (leaveMessage == null) {
+            plugin.getLogger().warning("leave-message is not configured properly.");
             return;
         }
-        broadcastMessage = PlaceholderAPI.setPlaceholders(player, broadcastMessage);
-        broadcastMessage = broadcastMessage.replace("%player%", player.getName());
-        Bukkit.broadcast(LegacyComponentSerializer.legacyAmpersand().deserialize(broadcastMessage));
+
+        String processedMessage = PlaceholderAPI.setPlaceholders(event.getPlayer(), leaveMessage);
+        event.quitMessage(ChatUtils.colorizeMini(processedMessage));
     }
 
     @EventHandler
@@ -76,27 +73,11 @@ public class SurvivalListeners implements Listener {
                 Objects.requireNonNull(Bukkit.getWorld("world")).setTime(0);
                 Objects.requireNonNull(Bukkit.getWorld("world")).setStorm(false);
                 Objects.requireNonNull(Bukkit.getWorld("world")).setThundering(false);
-                Bukkit.broadcast(net.kyori.adventure.text.Component.text("§e" + event.getPlayer().getName() + "§7 has slept. Good morning everyone!"));
+
+                String sleepMessage = "&e" + event.getPlayer().getName() + "&7 has slept. Good morning everyone!";
+                Bukkit.broadcast(ChatUtils.colorizeMini(sleepMessage));
+                plugin.getLogger().info(ChatUtils.stripColorLegacy(sleepMessage));
             }, 100L);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerHit(@NotNull EntityDamageByEntityEvent event) {
-        if (!isSurvival()) return;
-        if (event.getDamager() instanceof Player damager) {
-            Entity damaged = event.getEntity();
-
-            if (damaged instanceof Player damagedPlayer) {
-
-                double healthAfterDamage = damagedPlayer.getHealth() - event.getDamage();
-
-                if (healthAfterDamage <= 0.5) {
-                    event.setCancelled(true);
-                    damaged.sendMessage(colorize("&c" + damager.getName() + " tried to kill you!"));
-                    damager.sendMessage(colorize("&cYou can't hit them, they're gonna die LOL!"));
-                }
-            }
         }
     }
 
@@ -104,9 +85,9 @@ public class SurvivalListeners implements Listener {
     public void onPlayerDeath(@NotNull PlayerDeathEvent event) {
         if (!isSurvival()) return;
         Player player = event.getEntity();
-        String deathMessage = colorize("&c" + player.getName() + " died at X: " +
+        String deathMessage = "&c" + player.getName() + " died at X: " +
                 player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: " +
-                player.getLocation().getBlockZ());
+                player.getLocation().getBlockZ();
 
         EntityDamageEvent damageEvent = player.getLastDamageCause();
         if (damageEvent instanceof EntityDamageByEntityEvent entityDamageEvent) {
@@ -119,6 +100,8 @@ public class SurvivalListeners implements Listener {
         } else if (damageEvent != null) {
             deathMessage += " (" + damageEvent.getCause().name().toLowerCase() + ")";
         }
-        event.deathMessage(Component.text(deathMessage));
+
+        event.deathMessage(ChatUtils.colorizeMini(deathMessage));
+        plugin.getLogger().info(ChatUtils.stripColorLegacy(deathMessage));
     }
 }

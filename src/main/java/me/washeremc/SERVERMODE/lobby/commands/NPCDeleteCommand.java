@@ -30,12 +30,12 @@ public class NPCDeleteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command!"));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command!"));
             return true;
         }
 
         if (!isLobby()) {
-            player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
@@ -43,19 +43,19 @@ public class NPCDeleteCommand implements CommandExecutor {
         String cooldownKey = "deletenpc";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length < 1) {
-            player.sendMessage(ChatUtils.colorize("&cUsage: /deletenpc <id>"));
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /deletenpc <id>"));
             return true;
         }
 
         File npcFile = new File(plugin.getDataFolder(), "npcs.yml");
         if (!npcFile.exists()) {
-            player.sendMessage(ChatUtils.colorize("&cNo NPCs found!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cNo NPCs found!"));
             return true;
         }
 
@@ -63,7 +63,7 @@ public class NPCDeleteCommand implements CommandExecutor {
         Set<String> keys = npcConfig.getKeys(false);
 
         if (keys.isEmpty()) {
-            player.sendMessage(ChatUtils.colorize("&cNo NPCs found!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cNo NPCs found!"));
             return true;
         }
 
@@ -72,14 +72,14 @@ public class NPCDeleteCommand implements CommandExecutor {
         try {
             int npcIndex = Integer.parseInt(args[0]);
             if (npcIndex < 1 || npcIndex > npcIds.size()) {
-                player.sendMessage(ChatUtils.colorize("&cInvalid NPC ID! Use /listnpcs to see valid IDs."));
+                player.sendMessage(ChatUtils.colorizeMini("&cInvalid NPC ID! Use /listnpcs to see valid IDs."));
                 return true;
             }
 
             String npcUUID = npcIds.get(npcIndex - 1);
             npcUtils.deleteNPC(player, npcUUID);
         } catch (NumberFormatException e) {
-            player.sendMessage(ChatUtils.colorize("&cInvalid ID! Use a number from /listnpcs."));
+            player.sendMessage(ChatUtils.colorizeMini("&cInvalid ID! Use a number from /listnpcs."));
         }
 
         return true;

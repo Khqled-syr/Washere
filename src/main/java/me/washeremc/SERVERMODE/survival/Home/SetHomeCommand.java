@@ -28,12 +28,12 @@ public class SetHomeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
 
         if (isLobby()) {
-            player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
@@ -41,14 +41,14 @@ public class SetHomeCommand implements CommandExecutor {
         String cooldownKey = "sethome";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
 
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         HomeManager.setHome(player.getUniqueId(), player.getLocation());
-        player.sendMessage(ChatUtils.colorize("&eHome set!"));
+        player.sendMessage(ChatUtils.colorizeMini("&eHome set!"));
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
         return true;
     }

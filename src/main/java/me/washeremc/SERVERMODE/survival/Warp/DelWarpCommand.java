@@ -26,43 +26,43 @@ public class DelWarpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
 
         if (isLobby()) {
-            player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
         if (!WarpManager.isWarpsEnabled()) {
-            player.sendMessage(ChatUtils.colorize("&cWarps are currently disabled."));
+            player.sendMessage(ChatUtils.colorizeMini("&cWarps are currently disabled."));
             return true;
         }
 
         if (args.length == 2) {
             if (!args[0].equalsIgnoreCase("public")) {
                 if (player.hasPermission("washere.warp.public")) {
-                    player.sendMessage(ChatUtils.colorize("&cUsage: /delwarp [public] <name>"));
+                    player.sendMessage(ChatUtils.colorizeMini("&cUsage: /delwarp [public] <name>"));
                     return true;
                 }
             }
 
             if (!WarpManager.isPublicWarpsEnabled()) {
-                player.sendMessage(ChatUtils.colorize("&cPublic warps are currently disabled."));
+                player.sendMessage(ChatUtils.colorizeMini("&cPublic warps are currently disabled."));
                 return true;
             }
 
             if (!player.hasPermission("washere.warp.public")) {
-                player.sendMessage(ChatUtils.colorize("&cYou don't have permission to delete public warps."));
+                player.sendMessage(ChatUtils.colorizeMini("&cYou don't have permission to delete public warps."));
                 return true;
             }
 
             String warpName = args[1];
             if (WarpManager.deletePublicWarp(warpName)) {
-                player.sendMessage(ChatUtils.colorize("&aPublic warp &f" + warpName + " &ahas been deleted!"));
+                player.sendMessage(ChatUtils.colorizeMini("&aPublic warp &f" + warpName + " &ahas been deleted!"));
             } else {
-                player.sendMessage(ChatUtils.colorize("&cPublic warp &f" + warpName + " &cnot found!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cPublic warp &f" + warpName + " &cnot found!"));
             }
             return true;
         }
@@ -71,22 +71,22 @@ public class DelWarpCommand implements CommandExecutor {
         String cooldownKey = "delwarp";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length != 1) {
-            player.sendMessage(ChatUtils.colorize("&cUsage: /delwarp [name]"));
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /delwarp [name]"));
             return false;
         }
 
         String warpName = args[0];
         UUID playerUUID = player.getUniqueId();
         if (WarpManager.deleteWarp(playerUUID, warpName)) {
-            player.sendMessage(ChatUtils.colorize("&aWarp " + warpName + " deleted!"));
+            player.sendMessage(ChatUtils.colorizeMini("&aWarp " + warpName + " deleted!"));
         } else {
-            player.sendMessage(ChatUtils.colorize("&cWarp " + warpName + " not found!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cWarp " + warpName + " not found!"));
         }
         return true;
     }

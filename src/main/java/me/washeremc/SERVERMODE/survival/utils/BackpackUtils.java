@@ -55,12 +55,12 @@ public class BackpackUtils implements Listener {
         loadBackpacks();
         Bukkit.getPluginManager().registerEvents(new BackpackUtils(), pluginInstance);
         initialized = true;
+        pluginInstance.getLogger().info("Backpack system initialized.");
     }
 
     private static boolean isSurvivalMode() {
         return "survival".equalsIgnoreCase(plugin.getServerType());
     }
-
     public static void setBackpack(UUID playerUUID, Inventory inventory) {
         if (!initialized) return;
 
@@ -109,7 +109,6 @@ public class BackpackUtils implements Listener {
     @EventHandler
     public void onInventoryClose(@NotNull InventoryCloseEvent event) {
         if (!initialized) return;
-
         if (event.getView().title().equals(Component.text("Backpack"))) {
             UUID playerUUID = event.getPlayer().getUniqueId();
             setBackpack(playerUUID, event.getInventory());

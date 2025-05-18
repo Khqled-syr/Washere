@@ -30,12 +30,12 @@ public class NPCListommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (command.getName().equalsIgnoreCase("listnpcs")) {
             if (!(sender instanceof Player player)) {
-                sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command!"));
+                sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command!"));
                 return true;
             }
 
             if (!isLobby()) {
-                player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+                player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
                 return true;
             }
 
@@ -43,14 +43,14 @@ public class NPCListommand implements CommandExecutor {
             String cooldownKey = "listnpcs";
             if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
                 long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-                player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
                 return true;
             }
             CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
             File npcFile = new File(plugin.getDataFolder(), "npcs.yml");
             if (!npcFile.exists()) {
-                player.sendMessage(ChatUtils.colorize("&cNo NPCs found!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cNo NPCs found!"));
                 return true;
             }
 
@@ -58,19 +58,18 @@ public class NPCListommand implements CommandExecutor {
             Set<String> keys = npcConfig.getKeys(false);
 
             if (keys.isEmpty()) {
-                player.sendMessage(ChatUtils.colorize("&cNo NPCs found!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cNo NPCs found!"));
                 return true;
             }
 
-            player.sendMessage(ChatUtils.colorize("&6==== NPC List ===="));
+            player.sendMessage(ChatUtils.colorizeMini("&6==== NPC List ===="));
 
             int index = 1;
             for (String key : keys) {
                 String npcName = npcConfig.getString(key + ".name", "Unknown NPC");
-                player.sendMessage(ChatUtils.colorize("&e" + index + ". &a" + npcName + " &7(ID: " + key + ")"));
+                player.sendMessage(ChatUtils.colorizeMini("&e" + index + ". &a" + npcName + " &7(ID: " + key + ")"));
                 index++;
             }
-
             return true;
         }
         return false;

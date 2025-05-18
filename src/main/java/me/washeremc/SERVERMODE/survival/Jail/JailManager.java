@@ -1,5 +1,6 @@
 package me.washeremc.SERVERMODE.survival.Jail;
 
+    import me.washeremc.Core.utils.ChatUtils;
     import me.washeremc.Washere;
     import org.bukkit.Bukkit;
     import org.bukkit.Location;
@@ -30,20 +31,18 @@ package me.washeremc.SERVERMODE.survival.Jail;
         }
 
         public void initialize() {
+            if(!isSurvival()) {
+                plugin.getLogger().info("Jail system not initialized - not in survival mode.");
+                return;
+            }
             if (isSurvival()) {
                 this.jailFile = new File(plugin.getDataFolder(), "jail.yml");
                 loadJailConfig();
                 loadJailData();
                 Bukkit.getScheduler().runTaskTimer(plugin, this::checkJailTimes, 20L, 20L * 10);
+                plugin.getLogger().info("Jail system initialized.");
             }
         }
-
-//        public void start() {
-//            if (isSurvival()) {
-//                Bukkit.getScheduler().runTaskTimer(plugin, this::checkJailTimes, 20L, 20L * 10);
-//            }
-//        }
-
 
         private boolean isSurvival() {
             return "survival".equalsIgnoreCase(plugin.getServerType());
@@ -223,7 +222,6 @@ package me.washeremc.SERVERMODE.survival.Jail;
                     prevLocSection.set("pitch", prevLoc.getPitch());
                 }
             }
-
             saveJailConfig();
         }
 
@@ -236,7 +234,7 @@ package me.washeremc.SERVERMODE.survival.Jail;
                     Player player = Bukkit.getPlayer(uuid);
 
                     if (player != null && player.isOnline()) {
-                        player.sendMessage("§aYou have been released from jail!");
+                        player.sendMessage(ChatUtils.colorizeMini("&aYou have been released from jail!"));
                         teleportToReleaseLocation(player);
                     }
 
@@ -288,10 +286,9 @@ package me.washeremc.SERVERMODE.survival.Jail;
             if (player != null && player.isOnline()) {
                 previousLocations.put(uuid, player.getLocation().clone());
                 player.teleport(jailLocation);
-                player.sendMessage("§cYou have been jailed for: " + reason);
-                player.sendMessage("§cTime: " + formatTime(durationSeconds));
+                player.sendMessage(ChatUtils.colorizeMini("&cYou have been jailed for: " + reason));
+                player.sendMessage(ChatUtils.colorizeMini("&cTime: " + formatTime(durationSeconds)));
             }
-
             saveJailData();
             return true;
         }
@@ -303,10 +300,9 @@ package me.washeremc.SERVERMODE.survival.Jail;
             Player player = Bukkit.getPlayer(uuid);
 
             if (player != null && player.isOnline()) {
-                player.sendMessage("§aYou have been released from jail!");
+                player.sendMessage(ChatUtils.colorizeMini("&aYou have been released from jail!"));
                 teleportToReleaseLocation(player);
             }
-
             saveJailData();
             return true;
         }
@@ -329,6 +325,5 @@ package me.washeremc.SERVERMODE.survival.Jail;
 
             return time.toString().trim();
         }
-
         public record JailData(long releaseTime, String reason) {}
     }

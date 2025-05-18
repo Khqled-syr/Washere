@@ -112,7 +112,7 @@ public final class SettingsManager {
     private static boolean handlePvpCooldown(Player player, UUID uuid) {
         if (CooldownManager.isOnCooldown(uuid, PVP_TOGGLE_KEY)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, PVP_TOGGLE_KEY);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + " &cseconds before toggling PVP again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + " &cseconds before toggling PVP again!"));
             return false;
         }
         CooldownManager.setCooldown(uuid, PVP_TOGGLE_KEY, PVP_TOGGLE_COOLDOWN);
@@ -158,26 +158,26 @@ public final class SettingsManager {
     }
 
     private static void notifyToggle(@NotNull Player player, String settingName, boolean enabled) {
-        player.sendMessage(ChatUtils.colorize(enabled ?
+        player.sendMessage(ChatUtils.colorizeMini(enabled ?
                 "&a" + settingName + " has been enabled." :
                 "&c" + settingName + " has been disabled."));
     }
 
     private static void notifyPvpStatus(Player player, boolean enabled) {
         if (enabled) {
-            player.sendMessage(ChatUtils.colorize("&aYou have enabled PVP. You can now attack and be attacked by other players."));
+            player.sendMessage(ChatUtils.colorizeMini("&aYou have enabled PVP. You can now attack and be attacked by other players."));
         } else {
-            player.sendMessage(ChatUtils.colorize("&cYou have disabled PVP. You cannot attack or be attacked by other players."));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou have disabled PVP. You cannot attack or be attacked by other players."));
         }
     }
 
     private static void toggleScoreboard(Player player, boolean enabled) {
         if (enabled) {
             plugin.getScoreboard().createSidebar(player);
-            player.sendMessage(ChatUtils.colorize("&a" + "Scoreboard" + " has been enabled."));
+            player.sendMessage(ChatUtils.colorizeMini("&a" + "Scoreboard" + " has been enabled."));
         } else {
             plugin.getScoreboard().removeSidebar(player);
-            player.sendMessage(ChatUtils.colorize("&c" + "Scoreboard" + " has been disabled."));
+            player.sendMessage(ChatUtils.colorizeMini("&c" + "Scoreboard" + " has been disabled."));
         }
     }
 
@@ -196,7 +196,7 @@ public final class SettingsManager {
         }
 
         if (isToggle) {
-            player.sendMessage(ChatUtils.colorize("&ePlayers are now " + (visible ? "&avisible" : "&cinvisible") + "&e."));
+            player.sendMessage(ChatUtils.colorizeMini("&ePlayers are now " + (visible ? "&avisible" : "&cinvisible") + "&e."));
         }
 
         for (Player online : Bukkit.getOnlinePlayers()) {
@@ -230,18 +230,14 @@ public final class SettingsManager {
 
             futures.put(key, DatabaseManager.loadSetting(uuid, key, defaultValue)
                     .thenAccept(value -> {
-                        // Handle null values properly
                         if (key.equals("selectedTag")) {
-                            // For selectedTag, an empty string is a valid default
                             settings.put(key, value != null ? value : "");
                         } else {
-                            // For other settings, use the default value if null
                             settings.put(key, value != null ? value : defaultValue);
                         }
                     })
                     .exceptionally(e -> {
                         plugin.getLogger().log(Level.SEVERE, "Error loading setting: " + key, e);
-                        // Use empty string for selectedTag, default value for others
                         settings.put(key, key.equals("selectedTag") ? "" : defaultValue);
                         return null;
                     }));
@@ -252,7 +248,6 @@ public final class SettingsManager {
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Error waiting for settings to load", e);
         }
-
         playerSettings.put(uuid, settings);
     }
 
@@ -276,7 +271,6 @@ public final class SettingsManager {
     }
 
     public static @NotNull CompletableFuture<Void> savePlayerTag(UUID uuid, String tagId) {
-        // Update the in-memory settings
         playerSettings.computeIfAbsent(uuid, k -> new ConcurrentHashMap<>())
                 .put("selectedTag", tagId != null ? tagId : "");
 
@@ -288,7 +282,6 @@ public final class SettingsManager {
         Map<UUID, String> result = new HashMap<>();
 
         if (DatabaseManager.useMySQL) {
-            // Fetch tags from MySQL
             try (Connection conn = DatabaseManager.dataSource.getConnection();
                  PreparedStatement ps = conn.prepareStatement("SELECT uuid, selectedTag FROM player_settings")) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -304,7 +297,6 @@ public final class SettingsManager {
                 plugin.getLogger().log(Level.SEVERE, "Failed to fetch player tags from MySQL", e);
             }
         } else {
-            // Fetch tags from YAML
             if (DatabaseManager.settingsConfig == null) {
                 plugin.getLogger().severe("Settings configuration is not initialized. Ensure DatabaseManager.settingsConfig is loaded.");
                 return result;
@@ -325,7 +317,6 @@ public final class SettingsManager {
                 }
             }
         }
-
         return result;
     }
 

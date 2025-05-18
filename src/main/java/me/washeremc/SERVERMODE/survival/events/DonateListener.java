@@ -37,13 +37,13 @@ public class DonateListener implements Listener {
             } else if (slot == 27) {
                 returnItemsToDonor(donor);
                 donor.closeInventory();
-                donor.sendMessage(ChatUtils.colorize("&cDonation cancelled."));
+                donor.sendMessage(ChatUtils.colorizeMini("&cDonation cancelled."));
                 donor.playSound(donor.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);
                 event.setCancelled(true);
             } else
                 if (slot == 35) {
                 if (isInventoryEmpty(event.getInventory())) {
-                    donor.sendMessage(ChatUtils.colorize("&cYou have to select at least 1 item to donate!"));
+                    donor.sendMessage(ChatUtils.colorizeMini("&cYou have to select at least 1 item to donate!"));
                     donor.playSound(donor.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);
                 } else {
                     donateItems(donor);
@@ -109,12 +109,12 @@ public class DonateListener implements Listener {
                 }
             }
             donor.setMetadata("donationComplete", new FixedMetadataValue(plugin, true));
-            donor.sendMessage(ChatUtils.colorize("&aDonation successful! You donated: " + donatedItems));
+            donor.sendMessage(ChatUtils.colorizeMini("&aDonation successful! You donated: " + donatedItems));
             donor.playSound(donor.getLocation(), Sound.ENTITY_VILLAGER_YES, 1.0f, 1.0f);
-            recipient.sendMessage(ChatUtils.colorize("&aYou have received a donation from " + donor.getName() + ": " + donatedItems));
+            recipient.sendMessage(ChatUtils.colorizeMini("&aYou have received a donation from " + donor.getName() + ": " + donatedItems));
             recipient.playSound(recipient.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1.0f, 1.0f);
         } else {
-            donor.sendMessage(ChatUtils.colorize("&cDonation failed: Recipient is offline."));
+            donor.sendMessage(ChatUtils.colorizeMini("&cDonation failed: Recipient is offline."));
             donor.playSound(donor.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1.0f, 1.0f);
         }
         donor.closeInventory();
@@ -127,7 +127,6 @@ public class DonateListener implements Listener {
             ItemStack item = donateInventory.getItem(i);
             if (item != null && item.getType() != Material.AIR) {
                 HashMap<Integer, ItemStack> donorExcess = donor.getInventory().addItem(item);
-                // Store excess items to drop
                 if (!donorExcess.isEmpty()) {
                     excessItems.putAll(donorExcess);
                 } else {

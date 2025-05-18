@@ -5,6 +5,7 @@ import me.washeremc.Core.Managers.CooldownManager;
 import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Washere;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,12 +30,12 @@ public class HomeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
 
         if (isLobby()) {
-            player.sendMessage(ChatUtils.colorize("&cThis command is not available in this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThis command is not available in this server."));
             return true;
         }
 
@@ -42,7 +43,7 @@ public class HomeCommand implements CommandExecutor {
         String cooldownKey = "home";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
@@ -52,11 +53,11 @@ public class HomeCommand implements CommandExecutor {
         Location homeLocation = HomeManager.getHome(playerUUID);
         if (homeLocation != null) {
             player.teleport(homeLocation);
-            player.sendMessage(ChatUtils.colorize("&aTeleported to home!"));
+            player.sendMessage(ChatUtils.colorizeMini("&aTeleported to home!"));
             player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-            player.playEffect(player.getLocation(), org.bukkit.Effect.ENDER_SIGNAL, 1);
+            player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation().add(0, 1, 0), 30, 0.5, 0.5, 0.5, 0.05);
         } else {
-            player.sendMessage(ChatUtils.colorize("&cHome not set!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cHome not set!"));
         }
         return true;
     }

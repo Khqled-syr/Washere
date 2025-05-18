@@ -22,14 +22,13 @@ public class MsgCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatUtils.colorize("&cOnly players can use this command."));
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ChatUtils.colorizeMini("&cOnly players can use this command."));
             return true;
         }
-        Player player = (Player) sender;
 
         if (!SettingsManager.isMessagingEnabled(player)) {
-            player.sendMessage(ChatUtils.colorize("&cMessaging is disabled. Enable it in your settings."));
+            player.sendMessage(ChatUtils.colorizeMini("&cMessaging is disabled. Enable it in your settings."));
             return true;
         }
 
@@ -37,35 +36,35 @@ public class MsgCommand implements CommandExecutor {
         String cooldownKey = "msg";
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);
-            player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length < 2) {
-            player.sendMessage(ChatUtils.colorize("&cUsage: /msg <player> <message>"));
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /msg <player> <message>"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null || !target.isOnline()) {
-            player.sendMessage(ChatUtils.colorize("&cPlayer not found or not online."));
+            player.sendMessage(ChatUtils.colorizeMini("&cPlayer not found or not online."));
             return true;
         }
 
         if (!SettingsManager.isMessagingEnabled(target)) {
-            player.sendMessage(ChatUtils.colorize("&cThe player has disabled messaging."));
+            player.sendMessage(ChatUtils.colorizeMini("&cThe player has disabled messaging."));
             return true;
         }
 
         if (target.equals(player)) {
-            player.sendMessage(ChatUtils.colorize("&cYou cannot message yourself."));
+            player.sendMessage(ChatUtils.colorizeMini("&cYou cannot message yourself."));
             return true;
         }
 
         String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        target.sendMessage(ChatUtils.colorize( "&e" + player.getName() + " &7-> &6you&7: &b" + message));
-        player.sendMessage(ChatUtils.colorize("&6You &7-> &e" + target.getName() + "&7: &b" + message));
+        target.sendMessage(ChatUtils.colorizeMini( "&e" + player.getName() + " &7-> &6you&7: &b" + message));
+        player.sendMessage(ChatUtils.colorizeMini("&6You &7-> &e" + target.getName() + "&7: &b" + message));
 
         lastMessenger.put(target, player);
         target.playSound(target.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);

@@ -1,8 +1,9 @@
 package me.washeremc.Registration;
 
-
+import me.washeremc.Core.Managers.PluginReloadManager;
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.database.DatabaseManager;
+import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Core.utils.DiscordLogger;
 import me.washeremc.Core.utils.ScoreBoard;
 import me.washeremc.Core.utils.TabList;
@@ -24,11 +25,29 @@ public class PluginServices {
         this.plugin = plugin;
     }
 
-    public void logStartupMessage() {
-        printBanner();
+    public void onStartup() {
+        logStartupBanner();
+        initializeConfig();
+        initializeDatabase();
+        initializeSettings();
+        setupServerMode();
+        registerPluginReloadManager();
+        setupManagers();
+        registerAllComponents();
+        processExistingPlayers(plugin.getScoreboard());
     }
 
-    private void printBanner() {
+    public void onShutdown() {
+        logShutdownMessage();
+        cancelScheduledTasks();
+        closeDatabase();
+        if (plugin.getScoreboard() != null) {
+            plugin.getScoreboard().resetSidebars();
+        }
+        logSuccessfulShutdown();
+    }
+
+    private void logStartupBanner() {
         String banner = """
             __          __       _    _              \s
             \\ \\        / /      | |  | |             \s
@@ -43,28 +62,28 @@ public class PluginServices {
         Bukkit.getConsoleSender().sendMessage(banner);
     }
 
-    public void initializeConfig() {
+    private void initializeConfig() {
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
     }
 
-    public void initializeDatabase() {
+    private void initializeDatabase() {
         try {
             DatabaseManager.initialize(plugin);
         } catch (Exception e) {
-            plugin.getLogger().severe("Failed to initialize database: " + e.getMessage());
+            plugin.getLogger().severe("Database initialization failed: " + e.getMessage());
         }
     }
 
-    public void initializeSettings() {
+    private void initializeSettings() {
         try {
             SettingsManager.initialize(plugin);
         } catch (Exception e) {
-            plugin.getLogger().severe("Failed to initialize settings: " + e.getMessage());
+            plugin.getLogger().severe("Settings initialization failed: " + e.getMessage());
         }
     }
 
-    public void registerAllComponents() {
+    private void registerAllComponents() {
         new CommandManager(plugin).registerCommands();
         new ListenerManager(plugin).RegisterListeners();
         new UtilManager(plugin).RegisterUtils();
@@ -72,16 +91,16 @@ public class PluginServices {
     }
 
     private void checkForPlaceholderAPI() {
-        Plugin placeholderAPIPlugin = Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI");
-        if (placeholderAPIPlugin != null && placeholderAPIPlugin.isEnabled()) {
-            plugin.getLogger().info("PlaceholderAPI found! Hooking into it...");
+        Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+        if (placeholderAPI != null && placeholderAPI.isEnabled()) {
+            plugin.getLogger().info("Hooked into PlaceholderAPI.");
         } else {
             plugin.getLogger().warning("PlaceholderAPI not found!");
         }
     }
 
-
     public void processExistingPlayers(ScoreBoard scoreboard) {
+        if (scoreboard == null) return;
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!SettingsManager.isScoreboardEnabled(player)) {
                 scoreboard.removeSidebar(player);
@@ -89,50 +108,72 @@ public class PluginServices {
         }
     }
 
-    public void RegisterManagers(){
-        plugin.npcUtils = new NPCUtils(plugin);
-        plugin.npcUtils.loadNPCs();
+    public void setupManagers() {
+        try {
+            plugin.setNpcUtils(new NPCUtils(plugin));
+            plugin.getNpcUtils().loadNPCs();
 
-        plugin.scoreboard =  new ScoreBoard(plugin);
-        plugin.tabList = new TabList(plugin);
-        plugin.tpaManager =  new TpaManager(plugin);
-        plugin.jailManager = new JailManager(plugin);
-        plugin.jailManager.initialize();
-        DiscordLogger.initialize(plugin);
-        DiscordLogger.logPluginUsage();
-    }
+            plugin.setScoreboard(new ScoreBoard(plugin));
+            plugin.setTabList(new TabList(plugin));
 
-    public void setupServerMode(@NotNull String serverType) {
-        switch (serverType.toLowerCase()) {
-            case "lobby":
-                plugin.getLogger().info("Server is in Lobby mode. Enabling Lobby Features...");
-                plugin.getServer().getPluginManager().registerEvents(new LobbyListeners(plugin), plugin);
-                break;
-            case "survival":
-                plugin.getLogger().info("Server is in Survival mode. Enabling Survival Features...");
-                break;
-            default:
-                plugin.getLogger().warning("Unknown server type: " + serverType + ". Please check your config.");
-                plugin.getLogger().warning("Supported types: 'lobby', 'survival'");
-                break;
+            plugin.setTpaManager(new TpaManager(plugin));
+
+            JailManager jailManager = new JailManager(plugin);
+            jailManager.initialize();
+            plugin.setJailManager(jailManager);
+
+            DiscordLogger.initialize(plugin);
+            DiscordLogger.logPluginUsage();
+        } catch (Exception e) {
+            plugin.getLogger().severe("Error while setting up managers: " + e.getMessage());
+            plugin.getLogger().severe("Error" + e.getMessage());
         }
     }
-    public void logShutdownMessage() {
-        plugin.getLogger().info("\n§cWasHere plugin has been disabled.\n");
+
+    public void registerPluginReloadManager() {
+        PluginReloadManager reloadManager = new PluginReloadManager(plugin);
+        reloadManager.initializeFeatures();
+        plugin.setPluginReloadManager(reloadManager);
     }
 
-    public void cancelScheduledTasks() {
-        plugin.getServer().getScheduler().cancelTasks(plugin);
+    public void setupServerMode() {
+        @NotNull String type = plugin.getConfig().getString("server-type", "none").toLowerCase();
+        plugin.setServerType(type);
+
+        switch (type) {
+            case "lobby" -> {
+                plugin.getLogger().info("Lobby mode enabled.");
+                Bukkit.getPluginManager().registerEvents(new LobbyListeners(plugin), plugin);
+            }
+            case "survival" -> {
+
+                plugin.getLogger().info("Survival mode enabled.");
+                plugin.getLogger().info("Loading survival mode features...");
+            }
+            default -> {
+                plugin.getLogger().warning("Unknown server-type: " + type);
+                plugin.getLogger().warning("Valid options: 'lobby', 'survival'");
+            }
+        }
     }
 
-    public void closeDatabase() {
+    private void logShutdownMessage() {
+        plugin.getLogger().info(ChatUtils.colorize("\n&cWasHere plugin has been disabled.\n"));
+    }
+
+    private void logSuccessfulShutdown() {
+        plugin.getLogger().info(ChatUtils.colorize("&cWasHere plugin disabled successfully."));
+    }
+
+    private void cancelScheduledTasks() {
+        Bukkit.getScheduler().cancelTasks(plugin);
+    }
+
+    private void closeDatabase() {
         try {
             DatabaseManager.closeConnection();
         } catch (Exception e) {
-            plugin.getLogger().warning("Failed to close database connection! " + e.getMessage());
+            plugin.getLogger().warning("Failed to close database connection: " + e.getMessage());
         }
-    }
-    public void logSuccessfulShutdown() {
-        plugin.getLogger().info("§cWasHere plugin disabled successfully.");
     }
 }

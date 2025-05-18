@@ -39,6 +39,7 @@ public class NPCUtils implements Listener {
             plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
             Bukkit.getPluginManager().registerEvents(this, plugin);
             initialized = true;
+            plugin.getLogger().info("NPC system initialized.");
         } else {
             plugin.getLogger().info("NPC system not initialized - not in lobby mode.");
         }
@@ -82,7 +83,7 @@ public class NPCUtils implements Listener {
 
     public void createNPC(@NotNull Player player, String npcName, String serverName) {
         if (!initialized) {
-            player.sendMessage(ChatUtils.colorize("&cNPC system is not available on this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cNPC system is not available on this server."));
             return;
         }
 
@@ -103,7 +104,7 @@ public class NPCUtils implements Listener {
         applyPlayerSkin(npc, player);
 
         saveNPC(npcId, serverName, npcName);
-        player.sendMessage(ChatUtils.colorize("&aNPC created with name: &e" + npcName + " &7(ID: " + npcId + ")"));
+        player.sendMessage(ChatUtils.colorizeMini("&aNPC created with name: &e" + npcName + " &7(ID: " + npcId + ")"));
     }
 
     private void applyPlayerSkin(@NotNull Villager ignoredNpc, @NotNull Player player) {
@@ -120,7 +121,7 @@ public class NPCUtils implements Listener {
 
     public void deleteNPC(Player player, String npcIdStr) {
         if (!initialized) {
-            player.sendMessage(ChatUtils.colorize("&cNPC system is not available on this server."));
+            player.sendMessage(ChatUtils.colorizeMini("&cNPC system is not available on this server."));
             return;
         }
 
@@ -142,12 +143,12 @@ public class NPCUtils implements Listener {
 
             if (found) {
                 removeNPCFromConfig(npcId);
-                player.sendMessage(ChatUtils.colorize("&aNPC (ID: " + npcId + ") deleted successfully!"));
+                player.sendMessage(ChatUtils.colorizeMini("&aNPC (ID: " + npcId + ") deleted successfully!"));
             } else {
-                player.sendMessage(ChatUtils.colorize("&cNPC with ID " + npcId + " not found!"));
+                player.sendMessage(ChatUtils.colorizeMini("&cNPC with ID " + npcId + " not found!"));
             }
         } catch (IllegalArgumentException e) {
-            player.sendMessage(ChatUtils.colorize("&cInvalid NPC ID! Use a valid UUID."));
+            player.sendMessage(ChatUtils.colorizeMini("&cInvalid NPC ID! Use a valid UUID."));
         }
     }
 

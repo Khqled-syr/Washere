@@ -18,11 +18,11 @@ public class ReloadCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (sender.hasPermission("washere.reload")) {
-            sender.sendMessage(ChatUtils.colorize("&eReloading WasHere plugin..."));
+            sender.sendMessage(ChatUtils.colorizeMini("&eReloading WasHere plugin..."));
             plugin.getPluginReloadManager().reloadCustomConfig();
-            sender.sendMessage(ChatUtils.colorize("&aWasHere plugin reloaded successfully."));
+            sender.sendMessage(ChatUtils.colorizeMini("&aWasHere plugin reloaded successfully."));
         } else {
-            sender.sendMessage(ChatUtils.colorize("&cYou do not have permission to use this command."));
+            sender.sendMessage(ChatUtils.colorizeMini("&cYou do not have permission to use this command."));
         }
         return true;
     }
