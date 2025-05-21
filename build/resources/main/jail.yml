@@ -1,7 +1,0 @@
-# =================================
-#          JAIL CONFIGURATION
-# =================================
-jail:
-  location: {}
-  release-location: {}
-  players: {}

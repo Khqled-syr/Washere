@@ -64,7 +64,6 @@ public class ChatUtils {
             case '5' -> NamedTextColor.DARK_PURPLE;
             case 'f' -> NamedTextColor.WHITE;
             case '8' -> NamedTextColor.DARK_GRAY;
-            case '7' -> NamedTextColor.GRAY;
             case '0' -> NamedTextColor.BLACK;
             default -> NamedTextColor.GRAY;
         };

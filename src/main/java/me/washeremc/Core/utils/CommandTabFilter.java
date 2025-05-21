@@ -24,9 +24,9 @@ public class CommandTabFilter implements Listener {
     public void onCommandTabShow(@NotNull PlayerCommandSendEvent event) {
         Player player = event.getPlayer();
 
-        List<String> allowedCommands = plugin.getConfig().getStringList("allowed-commands");
+        List<String> allowedCommands = plugin.getConfig().getStringList("filtered-commands");
         boolean opBypass = plugin.getConfig().getBoolean("op-bypass", true);
-        String bypassPermission = plugin.getConfig().getString("bypass-permission", "washere.tabcomplete.bypass");
+        String bypassPermission = plugin.getConfig().getString("bypass-permission", "washere.admin");
 
         if ((opBypass && player.isOp()) || player.hasPermission(bypassPermission)) return;
 

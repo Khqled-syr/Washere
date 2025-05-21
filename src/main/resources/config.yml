@@ -31,32 +31,44 @@ fall-limit: -30.0
 # =======================================
 #            CHAT SETTINGS
 # =======================================
-join-message: "&a&l+ &r%washere_tag_prefix%&r%luckperms_meta_color%%player_displayname%&r%washere_tag_suffix% &7ʜᴀꜱ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
-leave-message: "&c&l- &r%washere_tag_prefix%&r%luckperms_meta_color%%player_displayname%&r%washere_tag_suffix% &7ʜᴀꜱ ʟᴇꜰᴛ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
+join-message: "&a&l+ &r%washere_tag_prefix%&r%luckperms_prefix%%player_displayname%&r%washere_tag_suffix% &7ʜᴀꜱ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
+leave-message: "&c&l- &r%washere_tag_prefix%&r%luckperms_prefix%%player_displayname%&r%washere_tag_suffix% &7ʜᴀꜱ ʟᴇꜰᴛ ᴛʜᴇ ꜱᴇʀᴠᴇʀ!"
 chat:
   format: "%washere_tag_prefix%%luckperms_prefix%%luckperms_meta_color%%player_name%%washere_tag_suffix%&f: %message%"
 
 # =======================================
 #       COMMAND FILTER SETTINGS
-#    ( COMMANDS + TAB SUGGESTIONS )
+#    (COMMANDS TAB SUGGESTIONS )
 # =======================================
-allowed-commands:
+# Commands to suggest in the tab completion
+filtered-commands:
   - help
   - settings
   - profile
   - msg
   - reply
   - r
-  - warp
-  - warps
-  - delwarp
-  - home
-  - sethome
-  - donate
-  - recipe
-  - backpack
+  - tags
 
 op-bypass: true
+
+# By default, minecraft will block commands if the player doesn't have permission for that command,
+# so it's not necessary unless you want a custom message.
+blocked-commands:
+  - plugins
+  - pl
+  - bukkit:pl
+  - bukkit:plugins
+  - version
+  - ver
+  - bukkit:ver
+  - bukkit:version
+  - about
+  - bukkit:about
+  - help
+  - bukkit:help
+  - "?"
+  - "bukkit:?"
 
 # =======================================
 #           DISPLAY SETTINGS

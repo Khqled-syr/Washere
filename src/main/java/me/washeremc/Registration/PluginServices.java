@@ -4,7 +4,6 @@ import me.washeremc.Core.Managers.PluginReloadManager;
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.database.DatabaseManager;
 import me.washeremc.Core.utils.ChatUtils;
-import me.washeremc.Core.utils.DiscordLogger;
 import me.washeremc.Core.utils.ScoreBoard;
 import me.washeremc.Core.utils.TabList;
 import me.washeremc.SERVERMODE.lobby.LobbyListeners;
@@ -121,9 +120,6 @@ public class PluginServices {
             JailManager jailManager = new JailManager(plugin);
             jailManager.initialize();
             plugin.setJailManager(jailManager);
-
-            DiscordLogger.initialize(plugin);
-            DiscordLogger.logPluginUsage();
         } catch (Exception e) {
             plugin.getLogger().severe("Error while setting up managers: " + e.getMessage());
             plugin.getLogger().severe("Error" + e.getMessage());

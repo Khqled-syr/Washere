@@ -64,8 +64,9 @@ public class TagGUI implements Listener {
                     lore.add(ChatUtils.colorize("&cYou do not have access to this tag."));
                 }
 
+                String name = "%luckperms_prefix%%player_displayname%";
                 lore.add("");
-                String preview = tag.prefix() + PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix%") + player.getName() + tag.suffix();
+                String preview = ChatUtils.colorize(tag.prefix() + "&r" + PlaceholderAPI.setPlaceholders(player, name) + "&r" + tag.suffix());
                 lore.add(ChatUtils.colorize("&7Preview: " + preview));
 
                 meta.setLore(lore);

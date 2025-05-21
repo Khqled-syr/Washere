@@ -21,7 +21,7 @@ public class AFKManager implements Listener {
     private final Washere plugin;
     private final Map<UUID, Long> lastActivity = new HashMap<>();
     private final Map<UUID, Boolean> isAFK = new HashMap<>();
-    private static final long AFK_TIME = 60_000; // 1 minute (was incorrectly set to 6 minutes)
+    private static final long AFK_TIME = 360_000;
     private final String name = "%washere_tag_prefix%%luckperms_prefix%%player_displayname%%washere_tag_suffix%";
 
     private boolean isSurvival() {

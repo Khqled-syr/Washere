@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -36,8 +35,9 @@ public class ServerListeners implements Listener {
     public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-
         SettingsManager.savePlayerSettings(uuid);
+        SettingsManager.loadPlayerSettings(uuid);
+        applyPlayerSettings(player);
 
         plugin.getScoreboard().removeSidebar(player);
         plugin.getScoreboard().removePlayerTeams(player);
@@ -61,10 +61,8 @@ public class ServerListeners implements Listener {
         SettingsManager.loadPlayerSettingsAsync(uuid).thenRun(() ->
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     try {
-                        // Apply settings
                         applyPlayerSettings(player);
 
-                        // Load and apply scoreboard if enabled
                         if (SettingsManager.isScoreboardEnabled(player)) {
                             plugin.getScoreboard().createSidebar(player);
                         }
@@ -83,7 +81,9 @@ public class ServerListeners implements Listener {
         });
     }
 
-    private void applyPlayerSettings(Player player) {
+    private void applyPlayerSettings(@NotNull Player player) {
+        TagManager.refreshPlayerTag(player.getUniqueId());
+
         // Apply scoreboard
         if (SettingsManager.isScoreboardEnabled(player)) {
             plugin.getScoreboard().createSidebar(player);
@@ -110,14 +110,20 @@ public class ServerListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreProcess(@NotNull PlayerCommandPreprocessEvent event) {
-        String command = event.getMessage().toLowerCase().split(" ")[0];
-        if (command.equals("/plugins") || command.equals("/pl") || command.equals("/bukkit:pl") || command.equals("/bukkit:plugins")) {
-            event.setCancelled(true);
-            Player player = event.getPlayer();
-            if (!player.hasPermission("washere.plugins")) {
-                player.sendMessage(ChatUtils.colorizeMini("&cAll Plugins that we use on the server are custom."));
-            } else {
-                event.setCancelled(false);
+        String rawCommand = event.getMessage().toLowerCase().split(" ")[0];
+        String command = rawCommand.startsWith("/") ? rawCommand.substring(1) : rawCommand;
+
+        if (plugin.getConfig().contains("blocked-commands")) {
+            java.util.List<String> blockedCommands = plugin.getConfig().getStringList("blocked-commands");
+
+            if (blockedCommands.contains(command)) {
+                event.setCancelled(true);
+                Player player = event.getPlayer();
+                if (!player.hasPermission("washere.plugins")) {
+                    player.sendMessage(ChatUtils.colorizeMini("&cYou are not allowed to use this command!"));
+                } else {
+                    event.setCancelled(false);
+                }
             }
         }
     }
