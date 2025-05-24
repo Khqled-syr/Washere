@@ -95,3 +95,6 @@ commands:
     description: Open the tags selector
     usage: /tags
     aliases: [ tag, emoji ]
+  connect:
+    description: Connect to a server
+    usage: /connect <server>

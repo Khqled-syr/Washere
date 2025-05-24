@@ -68,6 +68,7 @@ public class PluginMessage implements PluginMessageListener {
         out.writeUTF(server);
         player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
     }
+    
 
     private static void startServerStatusUpdater() {
         new BukkitRunnable() {

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -22,32 +23,56 @@ public class TagManager {
     private static final Map<String, Tag> tags = new HashMap<>();
     private static final Map<UUID, String> playerTags = new HashMap<>();
     private static FileConfiguration tagsConfig;
-    private static final String SETTING_KEY = "selectedTag";
+    public static final String SETTING_KEY = "selectedTag";
 
     public static void initialize(Washere pluginInstance) {
         plugin = pluginInstance;
-        try{
-            plugin.getLogger().info("Tags system initialized.");
+        try {
+            plugin.getLogger().info("Initializing Tags system...");
             loadTagsConfig();
             loadTags();
-            preloadAllPlayerTags();
+
+            // Wait for the database to be ready before loading tags
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+                preloadAllPlayerTags();
+                plugin.getLogger().info("Tags system initialized successfully.");
+            }, 20L); // 1 second delay
+
             new TagPlaceholderExpansion(plugin).register();
-        }catch (Exception e){
+        } catch (Exception e) {
             plugin.getLogger().severe("Failed to initialize Tags system: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-    private static void preloadAllPlayerTags() {
+
+    public static void preloadAllPlayerTags() {
+        // Cancel any existing tasks to avoid duplicates
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                loadPlayerTag(player.getUniqueId());
-            }
-                SettingsManager.getAllPlayerTags().forEach((uuid, tagId) -> {
-                    if (tags.containsKey(tagId)) {
+            try {
+                // First, clear any existing cache to ensure fresh data
+                playerTags.clear();
+
+                // Load all tags from database
+                Map<UUID, String> allTags = SettingsManager.getAllPlayerTags();
+
+                for (Map.Entry<UUID, String> entry : allTags.entrySet()) {
+                    UUID uuid = entry.getKey();
+                    String tagId = entry.getValue();
+
+                    if (tagId != null && !tagId.isEmpty() && tags.containsKey(tagId)) {
                         playerTags.put(uuid, tagId);
                     }
+                }
+
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        refreshPlayerTag(player.getUniqueId());
+                        plugin.getTabList().updatePlayerListNames();
+                    }
                 });
+            } catch (Exception e) {
+                plugin.getLogger().severe("Error preloading player tags: " + e.getMessage());
+            }
         });
     }
 
@@ -80,6 +105,7 @@ public class TagManager {
         }
         plugin.getLogger().info("Loaded " + tags.size() + " tags");
     }
+
     @Contract(" -> new")
     public static @NotNull List<Tag> getAllTags() {
         return new ArrayList<>(tags.values());
@@ -93,10 +119,6 @@ public class TagManager {
             }
         }
         return availableTags;
-    }
-
-    public static Tag getTag(String id) {
-        return tags.get(id);
     }
 
     public static @Nullable Tag getPlayerTag(UUID uuid) {
@@ -114,49 +136,105 @@ public class TagManager {
     }
 
     public static void refreshPlayerTag(UUID uuid) {
+        // We need to force a database check here
         playerTags.remove(uuid);
 
+        // Get fresh data from a database
         String tagId = SettingsManager.getSettingValue(uuid, SETTING_KEY, "");
         if (!tagId.isEmpty() && tags.containsKey(tagId)) {
             playerTags.put(uuid, tagId);
+            plugin.getLogger().info("Refreshed tag " + tagId + " for player " + uuid);
         } else {
             playerTags.put(uuid, "");
         }
-    }
 
-    public static CompletableFuture<Void> setPlayerTag(UUID uuid, String tagId) {
-        playerTags.remove(uuid);
-
-        if (tagId == null || tagId.isEmpty()) {
-            playerTags.put(uuid, "");
-            return SettingsManager.savePlayerTag(uuid, "").thenCompose(v ->
-                    DatabaseManager.saveSetting(uuid, SETTING_KEY, ""));
-        } else if (tags.containsKey(tagId)) {
-            playerTags.put(uuid, tagId);
-            return SettingsManager.savePlayerTag(uuid, tagId).thenCompose(v ->
-                    DatabaseManager.saveSetting(uuid, SETTING_KEY, tagId));
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            Bukkit.getScheduler().runTask(plugin, () -> plugin.getTabList().updatePlayerListNames());
         }
-        return CompletableFuture.completedFuture(null);
     }
 
-    public static @NotNull String formatPlayerName(@NotNull Player player) {
-        Tag tag = getPlayerTag(player.getUniqueId());
-        if (tag != null) {
-            return tag.prefix() + player.getName() + tag.suffix();
+    public static void saveAllTags() {
+        for (Map.Entry<UUID, String> entry : playerTags.entrySet()) {
+            try {
+                DatabaseManager.saveSettingSync(entry.getKey(), SETTING_KEY, entry.getValue());
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Failed to save tag for " + entry.getKey() + ": " + e.getMessage());
+            }
         }
-        return player.getName();
     }
+
+    public static void setPlayerTag(UUID uuid, String tagId) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                if (tagId == null || tagId.isEmpty() || !tags.containsKey(tagId)) {
+                    playerTags.put(uuid, "");
+                    DatabaseManager.saveSettingSync(uuid, SETTING_KEY, ""); // Force synchronous save
+                } else {
+                    playerTags.put(uuid, tagId);
+                    DatabaseManager.saveSettingSync(uuid, SETTING_KEY, tagId); // Force synchronous save
+                }
+
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    Player player = Bukkit.getPlayer(uuid);
+                    if (player != null) {
+                        plugin.getTabList().updatePlayerListNames();
+                    }
+                });
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed to save tag for " + uuid + ": " + e.getMessage());
+            }
+        });
+    }
+
 
     public static void reload() {
+        Map<UUID, String> currentTags = new HashMap<>(playerTags);
         loadTagsConfig();
         loadTags();
         playerTags.clear();
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                Map<UUID, String> allTags = SettingsManager.getAllPlayerTags();
+                allTags.forEach((uuid, tagId) -> {
+                    if (tagId != null && !tagId.isEmpty() && tags.containsKey(tagId)) {
+                        playerTags.put(uuid, tagId);
+                        plugin.getLogger().info("Restored tag " + tagId + " for player " + uuid);
+                    }
+                });
+
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    for (Player ignored : Bukkit.getOnlinePlayers()) {
+                        plugin.getTabList().updatePlayerListNames();
+                    }
+                });
+            } catch (Exception e) {
+                plugin.getLogger().severe("Error reloading tags: " + e.getMessage());
+                playerTags.putAll(currentTags);
+            }
+        });
     }
 
     public static void loadPlayerTag(UUID uuid) {
-        String tagId = SettingsManager.getSettingValue(uuid, SETTING_KEY, "");
-        if (!tagId.isEmpty() && tags.containsKey(tagId)) {
-            playerTags.put(uuid, tagId);
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                String tagId = DatabaseManager.loadSetting(uuid, SETTING_KEY, "").get(); // Force synchronous load
+
+                if (tagId != null && !tagId.isEmpty() && tags.containsKey(tagId)) {
+                    playerTags.put(uuid, tagId);
+                    plugin.getLogger().info("Loaded tag " + tagId + " for player " + uuid);
+
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        Player player = Bukkit.getPlayer(uuid);
+                        if (player != null) {
+                            plugin.getTabList().updatePlayerListNames();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed to load tag for " + uuid + ": " + e.getMessage());
+            }
+        });
     }
 }

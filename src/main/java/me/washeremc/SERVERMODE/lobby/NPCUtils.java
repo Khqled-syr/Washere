@@ -33,7 +33,6 @@ public class NPCUtils implements Listener {
         this.plugin = plugin;
         this.npcKey = new NamespacedKey(plugin, "npc_id");
 
-        // Only initialize if we're in lobby mode
         if (isLobbyMode()) {
             initializeNpcConfig();
             plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
@@ -81,7 +80,7 @@ public class NPCUtils implements Listener {
         }
     }
 
-    public void createNPC(@NotNull Player player, String npcName, String serverName) {
+    public void createNPC(@NotNull Player player, String npcName, String action) {
         if (!initialized) {
             player.sendMessage(ChatUtils.colorizeMini("&cNPC system is not available on this server."));
             return;
@@ -103,7 +102,7 @@ public class NPCUtils implements Listener {
 
         applyPlayerSkin(npc, player);
 
-        saveNPC(npcId, serverName, npcName);
+        saveNPC(npcId, action, npcName);
         player.sendMessage(ChatUtils.colorizeMini("&aNPC created with name: &e" + npcName + " &7(ID: " + npcId + ")"));
     }
 
@@ -159,18 +158,37 @@ public class NPCUtils implements Listener {
         if (event.getRightClicked() instanceof Villager villager) {
             String npcIdStr = villager.getPersistentDataContainer().get(npcKey, PersistentDataType.STRING);
             if (npcIdStr != null) {
-                String server = npcConfig.getString(npcIdStr + ".server");
-                if (server != null) {
-                    PluginMessage.connect(event.getPlayer(), server);
+                String action = npcConfig.getString(npcIdStr + ".action");
+                if (action != null) {
+                    Player player = event.getPlayer();
+
+                    if (action.startsWith("cmd:")) {
+                        // Execute command as player with proper slash prefix
+                        String command = action.substring(4);
+                        // Dispatch command properly with slash added if needed
+                        Bukkit.dispatchCommand(player, command.startsWith("/") ? command.substring(1) : command);
+                    } else if (action.startsWith("console:")) {
+                        // Execute command as console
+                        String command = action.substring(8);
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                                command.startsWith("/") ? command.substring(1) : command);
+                    } else if (action.startsWith("connect:")) {
+                        // Direct server connection
+                        String server = action.substring(8);
+                        PluginMessage.connect(player, server);
+                    } else {
+                        // Default behavior - assume it's a server name
+                        PluginMessage.connect(player, action);
+                    }
                 }
             }
         }
     }
 
-    private void saveNPC(@NotNull UUID npcId, String serverName, String npcName) {
+    private void saveNPC(@NotNull UUID npcId, String action, String npcName) {
         if (!initialized) return;
 
-        npcConfig.set(npcId + ".server", serverName);
+        npcConfig.set(npcId + ".action", action);
         npcConfig.set(npcId + ".name", npcName);
         saveNpcConfig();
     }

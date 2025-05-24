@@ -46,18 +46,19 @@ public class NPCCommand implements CommandExecutor {
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length < 2) {
-            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /npc <name> <server>"));
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /npc <name> <action>"));
+            player.sendMessage(ChatUtils.colorizeMini("&7Actions can be:"));
+            player.sendMessage(ChatUtils.colorizeMini("&7- connect:<server> to connect to server"));
+            player.sendMessage(ChatUtils.colorizeMini("&7- cmd:<command> to run as player"));
+            player.sendMessage(ChatUtils.colorizeMini("&7- console:<command> to run as console"));
+            player.sendMessage(ChatUtils.colorizeMini("&7- or just use a server name directly"));
             return true;
         }
 
         String name = args[0];
         String action = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
-        if (!action.contains(":")) {
-            String COMMAND_PREFIX = "cmd:";
-            action = COMMAND_PREFIX + action;
-        }
-
+        // Create the NPC with the specified action
         plugin.getNpcUtils().createNPC(player, name, action);
         return true;
     }

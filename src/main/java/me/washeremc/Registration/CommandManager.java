@@ -58,6 +58,7 @@ public class CommandManager {
         registerCommand("recipe", new RecipeCommand(plugin));
         registerCommand("whois", new WhoisCommand());
         registerCommand("tags", new TagCommand(plugin));
+        registerCommand("connect", new ConnectCommand());
 
 
         registerCommand("jail", new JailCommand(plugin.getJailManager(), plugin));

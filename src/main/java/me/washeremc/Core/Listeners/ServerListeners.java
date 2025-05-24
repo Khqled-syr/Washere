@@ -4,6 +4,7 @@ package me.washeremc.Core.Listeners;
 import me.washeremc.Core.Settings.PlayerSetting.PlayerTime;
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.Tags.TagManager;
+import me.washeremc.Core.database.DatabaseManager;
 import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Washere;
 import org.bukkit.Bukkit;
@@ -18,6 +19,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.logging.Level;
+
+import static me.washeremc.Core.Tags.TagManager.SETTING_KEY;
+
 
 public class ServerListeners implements Listener {
 
@@ -36,49 +40,58 @@ public class ServerListeners implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         SettingsManager.savePlayerSettings(uuid);
-        SettingsManager.loadPlayerSettings(uuid);
-        applyPlayerSettings(player);
 
         plugin.getScoreboard().removeSidebar(player);
         plugin.getScoreboard().removePlayerTeams(player);
+        plugin.getPlayerTimeManager().stopTracking(player);
 
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST) // Changed to LOWEST to run first
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+        plugin.getPlayerTimeManager().startTracking(player);
 
-        plugin.getLogger().info("🔄 Loading settings for " + player.getName() + "...");
-
+        // Force synchronous tag load for a join message
         try {
-            plugin.getTabList().setTabList(player);
-            plugin.getTabList().updatePlayerListNames();
+            String tagId = DatabaseManager.loadSetting(uuid, SETTING_KEY, "").get();
+            if (tagId != null && !tagId.isEmpty()) {
+                TagManager.setPlayerTag(uuid, tagId);
+            }
         } catch (Exception e) {
-            plugin.getLogger().warning("Failed to update tablist for " + player.getName() + ": " + e.getMessage());
+            plugin.getLogger().warning("Failed to load tag for " + player.getName() + ": " + e.getMessage());
         }
 
-        SettingsManager.loadPlayerSettingsAsync(uuid).thenRun(() ->
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    try {
-                        applyPlayerSettings(player);
+        // Delay other settings loading slightly
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            plugin.getLogger().info("🔄 Loading settings for " + player.getName() + "...");
 
-                        if (SettingsManager.isScoreboardEnabled(player)) {
-                            plugin.getScoreboard().createSidebar(player);
+            try {
+                plugin.getTabList().setTabList(player);
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed to update tablist for " + player.getName() + ": " + e.getMessage());
+            }
+
+            SettingsManager.loadPlayerSettingsAsync(uuid).thenRun(() ->
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        try {
+                            applyPlayerSettings(player);
+                            if (SettingsManager.isScoreboardEnabled(player)) {
+                                plugin.getScoreboard().createSidebar(player);
+                            }
+                            plugin.getScoreboard().setPlayerTeams(player);
+                            plugin.getTabList().updatePlayerListNames();
+                            plugin.getLogger().info("✅ Settings applied for " + player.getName());
+                        } catch (Exception e) {
+                            plugin.getLogger().log(Level.SEVERE, "Failed to apply settings for " + player.getName(), e);
                         }
-
-                        plugin.getScoreboard().setPlayerTeams(player);
-                        TagManager.loadPlayerTag(uuid);
-
-                        plugin.getLogger().info("✅ Settings applied for " + player.getName());
-                    } catch (Exception e) {
-                        plugin.getLogger().log(Level.SEVERE, "Failed to apply settings for " + player.getName(), e);
-                    }
-                })
-        ).exceptionally(ex -> {
-            plugin.getLogger().log(Level.SEVERE, "Error loading settings: " + ex.getMessage(), ex);
-            return null;
-        });
+                    })
+            ).exceptionally(ex -> {
+                plugin.getLogger().log(Level.SEVERE, "Error loading settings: " + ex.getMessage(), ex);
+                return null;
+            });
+        }, 5L); // Short delay to ensure the tag is loaded first
     }
 
     private void applyPlayerSettings(@NotNull Player player) {

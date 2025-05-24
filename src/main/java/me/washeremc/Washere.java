@@ -1,5 +1,6 @@
 package me.washeremc;
 
+import me.washeremc.Core.PlayerTime.PlayerTimeManager;
 import me.washeremc.Registration.PluginServices;
 import me.washeremc.Core.Managers.PluginReloadManager;
 import me.washeremc.Core.utils.ScoreBoard;
@@ -20,6 +21,7 @@ public final class Washere extends JavaPlugin implements Listener {
     private String serverType;
     private NPCUtils npcUtils;
     private JailManager jailManager;
+    private PlayerTimeManager playerTimeManager;
 
     @Override
     public void onEnable() {
@@ -32,19 +34,67 @@ public final class Washere extends JavaPlugin implements Listener {
         pluginServices.onShutdown();
     }
 
-    public TpaManager getTpaManager() { return tpaManager; }
-    public ScoreBoard getScoreboard() { return scoreboard; }
-    public PluginReloadManager getPluginReloadManager() { return pluginReloadManager; }
-    public TabList getTabList() { return tabList; }
-    public String getServerType() { return serverType; }
-    public NPCUtils getNpcUtils() { return npcUtils; }
-    public JailManager getJailManager() { return jailManager; }
+    public TpaManager getTpaManager() {
+        return tpaManager;
+    }
 
-    public void setTpaManager(TpaManager tpaManager) { this.tpaManager = tpaManager; }
-    public void setScoreboard(ScoreBoard scoreboard) { this.scoreboard = scoreboard; }
-    public void setPluginReloadManager(PluginReloadManager pluginReloadManager) { this.pluginReloadManager = pluginReloadManager; }
-    public void setTabList(TabList tabList) { this.tabList = tabList; }
-    public void setServerType(String serverType) { this.serverType = serverType; }
-    public void setNpcUtils(NPCUtils npcUtils) { this.npcUtils = npcUtils; }
-    public void setJailManager(JailManager jailManager) { this.jailManager = jailManager; }
+    public ScoreBoard getScoreboard() {
+        return scoreboard;
+    }
+
+    public PluginReloadManager getPluginReloadManager() {
+        return pluginReloadManager;
+    }
+
+    public TabList getTabList() {
+        return tabList;
+    }
+
+    public String getServerType() {
+        return serverType;
+    }
+
+    public NPCUtils getNpcUtils() {
+        return npcUtils;
+    }
+
+    public JailManager getJailManager() {
+        return jailManager;
+    }
+
+    public PlayerTimeManager getPlayerTimeManager() {
+        return playerTimeManager;
+    }
+
+    public void setTpaManager(TpaManager tpaManager) {
+        this.tpaManager = tpaManager;
+    }
+
+    public void setScoreboard(ScoreBoard scoreboard) {
+        this.scoreboard = scoreboard;
+    }
+
+    public void setPluginReloadManager(PluginReloadManager pluginReloadManager) {
+        this.pluginReloadManager = pluginReloadManager;
+    }
+
+    public void setTabList(TabList tabList) {
+        this.tabList = tabList;
+    }
+
+    public void setServerType(String serverType) {
+        this.serverType = serverType;
+    }
+
+    public void setNpcUtils(NPCUtils npcUtils) {
+        this.npcUtils = npcUtils;
+    }
+
+    public void setJailManager(JailManager jailManager) {
+        this.jailManager = jailManager;
+    }
+
+    public void setPlayerTimeManager(PlayerTimeManager playerTimeManager) {
+        this.playerTimeManager = playerTimeManager;
+    }
 }

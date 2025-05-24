@@ -1,7 +1,10 @@
 package me.washeremc.Registration;
 
 import me.washeremc.Core.Managers.PluginReloadManager;
+import me.washeremc.Core.PlayerTime.PlayerTimeExpansion;
+import me.washeremc.Core.PlayerTime.PlayerTimeManager;
 import me.washeremc.Core.Settings.SettingsManager;
+import me.washeremc.Core.Tags.TagManager;
 import me.washeremc.Core.database.DatabaseManager;
 import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Core.utils.ScoreBoard;
@@ -39,7 +42,9 @@ public class PluginServices {
     public void onShutdown() {
         logShutdownMessage();
         cancelScheduledTasks();
+        saveTagsOnShutdown();
         closeDatabase();
+        plugin.getPlayerTimeManager().shutdown();
         if (plugin.getScoreboard() != null) {
             plugin.getScoreboard().resetSidebars();
         }
@@ -120,6 +125,19 @@ public class PluginServices {
             JailManager jailManager = new JailManager(plugin);
             jailManager.initialize();
             plugin.setJailManager(jailManager);
+
+            try {
+                // Make sure this is after database initialization
+                PlayerTimeManager playerTimeManager = new PlayerTimeManager(plugin);
+                plugin.setPlayerTimeManager(playerTimeManager);
+                new PlayerTimeExpansion(plugin, playerTimeManager).register();
+                plugin.getLogger().info("PlayerTimeManager initialized successfully");
+            } catch (Exception e) {
+                plugin.getLogger().info("Failed to initialize PlayerTimeManager: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+
         } catch (Exception e) {
             plugin.getLogger().severe("Error while setting up managers: " + e.getMessage());
             plugin.getLogger().severe("Error" + e.getMessage());
@@ -171,5 +189,10 @@ public class PluginServices {
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to close database connection: " + e.getMessage());
         }
+    }
+
+    private void saveTagsOnShutdown() {
+        TagManager.saveAllTags();
+        TagManager.reload();
     }
 }

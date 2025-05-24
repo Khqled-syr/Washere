@@ -52,7 +52,6 @@ public class ChatListener implements Listener {
         String[] parts = chatFormat.split(":");
         String nameFormat = parts[0];
         String messageFormat = parts.length > 1 ? parts[1] : " &f%message%";
-
         String namePartProcessed = PlaceholderAPI.setPlaceholders(sender, nameFormat);
         Component nameComponent = ChatUtils.colorizeMini(namePartProcessed)
                 .hoverEvent(HoverEvent.showText(hoverComponent));
@@ -61,7 +60,6 @@ public class ChatListener implements Listener {
         Component messageComponent = ChatUtils.colorizeMini(messagePartProcessed);
 
         Component fullMessage = nameComponent.append(Component.text(":")).append(messageComponent);
-
         CooldownManager.setCooldown(uuid, cooldownKey, 2);
 
         for (Player recipient : Bukkit.getOnlinePlayers()) {

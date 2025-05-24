@@ -136,6 +136,27 @@ public class DatabaseManager {
         });
     }
 
+    public static void saveSettingSync(UUID uuid, String key, Object value) throws SQLException {
+        if (useMySQL) {
+            String sql = "INSERT INTO player_settings (uuid, " + key + ") VALUES (?, ?) " +
+                    "ON DUPLICATE KEY UPDATE " + key + " = ?";
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, uuid.toString());
+                ps.setObject(2, value);
+                ps.setObject(3, value);
+                ps.executeUpdate();
+            }
+        } else {
+            settingsConfig.set("players." + uuid + "." + key, value);
+            try {
+                settingsConfig.save(settingsFile);
+            } catch (IOException e) {
+                throw new SQLException("Failed to save to YAML", e);
+            }
+        }
+    }
+
     private static void saveToMySQL(@NotNull UUID uuid, String key, Object value) {
         String sql = "INSERT INTO player_settings (uuid, " + key + ") VALUES (?, ?) " +
                 "ON DUPLICATE KEY UPDATE " + key + " = ?";

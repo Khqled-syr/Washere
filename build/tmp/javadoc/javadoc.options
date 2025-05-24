@@ -9,6 +9,7 @@
 -notimestamp 
 -quiet 
 -windowtitle 'Washere 3.5.2 API'
+'D:\\Khaled\\Development\\Java\\Minecraft plugins\\Washere\\src\\main\\java\\me\\washeremc\\Core\\commands\\ConnectCommand.java'
 'D:\\Khaled\\Development\\Java\\Minecraft plugins\\Washere\\src\\main\\java\\me\\washeremc\\Core\\commands\\HelpCommand.java'
 'D:\\Khaled\\Development\\Java\\Minecraft plugins\\Washere\\src\\main\\java\\me\\washeremc\\Core\\commands\\MsgCommand.java'
 'D:\\Khaled\\Development\\Java\\Minecraft plugins\\Washere\\src\\main\\java\\me\\washeremc\\Core\\commands\\ReloadCommand.java'

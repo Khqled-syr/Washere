@@ -24,6 +24,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+import static me.washeremc.Core.Tags.TagManager.SETTING_KEY;
+
 public final class SettingsManager {
     private static final Map<UUID, Map<String, Object>> playerSettings = new ConcurrentHashMap<>();
     private static final int PVP_TOGGLE_COOLDOWN = 60;
@@ -274,7 +276,6 @@ public final class SettingsManager {
         playerSettings.computeIfAbsent(uuid, k -> new ConcurrentHashMap<>())
                 .put("selectedTag", tagId != null ? tagId : "");
 
-        // Save to a database
         return DatabaseManager.saveSetting(uuid, "selectedTag", tagId != null ? tagId : "");
     }
 
@@ -283,11 +284,11 @@ public final class SettingsManager {
 
         if (DatabaseManager.useMySQL) {
             try (Connection conn = DatabaseManager.dataSource.getConnection();
-                 PreparedStatement ps = conn.prepareStatement("SELECT uuid, selectedTag FROM player_settings")) {
+                 PreparedStatement ps = conn.prepareStatement("SELECT uuid, " + SETTING_KEY + " FROM player_settings")) {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("uuid"));
-                        String tagId = rs.getString("selectedTag");
+                        String tagId = rs.getString(SETTING_KEY);
                         if (tagId != null && !tagId.isEmpty()) {
                             result.put(uuid, tagId);
                         }
@@ -298,7 +299,7 @@ public final class SettingsManager {
             }
         } else {
             if (DatabaseManager.settingsConfig == null) {
-                plugin.getLogger().severe("Settings configuration is not initialized. Ensure DatabaseManager.settingsConfig is loaded.");
+                plugin.getLogger().severe("Settings configuration is not initialized.");
                 return result;
             }
 
@@ -307,7 +308,7 @@ public final class SettingsManager {
                 for (String uuidStr : playersSection.getKeys(false)) {
                     try {
                         UUID uuid = UUID.fromString(uuidStr);
-                        String tagId = DatabaseManager.settingsConfig.getString("players." + uuidStr + ".selectedTag", "");
+                        String tagId = DatabaseManager.settingsConfig.getString("players." + uuidStr + "." + SETTING_KEY, "");
                         if (!tagId.isEmpty()) {
                             result.put(uuid, tagId);
                         }
@@ -317,6 +318,8 @@ public final class SettingsManager {
                 }
             }
         }
+
+        plugin.getLogger().info("Loaded " + result.size() + " player tags from database");
         return result;
     }
 

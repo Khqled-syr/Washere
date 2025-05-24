@@ -34,6 +34,7 @@ public class Profile implements Listener {
 
     static String lp = "%luckperms_prefix%";
     static String meta = "%luckperms_meta_color%";
+    static String playeTime = "%playertime_hours%";
 
 
     public static void initialize(Washere pluginInstance) {
@@ -66,7 +67,7 @@ public class Profile implements Listener {
         ItemStack profileHead = GuiItems.createPlayerHead(player, ChatUtils.colorize("&eInfo"), Arrays.asList(
                 ChatUtils.colorize("&7Name: &f" + PlaceholderAPI.setPlaceholders(player, meta) + player.getName()),
                 ChatUtils.colorize("&7Rank: &f" + rank),
-                ChatUtils.colorize("&7Playtime: &e" + (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20 / 60) + " minutes"),
+                ChatUtils.colorize("&7Playtime: &e" + PlaceholderAPI.setPlaceholders(player, playeTime) + " hours" ),
                 "",
                 ChatUtils.colorize("&eClick to open settings.")
         ));
