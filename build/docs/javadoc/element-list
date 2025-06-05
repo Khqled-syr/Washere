@@ -3,6 +3,7 @@ me.washeremc.Core.commands
 me.washeremc.Core.database
 me.washeremc.Core.Listeners
 me.washeremc.Core.Managers
+me.washeremc.Core.PlayerTime
 me.washeremc.Core.Profile
 me.washeremc.Core.proxy
 me.washeremc.Core.Settings

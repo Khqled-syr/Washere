@@ -43,17 +43,17 @@ public class ServerListeners implements Listener {
 
         plugin.getScoreboard().removeSidebar(player);
         plugin.getScoreboard().removePlayerTeams(player);
-        plugin.getPlayerTimeManager().stopTracking(player);
+        plugin.getTabList().cleanupPlayer(player.getUniqueId());
+        plugin.getPlayerTimeManager().stopTracking(player.getUniqueId());
 
     }
 
-    @EventHandler(priority = EventPriority.LOWEST) // Changed to LOWEST to run first
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         plugin.getPlayerTimeManager().startTracking(player);
 
-        // Force synchronous tag load for a join message
         try {
             String tagId = DatabaseManager.loadSetting(uuid, SETTING_KEY, "").get();
             if (tagId != null && !tagId.isEmpty()) {
@@ -65,10 +65,13 @@ public class ServerListeners implements Listener {
 
         // Delay other settings loading slightly
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            plugin.getLogger().info("🔄 Loading settings for " + player.getName() + "...");
+            //plugin.getLogger().info("🔄 Loading settings for " + player.getName() + "...");
 
             try {
                 plugin.getTabList().setTabList(player);
+                if(!plugin.getTabList().isUpdaterRunning()){
+                    plugin.getTabList().startDynamicTabUpdater();
+                }
             } catch (Exception e) {
                 plugin.getLogger().warning("Failed to update tablist for " + player.getName() + ": " + e.getMessage());
             }
@@ -82,7 +85,7 @@ public class ServerListeners implements Listener {
                             }
                             plugin.getScoreboard().setPlayerTeams(player);
                             plugin.getTabList().updatePlayerListNames();
-                            plugin.getLogger().info("✅ Settings applied for " + player.getName());
+                            //plugin.getLogger().info("✅ Settings applied for " + player.getName());
                         } catch (Exception e) {
                             plugin.getLogger().log(Level.SEVERE, "Failed to apply settings for " + player.getName(), e);
                         }
@@ -91,7 +94,7 @@ public class ServerListeners implements Listener {
                 plugin.getLogger().log(Level.SEVERE, "Error loading settings: " + ex.getMessage(), ex);
                 return null;
             });
-        }, 5L); // Short delay to ensure the tag is loaded first
+        }, 5L);
     }
 
     private void applyPlayerSettings(@NotNull Player player) {

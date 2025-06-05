@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerTimeExpansion extends PlaceholderExpansion {
+public class PlayTimeTrackerExpansion extends PlaceholderExpansion {
     private final Washere plugin;
-    private final PlayerTimeManager playerTimeManager;
+    private final PlayTimeTracker playTimeTracker;
 
-    public PlayerTimeExpansion(Washere plugin, PlayerTimeManager playerTimeManager) {
+    public PlayTimeTrackerExpansion(Washere plugin, PlayTimeTracker playTimeTracker) {
         this.plugin = plugin;
-        this.playerTimeManager = playerTimeManager;
+        this.playTimeTracker = playTimeTracker;
     }
 
     @Override
@@ -40,8 +40,8 @@ public class PlayerTimeExpansion extends PlaceholderExpansion {
         if (player == null) return "";
 
         return switch (params.toLowerCase()) {
-            case "hours" -> String.valueOf(playerTimeManager.getPlayerTime(player.getUniqueId()));
-            case "hours_formatted" -> formatTime(playerTimeManager.getPlayerTime(player.getUniqueId()));
+            case "hours" -> String.valueOf(playTimeTracker.getPlayerTime(player.getUniqueId()));
+            case "hours_formatted" -> formatTime(playTimeTracker.getPlayerTime(player.getUniqueId()));
             default -> null;
         };
     }
@@ -53,7 +53,20 @@ public class PlayerTimeExpansion extends PlaceholderExpansion {
         } else {
             long days = hours / 24;
             long remainingHours = hours % 24;
-            return days + " days, " + remainingHours + " hours";
+            return days + " days" + (remainingHours > 0 ? ", " + remainingHours + " hours" : "");
+        }
+    }
+
+    @Contract(pure = true)
+    private @NotNull String formatTimeFull(long hours, long minutes) {
+        if (hours < 1) {
+            return minutes + " minutes";
+        } else if (hours < 24) {
+            return hours + " hours, " + minutes + " minutes";
+        } else {
+            long days = hours / 24;
+            long remainingHours = hours % 24;
+            return days + " days, " + remainingHours + " hours, " + minutes + " minutes";
         }
     }
 }

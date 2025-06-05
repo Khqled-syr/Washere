@@ -64,7 +64,7 @@ public class ScoreBoard {
                 updateSidebarLines(player, sidebar);
                 setPlayerTeams(player);
             }
-        }).runTaskTimer(plugin, 0L, 100L);
+        }).runTaskTimer(plugin, 0L, 20L);
     }
 
     private void updateSidebarLines(@NotNull Player player, Sidebar sidebar) {

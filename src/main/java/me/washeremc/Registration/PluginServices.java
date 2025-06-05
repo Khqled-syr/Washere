@@ -1,8 +1,8 @@
 package me.washeremc.Registration;
 
 import me.washeremc.Core.Managers.PluginReloadManager;
-import me.washeremc.Core.PlayerTime.PlayerTimeExpansion;
-import me.washeremc.Core.PlayerTime.PlayerTimeManager;
+import me.washeremc.Core.PlayerTime.PlayTimeTrackerExpansion;
+import me.washeremc.Core.PlayerTime.PlayTimeTracker;
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.Tags.TagManager;
 import me.washeremc.Core.database.DatabaseManager;
@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 public class PluginServices {
 
     private final Washere plugin;
-
     public PluginServices(Washere plugin) {
         this.plugin = plugin;
     }
@@ -97,7 +96,7 @@ public class PluginServices {
     private void checkForPlaceholderAPI() {
         Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
         if (placeholderAPI != null && placeholderAPI.isEnabled()) {
-            plugin.getLogger().info("Hooked into PlaceholderAPI.");
+            plugin.getLogger().info("Hooked into PlaceholderAPI.\n");
         } else {
             plugin.getLogger().warning("PlaceholderAPI not found!");
         }
@@ -127,14 +126,13 @@ public class PluginServices {
             plugin.setJailManager(jailManager);
 
             try {
-                // Make sure this is after database initialization
-                PlayerTimeManager playerTimeManager = new PlayerTimeManager(plugin);
-                plugin.setPlayerTimeManager(playerTimeManager);
-                new PlayerTimeExpansion(plugin, playerTimeManager).register();
+                PlayTimeTracker playTimeTracker = new PlayTimeTracker(plugin);
+                plugin.setPlayerTimeManager(playTimeTracker);
+                new PlayTimeTrackerExpansion(plugin, playTimeTracker).register();
                 plugin.getLogger().info("PlayerTimeManager initialized successfully");
             } catch (Exception e) {
                 plugin.getLogger().info("Failed to initialize PlayerTimeManager: " + e.getMessage());
-                e.printStackTrace();
+                plugin.getLogger().info(e.getMessage());
             }
 
 

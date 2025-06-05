@@ -1,6 +1,6 @@
 package me.washeremc;
 
-import me.washeremc.Core.PlayerTime.PlayerTimeManager;
+import me.washeremc.Core.PlayerTime.PlayTimeTracker;
 import me.washeremc.Registration.PluginServices;
 import me.washeremc.Core.Managers.PluginReloadManager;
 import me.washeremc.Core.utils.ScoreBoard;
@@ -21,7 +21,7 @@ public final class Washere extends JavaPlugin implements Listener {
     private String serverType;
     private NPCUtils npcUtils;
     private JailManager jailManager;
-    private PlayerTimeManager playerTimeManager;
+    private PlayTimeTracker playTimeTracker;
 
     @Override
     public void onEnable() {
@@ -62,8 +62,8 @@ public final class Washere extends JavaPlugin implements Listener {
         return jailManager;
     }
 
-    public PlayerTimeManager getPlayerTimeManager() {
-        return playerTimeManager;
+    public PlayTimeTracker getPlayerTimeManager() {
+        return playTimeTracker;
     }
 
     public void setTpaManager(TpaManager tpaManager) {
@@ -94,7 +94,7 @@ public final class Washere extends JavaPlugin implements Listener {
         this.jailManager = jailManager;
     }
 
-    public void setPlayerTimeManager(PlayerTimeManager playerTimeManager) {
-        this.playerTimeManager = playerTimeManager;
+    public void setPlayerTimeManager(PlayTimeTracker playTimeTracker) {
+        this.playTimeTracker = playTimeTracker;
     }
 }

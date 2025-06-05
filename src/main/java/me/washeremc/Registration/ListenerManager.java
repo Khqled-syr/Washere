@@ -51,7 +51,7 @@ public class ListenerManager {
             Objects.requireNonNull(plugin.getCommand("delwarp")).setTabCompleter(tabCompleter);
             Objects.requireNonNull(plugin.getCommand("setwarp")).setTabCompleter(tabCompleter);
 
-            new ActionBarTask(plugin).runTaskTimer(plugin, 0L, 20L);
+            new ActionBarTask(plugin).runTaskTimer(plugin, 0L, 0L);
         }
     }
 }

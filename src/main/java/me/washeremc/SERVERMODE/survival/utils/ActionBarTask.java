@@ -30,7 +30,6 @@ public class ActionBarTask extends BukkitRunnable {
             }else {
                 ActionBarUtils.hideActionBar(player);
             }
-
         }
     }
 }
