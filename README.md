@@ -2,7 +2,7 @@
 
 A powerful and flexible Minecraft server core plugin that enhances server management and player experience.
 
-## 🚀 Features
+## 🚀  Features
 
 ### PvP System
 - Individual PvP toggling
@@ -13,20 +13,46 @@ A powerful and flexible Minecraft server core plugin that enhances server manage
 ### Player Settings
 - ⚙️ Customizable player preferences
 - 💾 Persistent data storage
-- ⚡ Asynchronous data handling
+- Asynchronous data handling
 - 📋 Default settings management
 
-### Core Features
+### Lobby Features
 - 🌍 Multiple server type support
 - 📊 Dynamic scoreboard system
+- 🔄 Dynamic tablist
 - 👥 Player visibility controls
 - 🕒 Personal time settings
+- 🗣️ NPC interaction support
 - 💬 Enhanced messaging system
 - 📍 TPA functionality
+- 🔔 Action bar notifications
+
+### Survival Features
+- ⚔️ **PvP System**
+- Individual PvP toggling
+- Configurable cooldown system
+- Real-time action bar notifications
+- 🏆 Player statistics tracking
+- 🔒 Jail system with commands
+
+### Core Features
+- ⚙️ **Player Settings**
+- Customizable player preferences
+- 💾 Persistent data storage
+- ⚡ Asynchronous data handling
+- 📋 Default settings management
+- 🔄 Configuration reloading
+- 📜 PlaceholderAPI integration
+- 🔗 LuckPerms support
+- 📦 YAML and MySQL storage options
+- 🔧 Easy-to-use configuration
+- 📈 Performance optimized for high player counts
+- 🔒 Secure and stable
+
 
 ## 📦 Installation
 
-1. Download `WashereCore.jar`
+1. Download `Washere-3.5.2-all.jar`
 2. Place in server's `plugins` folder
 3. Restart server
 4. Edit `config.yml` as needed
@@ -52,27 +78,12 @@ mysql:
   username: "root"
   password: "password"
 ```
-## 🛠️ Commands
 
-### Player Commands
-- `/settings` - Access settings menu
-- `/pvp` - Toggle PvP state
-- `/tpa <player>` - Send teleport request
 
-### Admin Commands
-- `/wreload` - Reload configuration
-- `/jail | /unjail | /setjail` Jail system.
-
+## 📜 Commands
+### Soon...
 ## 🔒 Permissions
-washere.admin:
-description: Admin access
-default: op
-washere.jail
-washere.npc
-fly:
-  description: toggle fly
-  usage: /fly
-  permission: washere.vip
+### Soon...
 
 ## 🔧 Dependencies
 - Server: Paper/Spigot 1.21+
