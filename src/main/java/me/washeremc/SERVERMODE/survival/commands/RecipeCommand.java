@@ -54,13 +54,13 @@ public class RecipeCommand implements CommandExecutor, TabCompleter {
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
 
         if (args.length != 1) {
-            player.sendMessage("Usage: /recipe <item>");
+            player.sendMessage(ChatUtils.colorizeMini("&cUsage: /recipe <item>"));
             return true;
         }
 
         Material material = Material.matchMaterial(args[0]);
         if (material == null || !material.isItem()) {
-            player.sendMessage("Invalid item!");
+            player.sendMessage(ChatUtils.colorizeMini("&cInvalid item!, please use a valid item name."));
             return true;
         }
 
@@ -70,7 +70,7 @@ public class RecipeCommand implements CommandExecutor, TabCompleter {
 
     public void showRecipeGUI(Player player, Material result) {
         Bukkit.getScheduler().runTask(plugin, () -> {
-            String title = "recipe: " + result.name().toLowerCase(); // No colors, lowercase
+            String title = "recipe: " + result.name().toLowerCase();
             Inventory craftingInventory = Bukkit.createInventory( null, InventoryType.WORKBENCH, Component.text( title));
 
             Optional<Recipe> recipeOpt = Bukkit.getRecipesFor(new ItemStack(result)).stream()

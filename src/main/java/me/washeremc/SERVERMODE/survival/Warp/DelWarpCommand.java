@@ -43,7 +43,7 @@ public class DelWarpCommand implements CommandExecutor {
         if (args.length == 2) {
             if (!args[0].equalsIgnoreCase("public")) {
                 if (player.hasPermission("washere.warp.public")) {
-                    player.sendMessage(ChatUtils.colorizeMini("&cUsage: /delwarp [public] <name>"));
+                    player.sendMessage(ChatUtils.colorizeMini("&cUsage: /delwarp public [name]"));
                     return true;
                 }
             }

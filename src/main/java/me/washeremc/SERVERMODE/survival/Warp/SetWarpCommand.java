@@ -47,7 +47,7 @@ public record SetWarpCommand(Washere plugin) implements CommandExecutor {
                 return true;
             }
 
-            WarpManager.setPublicWarp(args[1], player.getLocation());
+            WarpManager.setPublicWarp(args[1].toLowerCase(), player.getLocation());
             player.sendMessage(ChatUtils.colorizeMini("&aPublic warp &f" + args[1] + " &ahas been set!"));
             return true;
         }
@@ -55,7 +55,7 @@ public record SetWarpCommand(Washere plugin) implements CommandExecutor {
         UUID uuid = player.getUniqueId();
 
         int currentWarps = WarpManager.getWarps(uuid).size();
-        if (currentWarps >= WarpManager.getMaxWarpsPerPlayer() && !player.hasPermission("washere.warp.bypass")) {
+        if (currentWarps >= WarpManager.getMaxWarpsPerPlayer()) {
             player.sendMessage(ChatUtils.colorizeMini("&cYou have reached your maximum warp limit!"));
             return true;
         }
@@ -71,7 +71,7 @@ public record SetWarpCommand(Washere plugin) implements CommandExecutor {
         if (args.length != 1) {
             player.sendMessage(ChatUtils.colorize("&cUsage: /setwarp [name]"));
             if (player.hasPermission("washere.warp.public")) {
-                player.sendMessage(ChatUtils.colorizeMini("&eUse /setwarp public <name> to create a public warp"));
+                player.sendMessage(ChatUtils.colorizeMini("&c&lUse /setwarp public [name] to create a public warp that anyone can see."));
             }
             return false;
         }

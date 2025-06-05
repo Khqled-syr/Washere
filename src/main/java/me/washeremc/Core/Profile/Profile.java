@@ -34,7 +34,7 @@ public class Profile implements Listener {
 
     static String lp = "%luckperms_prefix%";
     static String meta = "%luckperms_meta_color%";
-    static String playeTime = "%playertime_hours_formatted%";
+    static String playeTime = "%playertime_full_format%";
 
 
     public static void initialize(Washere pluginInstance) {

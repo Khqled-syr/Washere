@@ -14,3 +14,7 @@ Shows formatted time in a human-readable format.
 - `5 days, 3 hours`
 - `12 hours`
 - `2 days, 1 hour`
+
+
+
+`%playertime_full_format%` - displays time in "X days, Y hours, Z minutes" format

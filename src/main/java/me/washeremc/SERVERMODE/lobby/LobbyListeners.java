@@ -74,7 +74,6 @@ public class LobbyListeners implements Listener {
             FlyCommand.setFlight(player, true);
         }
 
-        // Ensure spawn.yml is loaded properly
         File spawnFile = new File(plugin.getDataFolder(), "spawn.yml");
         if (spawnFile.exists()) {
             FileConfiguration spawnConfig = YamlConfiguration.loadConfiguration(spawnFile);

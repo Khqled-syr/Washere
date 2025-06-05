@@ -62,10 +62,7 @@ public class ServerListeners implements Listener {
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to load tag for " + player.getName() + ": " + e.getMessage());
         }
-
-        // Delay other settings loading slightly
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            //plugin.getLogger().info("🔄 Loading settings for " + player.getName() + "...");
 
             try {
                 plugin.getTabList().setTabList(player);
@@ -85,7 +82,6 @@ public class ServerListeners implements Listener {
                             }
                             plugin.getScoreboard().setPlayerTeams(player);
                             plugin.getTabList().updatePlayerListNames();
-                            //plugin.getLogger().info("✅ Settings applied for " + player.getName());
                         } catch (Exception e) {
                             plugin.getLogger().log(Level.SEVERE, "Failed to apply settings for " + player.getName(), e);
                         }

@@ -38,10 +38,17 @@ public class HelpCommand implements CommandExecutor {
                         &a/settings &7- Open your personal settings menu.
                         &a/profile &7- View your player profile.
                         &a/tags &7- View and manage your tags.
+                        &a/warp &7- Teleport to a warp point.
+                        &a/sethome &7- Set your home location.
+                        &a/home &7- Teleport to your home.
+                        &a/backpack &7- Open your backpack.
+                        &a/donate <name> &7- Donate items to a player.
+                        &a/tpa <player> &7- Request to teleport to a player.
+                        &a/tpaccept &7- Accept a teleport request.
+                        &a/recipe <name> &7- View a recipe.
                         &b═════════════════════════════
                         &eTip: Use &a/settings &eto customize your experience!"""
         ));
-
         return true;
     }
 }

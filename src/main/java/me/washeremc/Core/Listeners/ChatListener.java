@@ -6,6 +6,7 @@ import me.washeremc.Core.Managers.CooldownManager;
 import me.washeremc.Core.Settings.SettingsManager;
 import me.washeremc.Core.utils.ChatUtils;
 import me.washeremc.Washere;
+import me.washeremc.SERVERMODE.survival.Jail.JailManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -17,12 +18,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("ALL")
 public class ChatListener implements Listener {
 
     private final Washere plugin;
+    // OPTIMIZED: Cache components to reduce processing
+    private final Map<String, Component> componentCache = new HashMap<>();
+    private long lastCacheClean = System.currentTimeMillis();
+    private static final long CACHE_CLEAN_INTERVAL = 300000; // 5 minutes
 
     public ChatListener(Washere plugin) {
         this.plugin = plugin;
@@ -42,19 +49,37 @@ public class ChatListener implements Listener {
             return;
         }
 
+        // OPTIMIZED: Clean cache periodically to prevent memory leaks
+        cleanCacheIfNeeded();
+
         FileConfiguration config = plugin.getConfig();
         String chatFormat = config.getString("chat.format", "&7%luckperms_prefix%%player_name%: &f%message%");
 
-        String rankInfo = PlaceholderAPI.setPlaceholders(sender, "&7Rank: %luckperms_primary_group_name%");
+        JailManager jailManager = plugin.getJailManager();
+        if (jailManager != null && jailManager.isJailed(uuid)) {
+            chatFormat = "&8[Prisoned] " + chatFormat;
+        }
 
-        Component hoverComponent = ChatUtils.colorizeMini(rankInfo);
+        String rankInfoKey = "rank_" + uuid.toString();
+        Component hoverComponent = componentCache.get(rankInfoKey);
+        if (hoverComponent == null) {
+            String rankInfo = PlaceholderAPI.setPlaceholders(sender, "&7Rank: %luckperms_primary_group_name%");
+            hoverComponent = ChatUtils.colorizeMini(rankInfo);
+            componentCache.put(rankInfoKey, hoverComponent);
+        }
 
         String[] parts = chatFormat.split(":");
         String nameFormat = parts[0];
         String messageFormat = parts.length > 1 ? parts[1] : " &f%message%";
-        String namePartProcessed = PlaceholderAPI.setPlaceholders(sender, nameFormat);
-        Component nameComponent = ChatUtils.colorizeMini(namePartProcessed)
-                .hoverEvent(HoverEvent.showText(hoverComponent));
+
+        String nameKey = "name_" + uuid.toString() + "_" + nameFormat.hashCode();
+        Component nameComponent = componentCache.get(nameKey);
+        if (nameComponent == null) {
+            String namePartProcessed = PlaceholderAPI.setPlaceholders(sender, nameFormat);
+            nameComponent = ChatUtils.colorizeMini(namePartProcessed)
+                    .hoverEvent(HoverEvent.showText(hoverComponent));
+            componentCache.put(nameKey, nameComponent);
+        }
 
         String messagePartProcessed = PlaceholderAPI.setPlaceholders(sender, messageFormat).replace("%message%", message);
         Component messageComponent = ChatUtils.colorizeMini(messagePartProcessed);
@@ -80,5 +105,13 @@ public class ChatListener implements Listener {
             }
         }
         event.setCancelled(true);
+    }
+
+    private void cleanCacheIfNeeded() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastCacheClean > CACHE_CLEAN_INTERVAL) {
+            componentCache.clear();
+            lastCacheClean = currentTime;
+        }
     }
 }

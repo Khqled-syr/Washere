@@ -100,7 +100,6 @@ public class SurvivalListeners implements Listener {
         } else if (damageEvent != null) {
             deathMessage += " (" + damageEvent.getCause().name().toLowerCase() + ")";
         }
-
         event.deathMessage(ChatUtils.colorizeMini(deathMessage));
         plugin.getLogger().info(ChatUtils.stripColorLegacy(deathMessage));
     }
