@@ -8,6 +8,7 @@ import me.washeremc.Core.utils.TabList;
 import me.washeremc.SERVERMODE.lobby.NPCUtils;
 import me.washeremc.SERVERMODE.survival.Jail.JailManager;
 import me.washeremc.SERVERMODE.survival.TPA.TpaManager;
+import me.washeremc.SERVERMODE.survival.utils.ActionBarManager;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +23,7 @@ public final class Washere extends JavaPlugin implements Listener {
     private NPCUtils npcUtils;
     private JailManager jailManager;
     private PlayTimeTracker playTimeTracker;
+    private ActionBarManager actionBarManager;
 
     @Override
     public void onEnable() {
@@ -66,6 +68,10 @@ public final class Washere extends JavaPlugin implements Listener {
         return playTimeTracker;
     }
 
+    public ActionBarManager getActionBarManager() {
+        return actionBarManager;
+    }
+
     public void setTpaManager(TpaManager tpaManager) {
         this.tpaManager = tpaManager;
     }
@@ -96,5 +102,11 @@ public final class Washere extends JavaPlugin implements Listener {
 
     public void setPlayerTimeManager(PlayTimeTracker playTimeTracker) {
         this.playTimeTracker = playTimeTracker;
+    }
+
+    public void setActionBarManager(ActionBarManager actionBarManager) {
+        this.actionBarManager = actionBarManager;
+
+
     }
 }

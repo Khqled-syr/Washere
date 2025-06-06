@@ -190,27 +190,43 @@ public class TagManager {
 
     public static void reload() {
         Map<UUID, String> currentTags = new HashMap<>(playerTags);
-        loadTagsConfig();
-        loadTags();
         playerTags.clear();
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                Map<UUID, String> allTags = SettingsManager.getAllPlayerTags();
-                allTags.forEach((uuid, tagId) -> {
-                    if (tagId != null && !tagId.isEmpty() && tags.containsKey(tagId)) {
+                Map<UUID, String> loadedTags = SettingsManager.getAllPlayerTags();
+
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    UUID uuid = player.getUniqueId();
+                    try {
+                        // Force synchronous load for online players
+                        String tagId = DatabaseManager.loadSetting(uuid, SETTING_KEY, "").get();
+                        if (tagId != null && !tagId.isEmpty() && tags.containsKey(tagId)) {
+                            playerTags.put(uuid, tagId);
+                            plugin.getLogger().info("Restored tag " + tagId + " for online player " + player.getName());
+                        }
+                    } catch (Exception e) {
+                        plugin.getLogger().warning("Failed to restore tag for online player " + player.getName() + ": " + e.getMessage());
+                        // Restore previous tag if loading fails
+                        if (currentTags.containsKey(uuid)) {
+                            playerTags.put(uuid, currentTags.get(uuid));
+                        }
+                    }
+                }
+
+                loadedTags.forEach((uuid, tagId) -> {
+                    if (!Bukkit.getPlayer(uuid).isOnline() && tags.containsKey(tagId)) {
                         playerTags.put(uuid, tagId);
-                        plugin.getLogger().info("Restored tag " + tagId + " for player " + uuid);
+                        plugin.getLogger().info("Restored tag " + tagId + " for offline player " + uuid);
                     }
                 });
 
                 Bukkit.getScheduler().runTask(plugin, () -> {
-                    for (Player ignored : Bukkit.getOnlinePlayers()) {
-                        plugin.getTabList().updatePlayerListNames();
-                    }
+                    plugin.getTabList().updatePlayerListNames();
                 });
             } catch (Exception e) {
                 plugin.getLogger().severe("Error reloading tags: " + e.getMessage());
+                // Restore all previous tags if something goes wrong
                 playerTags.putAll(currentTags);
             }
         });

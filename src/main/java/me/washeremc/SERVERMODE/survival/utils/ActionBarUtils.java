@@ -9,6 +9,7 @@ public class ActionBarUtils {
     public static void sendActionBar(@NotNull Player player, String message) {
         player.sendActionBar(ChatUtils.colorizeMini("&7" + message));
     }
+
     public static void hideActionBar(@NotNull Player player) {
         player.sendActionBar(Component.empty());
     }

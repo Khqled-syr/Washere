@@ -60,7 +60,6 @@ public class CommandManager {
         registerCommand("tags", new TagCommand(plugin));
         registerCommand("connect", new ConnectCommand());
 
-
         registerCommand("jail", new JailCommand(plugin.getJailManager(), plugin));
         registerCommand("unjail", new UnjailCommand(plugin.getJailManager(), plugin));
         registerCommand("setjail", new SetJailCommand(plugin.getJailManager(), plugin));

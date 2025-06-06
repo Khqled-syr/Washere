@@ -180,6 +180,9 @@ public class PluginServices {
     private void cancelScheduledTasks() {
         Bukkit.getScheduler().cancelTasks(plugin);
         plugin.getJailManager().shutdown();
+        if (plugin.getActionBarManager() != null) {
+            plugin.getActionBarManager().stop();
+        }
     }
 
     private void closeDatabase() {

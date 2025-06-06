@@ -93,7 +93,7 @@ public class SurvivalListeners implements Listener {
         if (damageEvent instanceof EntityDamageByEntityEvent entityDamageEvent) {
             Entity damager = entityDamageEvent.getDamager();
             if (damager instanceof Player) {
-                deathMessage += " by " + ((Player) damager).displayName();
+                deathMessage += " by " + ((Player) damager).getName();
             } else if (damager instanceof LivingEntity) {
                 deathMessage += " by a " + damager.getType().name().toLowerCase();
             }
