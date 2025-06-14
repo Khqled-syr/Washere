@@ -92,22 +92,22 @@ scoreboard:
   # ----- TAB SORTING CONFIGURATION & NAME TAG COLOR -----
   teams:
     founder:
-      prefix: "&4[Founder] "
+      prefix : "&4"
       priority: 1 #RANK WEIGHT
     vip:
-      prefix: "&6[VIP] "
+      prefix: "&6"
       priority: 2
     default:
-      prefix: "&7[Member] "
+      prefix: "&7"
       priority: 3
 
 # ----- TABLIST CONFIGURATION -----
 tablist:
-  player-list-name-format: "%washere_tag_prefix%%luckperms_prefix%%player_name%%washere_tag_suffix%"
+  player-list-name-format: "%washere_tag_prefix%%luckperms_prefix%%player_displayname%%washere_tag_suffix%"
   header: |
     
     &6ᴡᴀꜱʜᴇʀᴇ
-    &7&oᴇɴᴊᴏʏ ʏᴏᴜʀ ꜱᴛᴀʏ ᴀɴᴅ ʜᴀᴠᴇ ꜰᴜɴ!
+    &7&oᴇɴᴊᴏʀ ʏᴏᴜʀ ꜱᴛᴀʏ ᴀɴᴅ ʜᴀᴠᴇ ꜰᴜɴ!
 
   footer: |
     

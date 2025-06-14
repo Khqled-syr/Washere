@@ -46,15 +46,6 @@ public class TabList {
         });
     }
 
-    private void updatePlayerNameTag(@NotNull Player player) {
-        String format = plugin.getConfig().getString("nametag.format", "&7%luckperms_prefix%%player_name%");
-        String nameTag = ChatUtils.colorize(PlaceholderAPI.setPlaceholders(player, format));
-
-        player.setDisplayName(nameTag);
-        player.setCustomName(nameTag);
-        player.setCustomNameVisible(plugin.getConfig().getBoolean("nametag.visible", true));
-    }
-
     public boolean isUpdaterRunning() {
         return taskId != -1 && Bukkit.getScheduler().isCurrentlyRunning(taskId);
     }
@@ -99,7 +90,7 @@ public class TabList {
                 }
                 updatePlayerListNames();
             }
-        }.runTaskTimer(plugin, 0L, 20L).getTaskId();
+        }.runTaskTimer(plugin, 0L, 50L).getTaskId();
     }
 
     public void stopDynamicTabUpdater() {
@@ -109,7 +100,6 @@ public class TabList {
             } catch (Exception ignored) {}
             taskId = -1;
         }
-        // Clean up caches
         lastHeaders.clear();
         lastFooters.clear();
     }

@@ -28,9 +28,6 @@ commands:
     description: Reloads the plugin configuration.
     usage: "/reload"
     permission: washere.admin
-  donate:
-    description: Donate to a player
-    usage: "/donate <player>"
   setwarp:
     description: Set a warp point.
   delwarp:

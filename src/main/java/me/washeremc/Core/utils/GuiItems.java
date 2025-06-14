@@ -27,6 +27,7 @@ public record GuiItems(String name) {
         item.setItemMeta(meta);
         return item;
     }
+
     public static @NotNull ItemStack createPlayerHead(@NotNull Player player, String displayName, List<String> lore) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();

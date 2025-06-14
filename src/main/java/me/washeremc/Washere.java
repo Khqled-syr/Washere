@@ -106,7 +106,5 @@ public final class Washere extends JavaPlugin implements Listener {
 
     public void setActionBarManager(ActionBarManager actionBarManager) {
         this.actionBarManager = actionBarManager;
-
-
     }
 }

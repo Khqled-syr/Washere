@@ -36,7 +36,7 @@ public class ReplyCommand implements CommandExecutor {
             return true;
         }
 
-        if (SettingsManager.isMessagingEnabled(player)) {
+        if (!SettingsManager.isMessagingEnabled(player)) {
             player.sendMessage(ChatUtils.colorizeMini("&cMessaging is disabled. Enable it in your settings."));
             return true;
         }

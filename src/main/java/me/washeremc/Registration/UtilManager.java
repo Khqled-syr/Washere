@@ -42,7 +42,6 @@ public class UtilManager {
         Objects.requireNonNull(plugin.getCommand("warp")).setTabCompleter(tabCompleter);
         Objects.requireNonNull(plugin.getCommand("delwarp")).setTabCompleter(tabCompleter);
         Objects.requireNonNull(plugin.getCommand("setwarp")).setTabCompleter(tabCompleter);
-        //new ActionBarTask(plugin).runTaskTimer(plugin, 0L, 5L);
 
         ActionBarManager actionBarManager = new ActionBarManager(plugin);
         actionBarManager.start();

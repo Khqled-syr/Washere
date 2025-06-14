@@ -15,7 +15,6 @@ import me.washeremc.SERVERMODE.survival.TPA.TpaCommand;
 import me.washeremc.SERVERMODE.survival.TPA.TpacceptCommand;
 import me.washeremc.SERVERMODE.survival.Warp.*;
 import me.washeremc.SERVERMODE.survival.commands.BackpackCommand;
-import me.washeremc.SERVERMODE.survival.commands.DonateCommand;
 import me.washeremc.SERVERMODE.survival.commands.RecipeCommand;
 import me.washeremc.Washere;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +39,6 @@ public class CommandManager {
         registerCommand("tpa", new TpaCommand(plugin));
         registerCommand("tpaccept", new TpacceptCommand(plugin));
         registerCommand("wreload", new ReloadCommand(plugin));
-        registerCommand("donate", new DonateCommand(plugin));
         registerCommand("setwarp", new SetWarpCommand(plugin));
         registerCommand("delwarp", new DelWarpCommand(plugin));
         registerCommand("help", new HelpCommand());

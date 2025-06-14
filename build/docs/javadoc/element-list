@@ -17,6 +17,7 @@ me.washeremc.SERVERMODE.survival.commands
 me.washeremc.SERVERMODE.survival.events
 me.washeremc.SERVERMODE.survival.Home
 me.washeremc.SERVERMODE.survival.Jail
+me.washeremc.SERVERMODE.survival.timber
 me.washeremc.SERVERMODE.survival.TPA
 me.washeremc.SERVERMODE.survival.utils
 me.washeremc.SERVERMODE.survival.Warp

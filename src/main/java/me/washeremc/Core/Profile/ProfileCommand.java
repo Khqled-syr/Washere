@@ -3,6 +3,7 @@ package me.washeremc.Core.Profile;
 
 import me.washeremc.Core.Managers.CooldownManager;
 import me.washeremc.Core.utils.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,8 +28,20 @@ public class ProfileCommand implements CommandExecutor {
             player.sendMessage(ChatUtils.colorize("&cYou must wait &e" + timeLeft + "s &cbefore using this again!"));
             return true;
         }
+
         CooldownManager.setCooldown(uuid, cooldownKey, 3);
-        Profile.openProfile(player);
+
+        if (args.length > 0) {
+            Player target = Bukkit.getPlayer(args[0]);
+            if (target == null) {
+                player.sendMessage(ChatUtils.colorize("&cPlayer not found!"));
+                return true;
+            }
+            Profile.openOtherProfile(player, target);
+        } else {
+            Profile.openProfile(player);
+        }
+
         return true;
     }
 }

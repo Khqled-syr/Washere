@@ -4,6 +4,7 @@ import me.washeremc.Core.Managers.PluginReloadManager;
 import me.washeremc.Core.PlayerTime.PlayTimeTrackerExpansion;
 import me.washeremc.Core.PlayerTime.PlayTimeTracker;
 import me.washeremc.Core.Settings.SettingsManager;
+import me.washeremc.Core.Tags.Tag;
 import me.washeremc.Core.Tags.TagManager;
 import me.washeremc.Core.database.DatabaseManager;
 import me.washeremc.Core.utils.ChatUtils;
@@ -195,6 +196,6 @@ public class PluginServices {
 
     private void saveTagsOnShutdown() {
         TagManager.saveAllTags();
-        TagManager.reload();
+        //TagManager.reload();
     }
 }

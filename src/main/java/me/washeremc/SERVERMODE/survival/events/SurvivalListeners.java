@@ -85,15 +85,13 @@ public class SurvivalListeners implements Listener {
     public void onPlayerDeath(@NotNull PlayerDeathEvent event) {
         if (!isSurvival()) return;
         Player player = event.getEntity();
-        String deathMessage = "&c" + player.getName() + " died at X: " +
-                player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: " +
-                player.getLocation().getBlockZ();
+        String deathMessage = "&c" + player.getName() + " has died";
 
         EntityDamageEvent damageEvent = player.getLastDamageCause();
         if (damageEvent instanceof EntityDamageByEntityEvent entityDamageEvent) {
             Entity damager = entityDamageEvent.getDamager();
             if (damager instanceof Player) {
-                deathMessage += " by " + ((Player) damager).getName();
+                deathMessage += " by " + damager.getName();
             } else if (damager instanceof LivingEntity) {
                 deathMessage += " by a " + damager.getType().name().toLowerCase();
             }

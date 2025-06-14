@@ -35,12 +35,20 @@ public class ChatListener implements Listener {
         this.plugin = plugin;
     }
 
+
+    public void clearPlayerCache(UUID uuid) {
+        componentCache.remove("rank_" + uuid.toString());
+        componentCache.keySet().removeIf(key -> key.startsWith("name_" + uuid.toString()));
+    }
+
     @EventHandler
     public void onPlayerChat(@NotNull AsyncChatEvent event) {
         Player sender = event.getPlayer();
         String message = ((TextComponent) event.message()).content();
         UUID uuid = sender.getUniqueId();
         String cooldownKey = "chat";
+
+        clearPlayerCache(uuid);
 
         if (CooldownManager.isOnCooldown(uuid, cooldownKey)) {
             long timeLeft = CooldownManager.getRemainingTime(uuid, cooldownKey);

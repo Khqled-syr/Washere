@@ -31,10 +31,10 @@ public class PluginReloadManager {
             // Reload features in parallel
             CompletableFuture<Void> featuresFuture = CompletableFuture.runAsync(this::initializeFeatures);
             CompletableFuture<Void> serverTypeFuture = CompletableFuture.runAsync(this::updateServerType);
-            CompletableFuture<Void> tagsFuture = CompletableFuture.runAsync(this::reloadTags);
+            //CompletableFuture<Void> tagsFuture = CompletableFuture.runAsync(this::reloadTags);
 
             // Wait for all operations to complete
-            CompletableFuture.allOf(featuresFuture, serverTypeFuture, tagsFuture).join();
+            //CompletableFuture.allOf(featuresFuture, serverTypeFuture, tagsFuture).join();
 
             plugin.getLogger().info("Plugin reload completed successfully!");
             logReloadStatus();
@@ -85,25 +85,26 @@ public class PluginReloadManager {
         }
     }
 
-    public void reloadTags() {
-        plugin.getLogger().info("Reloading tags...");
-        try {
-            TagManager.reload();
-
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    try {
-                        TagManager.refreshPlayerTag(player.getUniqueId());
-                    } catch (Exception e) {
-                        plugin.getLogger().log(Level.WARNING,
-                            "Failed to reload tags for player " + player.getName(), e);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to reload tags", e);
-        }
-    }
+//    public void reloadTags() {
+//        plugin.getLogger().info("Reloading tags...");
+//        try {
+//            TagManager.reload();
+//            TagManager.getAllTags();
+//
+//            Bukkit.getScheduler().runTask(plugin, () -> {
+//                for (Player player : Bukkit.getOnlinePlayers()) {
+//                    try {
+//                        TagManager.refreshPlayerTag(player.getUniqueId());
+//                    } catch (Exception e) {
+//                        plugin.getLogger().log(Level.WARNING,
+//                            "Failed to reload tags for player " + player.getName(), e);
+//                    }
+//                }
+//            });
+//        } catch (Exception e) {
+//            plugin.getLogger().log(Level.SEVERE, "Failed to reload tags", e);
+//        }
+//    }
 
     /**
      * Updates the server type based on configuration.
